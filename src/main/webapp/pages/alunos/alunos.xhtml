@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                template="/pages/template.xhtml">
+
+    <ui:define name="title">Alunos</ui:define>
+    <ui:define name="subtitle">Cadastro e busca</ui:define>
+
+    <ui:define name="content">
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Alunos</div>
+                    <div class="cardx-subtitle">Buscar e gerenciar</div>
+                </div>
+                <h:link outcome="/pages/alunos.xhtml" styleClass="btn-primaryx" value="Novo aluno"/>
+            </div>
+
+            <h:form styleClass="row g-2">
+                <div class="col-md-4">
+                    <h:inputText value="#{alunoBean.filtroNome}"
+                                 styleClass="form-control"
+                                 pt:placeholder="Buscar por nome..."
+                                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"/>
+                </div>
+                <div class="col-md-3">
+                    <h:inputText value="#{alunoBean.filtroCpf}"
+                                 styleClass="form-control"
+                                 pt:placeholder="CPF"
+                                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"/>
+                </div>
+                <div class="col-md-3">
+                    <h:selectOneMenu value="#{alunoBean.filtroStatus}" styleClass="form-select">
+                        <f:selectItem itemLabel="Status (todos)" itemValue=""/>
+                        <f:selectItem itemLabel="Ativo" itemValue="ATIVO"/>
+                        <f:selectItem itemLabel="Inativo" itemValue="INATIVO"/>
+                    </h:selectOneMenu>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <h:commandButton value="Filtrar" styleClass="btn-ghostx" action="#{alunoBean.buscar}"/>
+                </div>
+            </h:form>
+        </div>
+
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Resultados</div>
+                    <div class="cardx-subtitle">Lista de alunos</div>
+                </div>
+            </div>
+
+            <table class="table-modern">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Turma</th>
+                    <th>Status</th>
+                    <th style="width: 180px;">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Ana Silva</td>
+                    <td>000.000.000-00</td>
+                    <td>2A</td>
+                    <td><span class="badge-pill badge-success">Ativo</span></td>
+                    <td class="d-flex gap-2">
+                        <button class="btn-ghostx" type="button">Detalhes</button>
+                        <button class="btn-ghostx" type="button">Editar</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>João Souza</td>
+                    <td>111.111.111-11</td>
+                    <td>3B</td>
+                    <td><span class="badge-pill badge-muted">Inativo</span></td>
+                    <td class="d-flex gap-2">
+                        <button class="btn-ghostx" type="button">Detalhes</button>
+                        <button class="btn-ghostx" type="button">Editar</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                template="/pages/template.xhtml">
+
+    <ui:define name="title">Notas &amp; Frequência</ui:define>
+    <ui:define name="subtitle">Lançamentos</ui:define>
+
+    <ui:define name="content">
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Selecionar turma</div>
+                    <div class="cardx-subtitle">Escolha a turma e o bimestre</div>
+                </div>
+            </div>
+
+            <h:form styleClass="row g-3">
+                <div class="col-md-5">
+                    <label class="form-label" style="color: rgba(255,255,255,.7);">Turma</label>
+                    <h:selectOneMenu value="#{lancamentoBean.turmaId}" styleClass="form-select">
+                        <f:selectItem itemLabel="2A - 2026" itemValue="10"/>
+                        <f:selectItem itemLabel="3B - 2026" itemValue="11"/>
+                    </h:selectOneMenu>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" style="color: rgba(255,255,255,.7);">Bimestre</label>
+                    <h:selectOneMenu value="#{lancamentoBean.bimestre}" styleClass="form-select">
+                        <f:selectItem itemLabel="1º" itemValue="1"/>
+                        <f:selectItem itemLabel="2º" itemValue="2"/>
+                        <f:selectItem itemLabel="3º" itemValue="3"/>
+                        <f:selectItem itemLabel="4º" itemValue="4"/>
+                    </h:selectOneMenu>
+                </div>
+                <div class="col-md-4 d-flex align-items-end gap-2">
+                    <h:commandButton value="Carregar" styleClass="btn-ghostx" action="#{lancamentoBean.carregar}"/>
+                    <h:commandButton value="Salvar tudo" styleClass="btn-primaryx" action="#{lancamentoBean.salvar}"/>
+                </div>
+            </h:form>
+        </div>
+
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Lançamentos</div>
+                    <div class="cardx-subtitle">Edite inline e salve em lote</div>
+                </div>
+                <span class="badge-pill badge-warning">Pendente</span>
+            </div>
+
+            <table class="table-modern">
+                <thead>
+                <tr>
+                    <th>Aluno</th>
+                    <th>Nota</th>
+                    <th>Frequência (%)</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Ana Silva</td>
+                    <td><input class="form-control" placeholder="0-10" /></td>
+                    <td><input class="form-control" placeholder="0-100" /></td>
+                    <td><span class="badge-pill badge-muted">—</span></td>
+                </tr>
+                <tr>
+                    <td>João Souza</td>
+                    <td><input class="form-control" placeholder="0-10" /></td>
+                    <td><input class="form-control" placeholder="0-100" /></td>
+                    <td><span class="badge-pill badge-muted">—</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </ui:define>
+</ui:composition>

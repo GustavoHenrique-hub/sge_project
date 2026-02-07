@@ -1,0 +1,56 @@
+package com.enterprise.service.admin;
+
+import com.enterprise.dto.UsuarioDTO;
+import com.enterprise.model.entity.admin.UsuarioEntity;
+import com.enterprise.repository.admin.UsuarioRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+
+import java.util.List;
+
+@ApplicationScoped
+public class UsuarioService {
+
+    @Inject
+    private UsuarioRepository repository;
+
+    @Transactional
+    public UsuarioDTO criar(UsuarioDTO dto) {
+        validar(dto);
+
+        UsuarioEntity entity = new UsuarioEntity(dto);
+        repository.save(entity);
+        return new UsuarioDTO(entity);
+    }
+
+    @Transactional
+    public UsuarioDTO atualizar(UsuarioDTO dto) {
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("ID é obrigatório para atualizar.");
+        }
+        validar(dto);
+
+        UsuarioEntity entity = new UsuarioEntity(dto);
+        UsuarioEntity merged = repository.update(entity);
+        return new UsuarioDTO(merged);
+    }
+
+    public List<UsuarioEntity> listar() {
+        return repository.findAll();
+    }
+
+    @Transactional
+    public void remover(Long id) {
+        repository.removeById(id);
+    }
+
+    private void validar(UsuarioDTO dto) {
+        if (dto.getLogin() == null || dto.getLogin().isBlank()) {
+            throw new IllegalArgumentException("Login é obrigatório.");
+        }
+        if (dto.getUsuario() == null || dto.getUsuario().isBlank()) {
+            throw new IllegalArgumentException("Usuário é obrigatório.");
+        }
+    }
+}

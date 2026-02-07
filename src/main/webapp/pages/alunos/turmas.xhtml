@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/pages/template.xhtml">
+
+    <ui:define name="title">Turmas</ui:define>
+    <ui:define name="subtitle">Cadastro e organização</ui:define>
+
+    <ui:define name="content">
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Turmas</div>
+                    <div class="cardx-subtitle">Criar e gerenciar turmas</div>
+                </div>
+                <button class="btn-primaryx" type="button">Nova turma</button>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-md-4">
+                    <input class="form-control" placeholder="Buscar por nome (ex: 2A)" />
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control" placeholder="Ano letivo (ex: 2026)" />
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button class="btn-ghostx" type="button">Filtrar</button>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button class="btn-ghostx" type="button">Limpar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Lista</div>
+                    <div class="cardx-subtitle">Turmas ativas</div>
+                </div>
+            </div>
+
+            <table class="table-modern">
+                <thead>
+                <tr>
+                    <th>Turma</th>
+                    <th>Ano</th>
+                    <th>Professor</th>
+                    <th>Alunos</th>
+                    <th>Status</th>
+                    <th style="width: 180px;">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>2A</td>
+                    <td>2026</td>
+                    <td>Marcos Lima</td>
+                    <td>34</td>
+                    <td><span class="badge-pill badge-success">Ativa</span></td>
+                    <td class="d-flex gap-2">
+                        <button class="btn-ghostx" type="button">Ver</button>
+                        <button class="btn-ghostx" type="button">Editar</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                template="/pages/template.xhtml">
+
+    <ui:define name="title">Professores</ui:define>
+    <ui:define name="subtitle">Cadastro e gestão</ui:define>
+
+    <ui:define name="content">
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Professores</div>
+                    <div class="cardx-subtitle">Buscar e gerenciar</div>
+                </div>
+                <button class="btn-primaryx" type="button">Novo professor</button>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-md-5">
+                    <input class="form-control" placeholder="Buscar por nome..." />
+                </div>
+                <div class="col-md-5">
+                    <input class="form-control" placeholder="Disciplina..." />
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button class="btn-ghostx" type="button">Filtrar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Lista</div>
+                    <div class="cardx-subtitle">Professores cadastrados</div>
+                </div>
+            </div>
+
+            <table class="table-modern">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Disciplina</th>
+                    <th>Contato</th>
+                    <th style="width: 180px;">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Marcos Lima</td>
+                    <td>Matemática</td>
+                    <td>(11) 99999-9999</td>
+                    <td class="d-flex gap-2">
+                        <button class="btn-ghostx" type="button">Detalhes</button>
+                        <button class="btn-ghostx" type="button">Editar</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </ui:define>
+</ui:composition>

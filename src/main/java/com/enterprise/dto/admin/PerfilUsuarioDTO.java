@@ -1,6 +1,6 @@
-package com.enterprise.dto;
+package com.enterprise.dto.admin;
 
-import com.enterprise.model.entity.admin.PefilUsuarioEntity;
+import com.enterprise.model.entity.admin.PerfilUsuarioEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +13,9 @@ public class PerfilUsuarioDTO {
     private Long id;
     private PerfilDTO acesso;
     private UsuarioDTO usuario;
+    private String situacao;
 
-    public PerfilUsuarioDTO(PefilUsuarioEntity acessoUsuario){
+    public PerfilUsuarioDTO(PerfilUsuarioEntity acessoUsuario){
         this.id = acessoUsuario.getId();
         if(acessoUsuario.getAcesso() != null){
             this.acesso = new PerfilDTO(acessoUsuario.getAcesso());

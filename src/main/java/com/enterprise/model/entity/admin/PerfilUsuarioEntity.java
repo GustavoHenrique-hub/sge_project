@@ -1,6 +1,6 @@
 package com.enterprise.model.entity.admin;
 
-import com.enterprise.dto.PerfilUsuarioDTO;
+import com.enterprise.dto.admin.PerfilUsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Table(name = "acesso_usuario")
-public class PefilUsuarioEntity {
+public class PerfilUsuarioEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +25,9 @@ public class PefilUsuarioEntity {
     @JoinColumn(name = "usuario_id")
     private UsuarioEntity usuario;
 
-    private String status;
+    private String situacao;
 
-    public PefilUsuarioEntity(PerfilUsuarioDTO perfilUsuarioDTO){
+    public PerfilUsuarioEntity(PerfilUsuarioDTO perfilUsuarioDTO){
         this.id = perfilUsuarioDTO.getId();
         if(perfilUsuarioDTO.getAcesso() != null){
             this.acesso = new PerfilEntity(perfilUsuarioDTO.getAcesso());

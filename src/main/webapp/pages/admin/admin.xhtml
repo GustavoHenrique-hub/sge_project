@@ -1,7 +1,9 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
-                template="/pages/template.xhtml">
+                template="/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core">
 
     <ui:define name="title">Administração</ui:define>
     <ui:define name="subtitle">Perfis e usuários</ui:define>
@@ -17,17 +19,19 @@
                     <button class="btn-primaryx"
                             type="button"
                             data-bs-toggle="modal"
-                            data-bs-target="#modalPerfilUser">Novo vínculo</button>
+                            data-bs-target="#modalPerfilUser">Novo vínculo
+                    </button>
                     <button class="btn-primaryx"
                             type="button"
                             data-bs-toggle="modal"
-                            data-bs-target="#modalNewUser">Novo usuário</button>
+                            data-bs-target="#modalNewUser">Novo usuário
+                    </button>
                 </div>
             </div>
 
             <div class="row g-2">
                 <div class="col-md-5">
-                    <input class="form-control" placeholder="Buscar por nome/usuário..." />
+                    <input class="form-control" placeholder="Buscar por nome/usuário..."/>
                 </div>
                 <div class="col-md-3">
                     <select class="form-select">
@@ -53,30 +57,42 @@
                     <div class="cardx-subtitle">Controle de acesso</div>
                 </div>
             </div>
-
-            <table class="table-modern">
-                <thead>
-                <tr>
-                    <th>Usuário</th>
-                    <th>Nome</th>
-                    <th>Perfil</th>
-                    <th>Status</th>
-                    <th style="width: 180px;">Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>admin</td>
-                    <td>Administrador</td>
-                    <td><span class="badge-pill badge-muted">Admin</span></td>
-                    <td><span class="badge-pill badge-success">Ativo</span></td>
-                    <td class="d-flex gap-2">
-                        <button class="btn-ghostx" type="button">Editar</button>
-                        <button class="btn-ghostx" type="button">Desativar</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <h:form>
+                <p:dataTable class="table-modern" id="listaUsers" var="usuario" value="#{usuarioAdminBean.usuarios}"
+                             rowKey="#{usuarioAdminBean.form.id}">
+                    <p:column headerText="Login">
+                        <h:outputText value="#{usuario.login}"/>
+                    </p:column>
+                    <p:column headerText="Usuário">
+                        <h:outputText value="#{usuario.usuario}"/>
+                    </p:column>
+                    <p:column headerText="Situação">
+                        <p:badge severity="#{usuario.situacao}" styleClass="badge-pill badge-muted"
+                                 value="#{usuario.situacao}"/>
+                    </p:column>
+                    <p:column headerText="Perfil">
+                        <p:badge severity="warning" styleClass="badge-pill badge-muted" value="#{usuario.perfil}"/>
+                    </p:column>
+                    <p:column headerText="Editar">
+                        <h:commandButton styleClass="btn-ghostx" value="Editar"/>
+                    </p:column>
+                    <p:column headerText="Excluir">
+                        <h:commandButton styleClass="btn-ghostx" value="Excluir"/>
+                    </p:column>
+                    <tbody>
+                    <tr>
+                        <td>admin</td>
+                        <td>Administrador</td>
+                        <td><span class="">Admin</span></td>
+                        <td><span class="badge-pill badge-success">Ativo</span></td>
+                        <td class="d-flex gap-2">
+                            <button class="" type="button">Editar</button>
+                            <button class="btn-ghostx" type="button">Desativar</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </p:dataTable>
+            </h:form>
         </div>
 
         <!-- MODAL Novo Usuário -->
@@ -104,28 +120,28 @@
 
                     <div class="modal-body">
                         <!-- ✅ inclui o conteúdo do arquivo separado -->
-                        <ui:include src="/pages/admin/modal/newuser.xhtml"/>
+                        <ui:include src="/components/modal/newuser.xhtml"/>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- MODAL Vínculo Perfil x Usuário -->
-         <div class="modal fade"
-                id="modalPerfilUser"
-                tabindex="-1"
-                aria-labelledby="modalPerfilUserLabel"
-                aria-hidden="true">
+        <div class="modal fade"
+             id="modalPerfilUser"
+             tabindex="-1"
+             aria-labelledby="modalPerfilUserLabel"
+             aria-hidden="true">
 
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content"
-                    style="background: rgba(15,23,42,.92);
+                     style="background: rgba(15,23,42,.92);
                                 border: 1px solid rgba(255,255,255,.10);
                                 border-radius: 16px;
                                 backdrop-filter: blur(10px);">
 
                     <div class="modal-header"
-                        style="border-bottom: 1px solid rgba(255,255,255,.10);">
+                         style="border-bottom: 1px solid rgba(255,255,255,.10);">
                         <h5 class="modal-title" id="modalPerfilUserLabel" style="color: rgba(255,255,255,.92);">
                             Novo usuário
                         </h5>
@@ -135,10 +151,10 @@
 
                     <div class="modal-body">
                         <!-- ✅ inclui o conteúdo do arquivo separado -->
-                        <ui:include src="/pages/admin/modal/perfiluser.xhtml"/>
+                        <ui:include src="/components/modal/perfiluser.xhtml"/>
                     </div>
                 </div>
             </div>
-         </div>
+        </div>
     </ui:define>
 </ui:composition>

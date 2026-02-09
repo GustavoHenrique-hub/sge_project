@@ -1,6 +1,6 @@
 package com.enterprise.controller.admin;
 
-import com.enterprise.dto.UsuarioDTO;
+import com.enterprise.dto.admin.UsuarioDTO;
 import com.enterprise.model.entity.admin.UsuarioEntity;
 import com.enterprise.service.admin.UsuarioService;
 import jakarta.annotation.PostConstruct;

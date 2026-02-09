@@ -1,6 +1,6 @@
 package com.enterprise.service.admin;
 
-import com.enterprise.dto.UsuarioDTO;
+import com.enterprise.dto.admin.UsuarioDTO;
 import com.enterprise.model.entity.admin.UsuarioEntity;
 import com.enterprise.repository.admin.UsuarioRepository;
 import jakarta.enterprise.context.ApplicationScoped;

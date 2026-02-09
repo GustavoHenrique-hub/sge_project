@@ -1,4 +1,4 @@
-package com.enterprise.dto;
+package com.enterprise.dto.admin;
 
 import com.enterprise.model.entity.admin.UsuarioEntity;
 import lombok.Getter;

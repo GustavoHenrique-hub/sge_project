@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html">
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -11,10 +12,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap"
           rel="stylesheet"/>
 
+    <h:outputStylesheet library="primeicons" name="primeicons.css"/>
     <h:outputStylesheet library="css" name="app-v2.css"/>
 </h:head>
 
-<h:body>
+<h:body styleClass="#{themeBean.bodyClass}">
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
         <div class="cardx" style="max-width: 460px; width: 100%;">
             <div class="cardx-header">
@@ -22,12 +24,28 @@
                     <div class="cardx-title">Entrar</div>
                     <div class="cardx-subtitle">Acesse com seu perfil</div>
                 </div>
-                <span class="badge-pill badge-muted">v1</span>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge-pill badge-muted">v1</span>
+                    <h:form styleClass="d-inline">
+                        <p:commandButton action="#{themeBean.toggleTheme}"
+                                         rendered="#{themeBean.darkTheme}"
+                                         ajax="false"
+                                         icon="pi pi-sun"
+                                         title="Trocar para tema claro"
+                                         styleClass="btn-ghostx theme-toggle rounded-button ui-button-outlined"/>
+                        <p:commandButton action="#{themeBean.toggleTheme}"
+                                         rendered="#{!themeBean.darkTheme}"
+                                         ajax="false"
+                                         icon="pi pi-moon"
+                                         title="Trocar para tema escuro"
+                                         styleClass="btn-ghostx theme-toggle rounded-button ui-button-outlined"/>
+                    </h:form>
+                </div>
             </div>
 
             <h:form>
                 <div class="mb-3">
-                    <label class="form-label" style="color: rgba(255,255,255,.7);">Usuário</label>
+                    <label class="form-label cardx-title">Usuário</label>
                     <h:inputText value="#{authBean.username}"
                                  styleClass="form-control"
                                  pt:placeholder="ex: gustavo"
@@ -35,7 +53,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label" style="color: rgba(255,255,255,.7);">Senha</label>
+                    <label class="form-label cardx-title">Senha</label>
                     <h:inputSecret value="#{authBean.password}"
                                    styleClass="form-control"
                                    pt:placeholder="••••••••"

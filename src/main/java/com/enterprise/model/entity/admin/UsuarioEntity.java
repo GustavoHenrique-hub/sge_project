@@ -1,6 +1,6 @@
 package com.enterprise.model.entity.admin;
 
-import com.enterprise.dto.UsuarioDTO;
+import com.enterprise.dto.admin.UsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

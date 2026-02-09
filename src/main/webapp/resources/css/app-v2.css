@@ -1,27 +1,49 @@
 :root{
+    --primary: #2563eb;
+    --primary-2: #3b82f6;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --danger: #dc2626;
+    --radius: 16px;
+}
+
+/* Tema claro */
+.theme-light{
+    --bg: #f5f7fb;
+    --surface: #ffffff;
+    --card: #ffffff;
+    --card-border: rgba(15,23,42,.08);
+    --text: #0f172a;
+    --muted: rgba(15,23,42,.60);
+    --shadow: rgba(15,23,42,.06);
+    --chip: rgba(15,23,42,.06);
+    --glass: rgba(255,255,255,.80);
+    --input-bg: #ffffff;
+    --input-border: rgba(15,23,42,.12);
+}
+
+/* Tema escuro */
+.theme-dark{
     --bg: #0b1220;
     --surface: #0f172a;
     --card: rgba(255,255,255,.06);
     --card-border: rgba(255,255,255,.10);
     --text: rgba(255,255,255,.92);
     --muted: rgba(255,255,255,.70);
-
-    --primary: #6366f1;   /* indigo */
-    --primary-2: #60a5fa; /* blue */
-    --success: #22c55e;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-
-    --radius: 16px;
+    --shadow: rgba(0,0,0,.35);
+    --chip: rgba(255,255,255,.10);
+    --glass: rgba(15,23,42,.60);
+    --input-bg: rgba(255,255,255,.06);
+    --input-border: rgba(255,255,255,.10);
 }
 
 html, body{
     height: 100%;
-    background: radial-gradient(1200px 600px at 20% 10%, rgba(99,102,241,.20), transparent 55%),
-    radial-gradient(1200px 600px at 80% 0%, rgba(96,165,250,.18), transparent 60%),
-    var(--bg);
-    color: var(--text);
-    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 20% 10%, rgba(37,99,235,.12), transparent 55%),
+    radial-gradient(1200px 600px at 80% 0%, rgba(59,130,246,.10), transparent 60%),
+    var(--bg) !important;
+    color: var(--text) !important;
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
 }
 
 .app-shell{
@@ -30,9 +52,17 @@ html, body{
     min-height: 100vh;
 }
 
+.app-body{
+    background: radial-gradient(1200px 600px at 20% 10%, rgba(37,99,235,.12), transparent 55%),
+    radial-gradient(1200px 600px at 80% 0%, rgba(59,130,246,.10), transparent 60%),
+    var(--bg) !important;
+    color: var(--text) !important;
+    min-height: 100vh;
+}
+
 .sidebar{
-    background: rgba(15,23,42,.85);
-    border-right: 1px solid rgba(255,255,255,.08);
+    background: var(--glass);
+    border-right: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
     padding: 18px;
 }
@@ -43,8 +73,8 @@ html, body{
     gap:12px;
     padding: 10px 12px;
     border-radius: var(--radius);
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.08);
+    background: color-mix(in srgb, var(--primary) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--primary) 15%, transparent);
 }
 .brand .logo{
     width: 36px; height: 36px;
@@ -80,13 +110,13 @@ html, body{
 }
 .nav a:hover{
     color: var(--text);
-    background: rgba(255,255,255,.06);
-    border-color: rgba(255,255,255,.08);
+    background: color-mix(in srgb, var(--primary) 8%, transparent);
+    border-color: color-mix(in srgb, var(--primary) 15%, transparent);
 }
 .nav a.active{
     color: var(--text);
-    background: linear-gradient(135deg, rgba(99,102,241,.22), rgba(96,165,250,.14));
-    border-color: rgba(99,102,241,.25);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 20%, transparent), color-mix(in srgb, var(--primary-2) 14%, transparent));
+    border-color: color-mix(in srgb, var(--primary) 25%, transparent);
 }
 
 .main{
@@ -100,8 +130,8 @@ html, body{
     gap: 12px;
     padding: 14px 16px;
     border-radius: var(--radius);
-    background: rgba(15,23,42,.60);
-    border: 1px solid rgba(255,255,255,.08);
+    background: var(--glass);
+    border: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
 }
 
@@ -113,20 +143,21 @@ html, body{
 .search input{
     width: 100%;
     border-radius: 14px;
-    border: 1px solid rgba(255,255,255,.10);
-    background: rgba(255,255,255,.06);
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
     color: var(--text);
     padding: 10px 12px;
     outline: none;
 }
-.search input::placeholder{ color: rgba(255,255,255,.55); }
+.search input::placeholder{ color: var(--muted); }
 
 .cardx{
     margin-top: 16px;
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.10);
+    background: var(--card);
+    border: 1px solid var(--card-border);
     border-radius: var(--radius);
     padding: 16px;
+    box-shadow: 0 10px 26px var(--shadow);
 }
 
 .cardx-header{
@@ -151,19 +182,31 @@ html, body{
     border-radius: 14px;
     padding: 10px 14px;
     color: white;
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--primary) 25%, transparent);
 }
 .btn-ghostx{
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.10);
+    background: color-mix(in srgb, var(--chip) 100%, transparent);
+    border: 1px solid var(--card-border);
     border-radius: 14px;
     padding: 10px 14px;
     color: var(--text);
 }
+.theme-toggle{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.theme-toggle .pi{
+    font-size: 16px;
+    line-height: 1;
+}
 
 .table-modern{
     width: 100%;
+    max-height: 20vh;
     border-collapse: separate;
     border-spacing: 0 10px;
+    overflow: scroll;
 }
 .table-modern thead th{
     color: var(--muted);
@@ -172,8 +215,8 @@ html, body{
     padding: 0 12px 10px;
 }
 .table-modern tbody tr{
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.08);
+    background: var(--card);
+    border: 1px solid var(--card-border);
 }
 .table-modern tbody td{
     padding: 12px;
@@ -196,12 +239,13 @@ html, body{
     padding: 6px 10px;
     border-radius: 999px;
     font-size: 12px;
-    border: 1px solid rgba(255,255,255,.12);
+    border: 1px solid var(--card-border);
+    background: var(--surface);
 }
-.badge-success{ background: rgba(34,197,94,.18); }
-.badge-warning{ background: rgba(245,158,11,.18); }
-.badge-danger{ background: rgba(239,68,68,.18); }
-.badge-muted{ background: rgba(255,255,255,.10); color: var(--muted); }
+.badge-success{ background: color-mix(in srgb, var(--success) 15%, transparent); }
+.badge-warning{ background: color-mix(in srgb, var(--warning) 15%, transparent); }
+.badge-danger{ background: color-mix(in srgb, var(--danger) 15%, transparent); }
+.badge-muted{ background: var(--chip); color: var(--muted); }
 
 /* posiciona o growl no canto inferior direito */
 .ui-growl{
@@ -213,14 +257,13 @@ html, body{
     z-index: 99999 !important;
 }
 
-/* “card glass” padrão do seu sistema */
+/* “card” padrao do sistema */
 .ui-growl-item-container{
     border-radius: var(--radius) !important;
-    border: 1px solid rgba(255,255,255,.12) !important;
-    background: rgba(15,23,42,.92) !important;
+    border: 1px solid var(--card-border) !important;
+    background: var(--surface) !important;
     color: var(--text) !important;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 12px 32px rgba(0,0,0,.38);
+    box-shadow: 0 12px 32px var(--shadow);
     overflow: hidden;
 }
 
@@ -232,19 +275,19 @@ html, body{
 }
 .ui-growl-message p{
     margin: 2px 0 0 0 !important;
-    color: rgba(255,255,255,.78) !important;
+    color: var(--muted) !important;
     font-size: 12px !important;
 }
 
-/* remove o “verde padrão” e aplica cor pela severidade */
-.ui-growl-message-info    { border-left: 4px solid rgba(34,197,94,.55) !important; }
-.ui-growl-message-warn    { border-left: 4px solid rgba(245,158,11,.55) !important; }
+/* remove o “verde padrao” e aplica cor pela severidade */
+.ui-growl-message-info    { border-left: 4px solid color-mix(in srgb, var(--success) 55%, transparent) !important; }
+.ui-growl-message-warn    { border-left: 4px solid color-mix(in srgb, var(--warning) 55%, transparent) !important; }
 .ui-growl-message-error,
-.ui-growl-message-fatal   { border-left: 4px solid rgba(239,68,68,.55) !important; }
+.ui-growl-message-fatal   { border-left: 4px solid color-mix(in srgb, var(--danger) 55%, transparent) !important; }
 
-/* ícones (opcional) */
+/* icones (opcional) */
 .ui-growl-image{
-    filter: saturate(1.2);
+    filter: saturate(1.05);
     opacity: .95;
 }
 

@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:ui="jakarta.faces.facelets"
-      xmlns:f="jakarta.faces.core">
+      xmlns:f="jakarta.faces.core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -22,7 +24,7 @@
           rel="stylesheet"/>
 
     <!-- Seu CSS -->
-    <h:outputStylesheet library="css" name="app.css"/>
+    <h:outputStylesheet library="css" name="app-v2.css"/>
 </h:head>
 
 <h:body>
@@ -41,16 +43,16 @@
             </div>
 
             <nav class="nav">
-                <h:link outcome="/pages/dashboard.xhtml" styleClass="active">
+                <h:link outcome="/pages/alunos/dashboard.xhtml" styleClass="active">
                     Dashboard
                 </h:link>
-                <h:link outcome="/pages/alunos.xhtml">Alunos</h:link>
-                <h:link outcome="/pages/professores.xhtml">Professores</h:link>
-                <h:link outcome="/pages/turmas.xhtml">Turmas</h:link>
-                <h:link outcome="/pages/matriculas.xhtml">Matrículas</h:link>
-                <h:link outcome="/pages/notas-frequencia.xhtml">Notas &amp; Frequência</h:link>
-                <h:link outcome="/pages/historico.xhtml">Histórico</h:link>
-                <h:link outcome="/pages/admin.xhtml">Administração</h:link>
+                <h:link outcome="/pages/alunos/alunos.xhtml">Alunos</h:link>
+                <h:link outcome="/pages/professores/professores.xhtml">Professores</h:link>
+                <h:link outcome="/pages/alunos/turmas.xhtml">Turmas</h:link>
+                <h:link outcome="/pages/admin/matriculas.xhtml">Matrículas</h:link>
+                <h:link outcome="/pages/alunos/nota-frequencia.xhtml">Notas &amp; Frequência</h:link>
+                <h:link outcome="/pages/alunos/historico.xhtml">Histórico</h:link>
+                <h:link outcome="/pages/admin/admin.xhtml">Administração</h:link>
             </nav>
 
             <div class="cardx" style="margin-top: 16px;">
@@ -87,6 +89,25 @@
 
     </div>
 
+    <p:growl id="growl"
+             globalOnly="true"
+             showSummary="true"
+             showDetail="true"
+             life="3200"
+             sticky="false" />
+
+    <h:panelGroup id="msgs" layout="block" styleClass="jsf-msgs-hidden">
+        <h:messages globalOnly="true" layout="list"
+                    showSummary="true"
+                    showDetail="true"
+                    infoClass="jsf-msg jsf-info"
+                    warnClass="jsf-msg jsf-warn"
+                    errorClass="jsf-msg jsf-error"
+                    fatalClass="jsf-msg jsf-fatal"/>
+    </h:panelGroup>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </h:body>
 </html>

@@ -15,10 +15,11 @@ public class PerfilUsuarioDTO {
     private UsuarioDTO usuario;
 
     public PerfilUsuarioDTO(PefilUsuarioEntity acessoUsuario){
-        if(acessoUsuario != null && acessoUsuario.getAcesso() != null){
+        this.id = acessoUsuario.getId();
+        if(acessoUsuario.getAcesso() != null){
             this.acesso = new PerfilDTO(acessoUsuario.getAcesso());
         }
-        if(acessoUsuario != null && acessoUsuario.getUsuario() != null){
+        if(acessoUsuario.getUsuario() != null){
             this.usuario = new UsuarioDTO(acessoUsuario.getUsuario());
         }
     }

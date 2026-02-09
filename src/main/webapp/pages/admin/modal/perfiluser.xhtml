@@ -4,29 +4,23 @@
                 xmlns:f="jakarta.faces.core"
                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
-    <h:form id="formNewUser">
+    <h:form id="formPerfilUser">
 
         <div class="row g-3">
-
             <div class="col-md-4">
                 <label class="form-label" style="color: rgba(255,255,255,.70);">Login</label>
-                <h:inputText value="#{usuarioAdminBean.form.login}"
+                <h:inputText value="#{perfilUsuarioBean.login}"
                              styleClass="form-control"
                              pt:placeholder="ex: admin"/>
             </div>
-
             <div class="col-md-4">
-                <label class="form-label" style="color: rgba(255,255,255,.70);">Usuário</label>
-                <h:inputText value="#{usuarioAdminBean.form.usuario}"
-                             styleClass="form-control"
-                             pt:placeholder="Nome do usuário"/>
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label" style="color: rgba(255,255,255,.70);">Senha</label>
-                <h:inputSecret value="#{usuarioAdminBean.form.senha}"
-                               styleClass="form-control"
-                               pt:placeholder="••••••••"/>
+                <label class="form-label" style="color: rgba(255,255,255,.70);">Acesso</label>
+                <h:selectOneMenu value="#{perfilUsuarioBean.acesso}" styleClass="form-select">
+                    <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
+                    <f:selectItem itemLabel="Admin" itemValue="ADMIN"/>
+                    <f:selectItem itemLabel="Professor" itemValue="PROFESSOR"/>
+                    <f:selectItem itemLabel="Secretaria" itemValue="SECRETARIA"/>
+                </h:selectOneMenu>
             </div>
         </div>
 
@@ -39,7 +33,7 @@
             <!-- Submit do JSF -->
             <h:commandButton value="Salvar"
                              styleClass="btn-primaryx"
-                             action="#{usuarioAdminBean.salvar}" />
+                             action="#{perfilUsuarioBean.vincular}" />
         </div>
 
     </h:form>

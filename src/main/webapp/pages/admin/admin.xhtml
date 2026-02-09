@@ -13,14 +13,16 @@
                     <div class="cardx-title">Usuários e perfis</div>
                     <div class="cardx-subtitle">Admin / Professor / Secretaria</div>
                 </div>
-                <button class="btn-primaryx"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#modalPerfilUser">Novo vínculo</button>
-                <button class="btn-primaryx"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#modalNewUser">Novo usuário</button>
+                <div>
+                    <button class="btn-primaryx"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalPerfilUser">Novo vínculo</button>
+                    <button class="btn-primaryx"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalNewUser">Novo usuário</button>
+                </div>
             </div>
 
             <div class="row g-2">
@@ -77,36 +79,66 @@
             </table>
         </div>
 
-        <!-- ✅ MODAL -->
+        <!-- MODAL Novo Usuário -->
         <div class="modal fade"
              id="modalNewUser"
              tabindex="-1"
              aria-labelledby="modalNewUserLabel"
              aria-hidden="true">
 
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content"
-                 style="background: rgba(15,23,42,.92);
-                            border: 1px solid rgba(255,255,255,.10);
-                            border-radius: 16px;
-                            backdrop-filter: blur(10px);">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content"
+                     style="background: rgba(15,23,42,.92);
+                                border: 1px solid rgba(255,255,255,.10);
+                                border-radius: 16px;
+                                backdrop-filter: blur(10px);">
 
-                <div class="modal-header"
-                     style="border-bottom: 1px solid rgba(255,255,255,.10);">
-                    <h5 class="modal-title" id="modalNewUserLabel" style="color: rgba(255,255,255,.92);">
-                        Novo usuário
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                    <div class="modal-header"
+                         style="border-bottom: 1px solid rgba(255,255,255,.10);">
+                        <h5 class="modal-title" id="modalNewUserLabel" style="color: rgba(255,255,255,.92);">
+                            Novo usuário
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"/>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- ✅ inclui o conteúdo do arquivo separado -->
+                        <ui:include src="/pages/admin/modal/newuser.xhtml"/>
+                    </div>
                 </div>
-
-                <div class="modal-body">
-                    <!-- ✅ inclui o conteúdo do arquivo separado -->
-                    <ui:include src="/pages/admin/newuser.xhtml"/>
-                </div>
-
             </div>
         </div>
-        </div>
+
+        <!-- MODAL Vínculo Perfil x Usuário -->
+         <div class="modal fade"
+                id="modalPerfilUser"
+                tabindex="-1"
+                aria-labelledby="modalPerfilUserLabel"
+                aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content"
+                    style="background: rgba(15,23,42,.92);
+                                border: 1px solid rgba(255,255,255,.10);
+                                border-radius: 16px;
+                                backdrop-filter: blur(10px);">
+
+                    <div class="modal-header"
+                        style="border-bottom: 1px solid rgba(255,255,255,.10);">
+                        <h5 class="modal-title" id="modalPerfilUserLabel" style="color: rgba(255,255,255,.92);">
+                            Novo usuário
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"/>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- ✅ inclui o conteúdo do arquivo separado -->
+                        <ui:include src="/pages/admin/modal/perfiluser.xhtml"/>
+                    </div>
+                </div>
+            </div>
+         </div>
     </ui:define>
 </ui:composition>

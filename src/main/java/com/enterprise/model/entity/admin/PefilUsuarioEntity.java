@@ -28,10 +28,11 @@ public class PefilUsuarioEntity {
     private String status;
 
     public PefilUsuarioEntity(PerfilUsuarioDTO perfilUsuarioDTO){
-        if(perfilUsuarioDTO != null && perfilUsuarioDTO.getAcesso() != null){
+        this.id = perfilUsuarioDTO.getId();
+        if(perfilUsuarioDTO.getAcesso() != null){
             this.acesso = new PerfilEntity(perfilUsuarioDTO.getAcesso());
         }
-        if(perfilUsuarioDTO != null && perfilUsuarioDTO.getUsuario() != null){
+        if(perfilUsuarioDTO.getUsuario() != null){
             this.usuario = new UsuarioEntity(perfilUsuarioDTO.getUsuario());
         }
     }

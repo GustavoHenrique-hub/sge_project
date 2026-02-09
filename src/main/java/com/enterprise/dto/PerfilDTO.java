@@ -14,6 +14,8 @@ public class PerfilDTO {
     private String descricao;
 
     public PerfilDTO(PerfilEntity acesso){
-
+        this.id = acesso.getId();
+        this.nomeAcesso = acesso.getNomeAcesso();
+        this.descricao = acesso.getDescricao();
     }
 }

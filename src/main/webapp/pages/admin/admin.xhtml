@@ -58,10 +58,10 @@
                 </div>
             </div>
             <h:form>
-                <p:dataTable class="table-modern" id="listaUsers" var="usuario" value="#{usuarioAdminBean.usuarios}"
-                             rowKey="#{usuarioAdminBean.form.id}">
-                    <p:column headerText="Login">
-                        <h:outputText value="#{usuario.login}"/>
+                <p:dataTable class="table-modern" id="listaUsers" var="usuario" value="#{perfilUsuarioBean.perfilUsuarios}"
+                             rowKey="#{perfilUsuarioBean.perfilUsuarios.id}">
+                    <p:column headerText="Acesso">
+                        <h:outputText value="#{usuario.acesso}"/>
                     </p:column>
                     <p:column headerText="Usuário">
                         <h:outputText value="#{usuario.usuario}"/>
@@ -71,7 +71,7 @@
                                  value="#{usuario.situacao}"/>
                     </p:column>
                     <p:column headerText="Perfil">
-                        <p:badge severity="warning" styleClass="badge-pill badge-muted" value="#{usuario.perfil}"/>
+                        <p:badge severity="warning" styleClass="badge-pill badge-muted" value="#{usuario.acesso}"/>
                     </p:column>
                     <p:column headerText="Editar">
                         <h:commandButton styleClass="btn-ghostx" value="Editar"/>

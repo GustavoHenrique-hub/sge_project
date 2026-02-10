@@ -3,7 +3,8 @@
                 xmlns:h="jakarta.faces.html"
                 template="/template.xhtml"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="jakarta.faces.core">
+                xmlns:f="jakarta.faces.core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
     <ui:define name="title">Administração</ui:define>
     <ui:define name="subtitle">Perfis e usuários</ui:define>
@@ -14,6 +15,35 @@
                 <div>
                     <div class="cardx-title">Usuários e perfis</div>
                     <div class="cardx-subtitle">Admin / Professor / Secretaria</div>
+                </div>
+
+            </div>
+            <h:form>
+                <div class="row g-2">
+                    <div class="col-md-5">
+                        <p:autoComplete pt:placeholder="Buscar usuario..." id="dd" dropdown="true" value="#{perfilUsuarioBean.filtroUsuario}"
+                                        styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                        completeMethod="#{perfilUsuarioBean.completeUsuario}" scrollHeight="250"/>
+                    </div>
+                    <div class="col-md-3">
+                        <h:selectOneMenu value="#{perfilUsuarioBean.filtroPerfilId}" styleClass="form-select select-modern">
+                            <f:selectItem itemLabel="Selecionar Perfil..." itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{perfilBean.perfils}" var="perfil"
+                                           itemLabel="#{perfil.perfil}" itemValue="#{perfil.id}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{perfilUsuarioBean.filtrar}" />
+                    </div>
+                </div>
+            </h:form>
+        </div>
+
+        <div class="cardx-datatable">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Lista de usuários</div>
+                    <div class="cardx-subtitle">Controle de acesso</div>
                 </div>
                 <div>
                     <button class="btn-primaryx"
@@ -28,63 +58,42 @@
                     </button>
                 </div>
             </div>
-
-            <div class="row g-2">
-                <div class="col-md-5">
-                    <input class="form-control" placeholder="Buscar por nome usuário..."/>
-                </div>
-                <div class="col-md-3">
-                    <select class="form-select">
-                        <option>Perfil (todos)</option>
-                        <option>Admin</option>
-                        <option>Professor</option>
-                        <option>Secretaria</option>
-                    </select>
-                </div>
-                <div class="col-md-2 d-grid">
-                    <button class="btn-ghostx" type="button">Filtrar</button>
-                </div>
-                <div class="col-md-2 d-grid">
-                    <button class="btn-ghostx" type="button">Limpar</button>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <h:form>
+                        <h:dataTable styleClass="table-modern" id="listaUsers" var="usuario" value="#{perfilUsuarioBean.perfilUsuarios}"
+                                     rowKey="#{perfilUsuarioBean.perfilUsuarioDTO.id}">
+                            <h:column>
+                                <f:facet name="header">Usuário</f:facet>
+                                <h:outputText value="#{usuario.usuario.usuario}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Login</f:facet>
+                                <h:outputText value="#{usuario.usuario.login}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Situação</f:facet>
+                                <p:badge severity="#{perfilUsuarioBean.situacaoSeverity(usuario.situacao)}"
+                                         styleClass="#{perfilUsuarioBean.situacaoBadgeClass(usuario.situacao)}"
+                                         value="#{usuario.situacao}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Perfil</f:facet>
+                                <p:badge severity="warning" styleClass="badge-pill badge-muted"
+                                         value="#{usuario.perfil.perfil}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Editar</f:facet>
+                                <h:commandButton styleClass="btn-ghostx" value="Editar"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Excluir</f:facet>
+                                <h:commandButton styleClass="btn-ghostx" value="Excluir"/>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
                 </div>
             </div>
-        </div>
-
-        <div class="cardx">
-            <div class="cardx-header">
-                <div>
-                    <div class="cardx-title">Lista de usuários</div>
-                    <div class="cardx-subtitle">Controle de acesso</div>
-                </div>
-            </div>
-            <h:form>
-                <h:dataTable styleClass="table-modern" id="listaUsers" var="usuario" value="#{perfilUsuarioBean.perfilUsuarios}"
-                             rowKey="#{usuario.id}">
-                    <h:column>
-                        <f:facet name="header">Usuário</f:facet>
-                        <h:outputText value="#{usuario.usuario.usuario}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">Situação</f:facet>
-                        <p:badge severity="#{perfilUsuarioBean.situacaoSeverity(usuario.situacao)}"
-                                 styleClass="#{perfilUsuarioBean.situacaoBadgeClass(usuario.situacao)}"
-                                 value="#{usuario.situacao}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">Perfil</f:facet>
-                        <p:badge severity="warning" styleClass="badge-pill badge-muted"
-                                 value="#{usuario.acesso.nomeAcesso}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">Editar</f:facet>
-                        <h:commandButton styleClass="btn-ghostx" value="Editar"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">Excluir</f:facet>
-                        <h:commandButton styleClass="btn-ghostx" value="Excluir"/>
-                    </h:column>
-                </h:dataTable>
-            </h:form>
         </div>
 
         <!-- MODAL Novo UsuÃ¡rio -->
@@ -118,7 +127,7 @@
             </div>
         </div>
 
-        <!-- MODAL VÃ­nculo Perfil x UsuÃ¡rio -->
+        <!-- MODAL Vínculo Perfil x Usuário -->
         <div class="modal fade"
              id="modalPerfilUser"
              tabindex="-1"
@@ -142,7 +151,6 @@
                     </div>
 
                     <div class="modal-body">
-                        <!-- âœ… inclui o conteÃºdo do arquivo separado -->
                         <ui:include src="/components/modal/perfiluser.xhtml"/>
                     </div>
                 </div>

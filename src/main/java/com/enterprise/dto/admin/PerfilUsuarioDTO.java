@@ -11,18 +11,18 @@ import lombok.Setter;
 public class PerfilUsuarioDTO {
 
     private Long id;
-    private PerfilDTO acesso;
+    private PerfilDTO perfil;
     private UsuarioDTO usuario;
     private String situacao;
 
-    public PerfilUsuarioDTO(PerfilUsuarioEntity acessoUsuario){
-        this.id = acessoUsuario.getId();
-        if(acessoUsuario.getAcesso() != null){
-            this.acesso = new PerfilDTO(acessoUsuario.getAcesso());
+    public PerfilUsuarioDTO(PerfilUsuarioEntity perfilUsuario){
+        this.id = perfilUsuario.getId();
+        if(perfilUsuario.getPerfil() != null){
+            this.perfil = new PerfilDTO(perfilUsuario.getPerfil());
         }
-        if(acessoUsuario.getUsuario() != null){
-            this.usuario = new UsuarioDTO(acessoUsuario.getUsuario());
+        if(perfilUsuario.getUsuario() != null){
+            this.usuario = new UsuarioDTO(perfilUsuario.getUsuario());
         }
-        this.situacao = acessoUsuario.getSituacao();
+        this.situacao = perfilUsuario.getSituacao();
     }
 }

@@ -161,6 +161,20 @@ html, body{
     box-shadow: 0 10px 26px var(--shadow);
 }
 
+.cardx-datatable{
+    margin-top: 16px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: 0 10px 26px var(--shadow);
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    width: 100%;
+}
+
 .cardx-header{
     display:flex;
     align-items:center;
@@ -168,6 +182,15 @@ html, body{
     gap: 12px;
     margin-bottom: 12px;
 }
+.cardx-body{
+    flex: 1;
+    min-height: 0;
+}
+.table-scroll{
+    height: 100%;
+    overflow: auto;
+}
+
 .cardx-title{
     font-weight: 700;
 }
@@ -204,21 +227,96 @@ html, body{
 
 .table-modern{
     width: 100%;
-    max-height: 30px;
     border-collapse: separate;
     border-spacing: 0 10px;
-    overflow: scroll;
+}
+
+.autocomplete-modern{
+    width: 100%;
+    display: inline-flex;
+}
+.autocomplete-modern .ui-autocomplete-input,
+.autocomplete-input{
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text);
+    padding: 10px 12px;
+    outline: none;
+    box-shadow: none;
+}
+.autocomplete-modern .ui-autocomplete-dropdown{
+    border-radius: 0 14px 14px 0;
+    border: 1px solid var(--input-border);
+    border-left: 0;
+    background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    color: #fff;
+}
+.autocomplete-modern .ui-autocomplete-dropdown .pi{
+    color: #fff;
+}
+.autocomplete-modern .ui-autocomplete-input::placeholder{
+    color: var(--muted);
+}
+.ui-autocomplete-panel{
+    background: var(--surface);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px var(--shadow);
+    overflow: hidden;
+}
+.ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-item{
+    padding: 10px 12px;
+    color: var(--text);
+}
+.ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-item.ui-state-highlight{
+    background: color-mix(in srgb, var(--primary) 12%, transparent);
+    color: var(--text);
+}
+
+.select-modern{
+    border-radius: 14px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text);
+    padding: 10px 12px;
+}
+.select-modern:focus{
+    box-shadow: none;
+    border-color: color-mix(in srgb, var(--primary) 25%, var(--input-border));
+}
+.ui-selectonemenu{
+    width: 100% !important;
+    border-radius: 14px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text);
+}
+.ui-selectonemenu .ui-selectonemenu-label{
+    padding: 10px 12px;
+}
+.ui-selectonemenu .ui-selectonemenu-trigger{
+    border-left: 1px solid var(--input-border);
+    background: color-mix(in srgb, var(--primary) 8%, var(--input-bg));
+}
+.ui-selectonemenu-panel{
+    background: var(--surface);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px var(--shadow);
+}
+.ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight{
+    background: color-mix(in srgb, var(--primary) 12%, transparent);
+    color: var(--text);
 }
 .ui-datatable.table-modern .ui-datatable-table thead th{
     color: var(--muted);
     font-weight: 600;
     font-size: 13px;
-    padding: 0 12px 10px;
-}
-.ui-datatable.table-modern .ui-datatable-table tbody tr{
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 14px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 .ui-datatable.table-modern .ui-datatable-table tbody td{
     padding: 12px;

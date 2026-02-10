@@ -18,8 +18,8 @@ public class PerfilUsuarioEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "acesso_id")
-    private PerfilEntity acesso;
+    @JoinColumn(name = "perfil_id")
+    private PerfilEntity perfil;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -29,11 +29,12 @@ public class PerfilUsuarioEntity {
 
     public PerfilUsuarioEntity(PerfilUsuarioDTO perfilUsuarioDTO){
         this.id = perfilUsuarioDTO.getId();
-        if(perfilUsuarioDTO.getAcesso() != null){
-            this.acesso = new PerfilEntity(perfilUsuarioDTO.getAcesso());
+        if(perfilUsuarioDTO.getPerfil() != null){
+            this.perfil = new PerfilEntity(perfilUsuarioDTO.getPerfil());
         }
         if(perfilUsuarioDTO.getUsuario() != null){
             this.usuario = new UsuarioEntity(perfilUsuarioDTO.getUsuario());
         }
+        this.situacao = perfilUsuarioDTO.getSituacao();
     }
 }

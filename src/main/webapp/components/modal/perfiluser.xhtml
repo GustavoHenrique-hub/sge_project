@@ -2,26 +2,42 @@
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
-                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui">
 
     <h:form id="formPerfilUser">
 
         <div class="row g-3">
             <div class="col-md-4">
                 <label class="form-label" style="color: rgba(255,255,255,.70);">Login</label>
-                <h:inputText value="#{perfilUsuarioBean.perfilUsuarioDTO.usuario}"
-                             styleClass="form-control"
-                             pt:placeholder="ex: admin"/>
+<!--                <h:inputText value="#{perfilUsuarioBean.perfilUsuarioDTO.usuario}"-->
+<!--                             styleClass="form-control"-->
+<!--                             pt:placeholder="ex: admin"/>-->
+<!--                <p:outputLabel value="Login" for="@next"/>-->
+<!--                <p:autoComplete id="acSimple" value="#{autoCompleteView.txt1}"-->
+<!--                                completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>-->
+                <h:selectOneMenu value="#{perfilUsuarioBean.usuarioId}" styleClass="form-select">
+                    <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{usuarioAdminBean.usuarios}" var="usuario"
+                                   itemLabel="ID: #{usuario.id} | Login: #{usuario.login}" itemValue="#{usuario.id}"/>
+                </h:selectOneMenu>
             </div>
             <div class="col-md-4">
                 <label class="form-label" style="color: rgba(255,255,255,.70);">Acesso</label>
-                <h:selectOneMenu value="#{perfilUsuarioBean.perfilUsuarioDTO.acesso}" styleClass="form-select">
+                <h:selectOneMenu value="#{perfilUsuarioBean.perfilId}" styleClass="form-select">
                     <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
-                    <f:selectItem itemLabel="Admin" itemValue="ADMIN"/>
-                    <f:selectItem itemLabel="Professor" itemValue="PROFESSOR"/>
-                    <f:selectItem itemLabel="Secretaria" itemValue="SECRETARIA"/>
+                    <f:selectItems value="#{perfilBean.perfils}" var="perfil"
+                                   itemLabel="#{perfil.perfil}" itemValue="#{perfil.id}"/>
                 </h:selectOneMenu>
             </div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label" style="color: rgba(255,255,255,.70);">Acesso</label>
+            <h:selectOneMenu value="#{perfilUsuarioBean.perfilUsuarioDTO.situacao}" styleClass="form-select">
+                <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
+                <f:selectItem itemLabel="ATIVO" itemValue="ATIVO"/>
+                <f:selectItem itemLabel="INATIVO" itemValue="INATIVO"/>
+            </h:selectOneMenu>
         </div>
 
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
@@ -33,7 +49,10 @@
             <!-- Submit do JSF -->
             <h:commandButton value="Salvar"
                              styleClass="btn-primaryx"
-                             action="#{perfilUsuarioBean.vincular}" />
+                             action="#{perfilUsuarioBean.vincular}"
+                             process="@form"
+                             update=":growl :formPerfilUser"
+                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNewUser')).hide();}" />
         </div>
 
     </h:form>

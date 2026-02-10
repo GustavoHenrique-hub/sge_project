@@ -10,19 +10,19 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "acesso")
+@Table(name = "perfil")
 public class PerfilEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nomeAcesso;
+    private String perfil;
     private String descricao;
 
-    public PerfilEntity(PerfilDTO acesso) {
-        this.id = acesso.getId();
-        this.nomeAcesso = acesso.getNomeAcesso();
-        this.descricao = acesso.getDescricao();
+    public PerfilEntity(PerfilDTO perfil) {
+        this.id = perfil.getId();
+        this.perfil = perfil.getPerfil();
+        this.descricao = perfil.getDescricao();
     }
 }

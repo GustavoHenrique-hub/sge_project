@@ -5,7 +5,6 @@
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
             <!-- opcional, ajuda a ver bind de parâmetros -->
             <property name="hibernate.use_sql_comments" value="true"/>
         </properties>

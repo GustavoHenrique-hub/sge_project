@@ -28,15 +28,12 @@ public class UsuarioAdminBean implements Serializable {
     private UsuarioDTO form = new UsuarioDTO();
     private List<UsuarioEntity> usuarios = new ArrayList<>();
 
-    private boolean sucesso;
-
     @PostConstruct
     public void init() {
         recarregarLista();
     }
 
     public void salvar() {
-        sucesso = false;
         try {
             if (form.getId() == null) {
                 service.criar(form);
@@ -45,7 +42,6 @@ public class UsuarioAdminBean implements Serializable {
                 service.atualizar(form);
                 addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Usuário atualizado.");
             }
-            sucesso = true;
             limparFormulario();
             recarregarLista();
         } catch (Exception e) {

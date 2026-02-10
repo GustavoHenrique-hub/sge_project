@@ -10,12 +10,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PerfilDTO {
     private Long id;
-    private String nomeAcesso;
+    private String perfil;
     private String descricao;
 
     public PerfilDTO(PerfilEntity acesso){
         this.id = acesso.getId();
-        this.nomeAcesso = acesso.getNomeAcesso();
+        this.perfil = acesso.getPerfil();
         this.descricao = acesso.getDescricao();
     }
 }

@@ -1,7 +1,6 @@
 package com.enterprise.controller.admin;
 
 import com.enterprise.dto.admin.PerfilUsuarioDTO;
-import com.enterprise.model.entity.admin.PerfilUsuarioEntity;
 import com.enterprise.service.admin.PerfilUsuarioService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -10,6 +9,7 @@ import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +17,13 @@ import java.util.List;
 @ViewScoped
 @Getter
 @Setter
-public class PerfilUsuarioBean {
+public class PerfilUsuarioBean implements Serializable {
 
     @Inject
     private PerfilUsuarioService service;
 
     private PerfilUsuarioDTO perfilUsuarioDTO = new PerfilUsuarioDTO();
-    private List<PerfilUsuarioEntity> perfilUsuarios = new ArrayList<>();
+    private List<PerfilUsuarioDTO> perfilUsuarios = new ArrayList<>();
 
 
     @PostConstruct
@@ -32,6 +32,28 @@ public class PerfilUsuarioBean {
     }
 
     private void recarregarLista() {
-        perfilUsuarios = service.listar();
+        perfilUsuarios = service.listarDTO();
+    }
+
+    public String situacaoSeverity(String situacao) {
+        if (situacao == null) {
+            return "info";
+        }
+        return switch (situacao.toUpperCase()) {
+            case "ATIVO" -> "success";
+            case "INATIVO" -> "danger";
+            default -> "warning";
+        };
+    }
+
+    public String situacaoBadgeClass(String situacao) {
+        if (situacao == null) {
+            return "badge-pill badge-muted";
+        }
+        return switch (situacao.toUpperCase()) {
+            case "ATIVO" -> "badge-pill badge-success";
+            case "INATIVO" -> "badge-pill badge-danger";
+            default -> "badge-pill badge-warning";
+        };
     }
 }

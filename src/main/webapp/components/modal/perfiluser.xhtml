@@ -9,13 +9,13 @@
         <div class="row g-3">
             <div class="col-md-4">
                 <label class="form-label" style="color: rgba(255,255,255,.70);">Login</label>
-                <h:inputText value="#{perfilUsuarioBean.login}"
+                <h:inputText value="#{perfilUsuarioBean.perfilUsuarioDTO.usuario}"
                              styleClass="form-control"
                              pt:placeholder="ex: admin"/>
             </div>
             <div class="col-md-4">
                 <label class="form-label" style="color: rgba(255,255,255,.70);">Acesso</label>
-                <h:selectOneMenu value="#{perfilUsuarioBean.acesso}" styleClass="form-select">
+                <h:selectOneMenu value="#{perfilUsuarioBean.perfilUsuarioDTO.acesso}" styleClass="form-select">
                     <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
                     <f:selectItem itemLabel="Admin" itemValue="ADMIN"/>
                     <f:selectItem itemLabel="Professor" itemValue="PROFESSOR"/>

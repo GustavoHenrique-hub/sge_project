@@ -23,5 +23,6 @@ public class PerfilUsuarioDTO {
         if(acessoUsuario.getUsuario() != null){
             this.usuario = new UsuarioDTO(acessoUsuario.getUsuario());
         }
+        this.situacao = acessoUsuario.getSituacao();
     }
 }

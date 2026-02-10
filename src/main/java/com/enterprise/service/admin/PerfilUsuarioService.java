@@ -1,5 +1,6 @@
 package com.enterprise.service.admin;
 
+import com.enterprise.dto.admin.PerfilUsuarioDTO;
 import com.enterprise.model.entity.admin.PerfilUsuarioEntity;
 import com.enterprise.repository.admin.PerfilUsuarioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -15,5 +16,12 @@ public class PerfilUsuarioService {
 
     public List<PerfilUsuarioEntity> listar() {
         return repository.findAll();
+    }
+
+    public List<PerfilUsuarioDTO> listarDTO() {
+        return repository.findAll()
+                .stream()
+                .map(PerfilUsuarioDTO::new)
+                .toList();
     }
 }

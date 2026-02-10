@@ -1,4 +1,4 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+﻿<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
                 template="/template.xhtml"
@@ -31,7 +31,7 @@
 
             <div class="row g-2">
                 <div class="col-md-5">
-                    <input class="form-control" placeholder="Buscar por nome/usuário..."/>
+                    <input class="form-control" placeholder="Buscar por nome usuário..."/>
                 </div>
                 <div class="col-md-3">
                     <select class="form-select">
@@ -58,44 +58,36 @@
                 </div>
             </div>
             <h:form>
-                <p:dataTable class="table-modern" id="listaUsers" var="usuario" value="#{perfilUsuarioBean.perfilUsuarios}"
-                             rowKey="#{perfilUsuarioBean.perfilUsuarios.id}">
-                    <p:column headerText="Acesso">
-                        <h:outputText value="#{usuario.acesso}"/>
-                    </p:column>
-                    <p:column headerText="Usuário">
-                        <h:outputText value="#{usuario.usuario}"/>
-                    </p:column>
-                    <p:column headerText="Situação">
-                        <p:badge severity="#{usuario.situacao}" styleClass="badge-pill badge-muted"
+                <h:dataTable styleClass="table-modern" id="listaUsers" var="usuario" value="#{perfilUsuarioBean.perfilUsuarios}"
+                             rowKey="#{usuario.id}">
+                    <h:column>
+                        <f:facet name="header">Usuário</f:facet>
+                        <h:outputText value="#{usuario.usuario.usuario}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Situação</f:facet>
+                        <p:badge severity="#{perfilUsuarioBean.situacaoSeverity(usuario.situacao)}"
+                                 styleClass="#{perfilUsuarioBean.situacaoBadgeClass(usuario.situacao)}"
                                  value="#{usuario.situacao}"/>
-                    </p:column>
-                    <p:column headerText="Perfil">
-                        <p:badge severity="warning" styleClass="badge-pill badge-muted" value="#{usuario.acesso}"/>
-                    </p:column>
-                    <p:column headerText="Editar">
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Perfil</f:facet>
+                        <p:badge severity="warning" styleClass="badge-pill badge-muted"
+                                 value="#{usuario.acesso.nomeAcesso}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Editar</f:facet>
                         <h:commandButton styleClass="btn-ghostx" value="Editar"/>
-                    </p:column>
-                    <p:column headerText="Excluir">
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Excluir</f:facet>
                         <h:commandButton styleClass="btn-ghostx" value="Excluir"/>
-                    </p:column>
-                    <tbody>
-                    <tr>
-                        <td>admin</td>
-                        <td>Administrador</td>
-                        <td><span class="">Admin</span></td>
-                        <td><span class="badge-pill badge-success">Ativo</span></td>
-                        <td class="d-flex gap-2">
-                            <button class="" type="button">Editar</button>
-                            <button class="btn-ghostx" type="button">Desativar</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </p:dataTable>
+                    </h:column>
+                </h:dataTable>
             </h:form>
         </div>
 
-        <!-- MODAL Novo Usuário -->
+        <!-- MODAL Novo UsuÃ¡rio -->
         <div class="modal fade"
              id="modalNewUser"
              tabindex="-1"
@@ -112,21 +104,21 @@
                     <div class="modal-header"
                          style="border-bottom: 1px solid rgba(255,255,255,.10);">
                         <h5 class="modal-title" id="modalNewUserLabel" style="color: rgba(255,255,255,.92);">
-                            Novo usuário
+                            Novo usuÃ¡rio
                         </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                                 aria-label="Close"/>
                     </div>
 
                     <div class="modal-body">
-                        <!-- ✅ inclui o conteúdo do arquivo separado -->
+                        <!-- âœ… inclui o conteÃºdo do arquivo separado -->
                         <ui:include src="/components/modal/newuser.xhtml"/>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- MODAL Vínculo Perfil x Usuário -->
+        <!-- MODAL VÃ­nculo Perfil x UsuÃ¡rio -->
         <div class="modal fade"
              id="modalPerfilUser"
              tabindex="-1"
@@ -143,14 +135,14 @@
                     <div class="modal-header"
                          style="border-bottom: 1px solid rgba(255,255,255,.10);">
                         <h5 class="modal-title" id="modalPerfilUserLabel" style="color: rgba(255,255,255,.92);">
-                            Novo usuário
+                            Novo usuÃ¡rio
                         </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                                 aria-label="Close"/>
                     </div>
 
                     <div class="modal-body">
-                        <!-- ✅ inclui o conteúdo do arquivo separado -->
+                        <!-- âœ… inclui o conteÃºdo do arquivo separado -->
                         <ui:include src="/components/modal/perfiluser.xhtml"/>
                     </div>
                 </div>
@@ -158,3 +150,4 @@
         </div>
     </ui:define>
 </ui:composition>
+

@@ -19,7 +19,11 @@ public class PerfilUsuarioRepository {
     }
 
     public List<PerfilUsuarioEntity> findAll() {
-        return em.createQuery("select pu from PerfilUsuarioEntity pu order by pu.id", PerfilUsuarioEntity.class)
-                .getResultList();
+        return em.createQuery(
+                "select pu from PerfilUsuarioEntity pu " +
+                        "left join fetch pu.acesso " +
+                        "left join fetch pu.usuario",
+                PerfilUsuarioEntity.class
+        ).getResultList();
     }
 }

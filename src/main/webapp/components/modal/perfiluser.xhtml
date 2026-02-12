@@ -10,12 +10,6 @@
         <div class="row g-3">
             <div class="col-md-4">
                 <label class="form-label" style="color: rgba(255,255,255,.70);">Login</label>
-<!--                <h:inputText value="#{perfilUsuarioBean.perfilUsuarioDTO.usuario}"-->
-<!--                             styleClass="form-control"-->
-<!--                             pt:placeholder="ex: admin"/>-->
-<!--                <p:outputLabel value="Login" for="@next"/>-->
-<!--                <p:autoComplete id="acSimple" value="#{autoCompleteView.txt1}"-->
-<!--                                completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>-->
                 <h:selectOneMenu value="#{perfilUsuarioBean.usuarioId}" styleClass="form-select">
                     <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
                     <f:selectItems value="#{usuarioAdminBean.usuarios}" var="usuario"
@@ -33,10 +27,10 @@
         </div>
         <div class="col-md-4">
             <label class="form-label" style="color: rgba(255,255,255,.70);">Acesso</label>
-            <h:selectOneMenu value="#{perfilUsuarioBean.perfilUsuarioDTO.situacao}" styleClass="form-select">
+            <h:selectOneMenu value="#{perfilUsuarioBean.situacaoId}" styleClass="form-select">
                 <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
-                <f:selectItem itemLabel="ATIVO" itemValue="ATIVO"/>
-                <f:selectItem itemLabel="INATIVO" itemValue="INATIVO"/>
+                <f:selectItems value="#{situacaoBean.situacao}" var="situacao"
+                               itemLabel="ID: #{situacao.id} | #{situacao.situacao}" itemValue="#{situacao.id}"/>
             </h:selectOneMenu>
         </div>
 

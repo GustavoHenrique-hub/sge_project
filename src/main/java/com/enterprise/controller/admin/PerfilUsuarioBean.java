@@ -2,10 +2,13 @@ package com.enterprise.controller.admin;
 
 import com.enterprise.dto.admin.PerfilDTO;
 import com.enterprise.dto.admin.PerfilUsuarioDTO;
+import com.enterprise.dto.admin.SituacaoDTO;
 import com.enterprise.dto.admin.UsuarioDTO;
 import com.enterprise.model.entity.admin.PerfilEntity;
+import com.enterprise.model.entity.admin.SituacaoEntity;
 import com.enterprise.service.admin.PerfilService;
 import com.enterprise.service.admin.PerfilUsuarioService;
+import com.enterprise.service.admin.SituacaoService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -30,12 +33,17 @@ public class PerfilUsuarioBean implements Serializable {
     private PerfilUsuarioService service;
     @Inject
     private PerfilService perfilService;
+    @Inject
+    private SituacaoService situacaoService;
     private PerfilUsuarioDTO perfilUsuarioDTO = new PerfilUsuarioDTO();
     private List<PerfilUsuarioDTO> perfilUsuarios = new ArrayList<>();
     private Long perfilId;
     private Long usuarioId;
+    private Long situacaoId;
     private String filtroUsuario;
-    private Long filtroPerfilId;
+    private PerfilEntity filtroPerfil;
+    private SituacaoEntity filtroSituacao;
+    private List<String> situacao = new ArrayList<>();
 
 
     @PostConstruct
@@ -51,6 +59,7 @@ public class PerfilUsuarioBean implements Serializable {
         perfilUsuarioDTO = new PerfilUsuarioDTO();
         perfilId = null;
         usuarioId = null;
+        situacaoId = null;
     }
 
     public String situacaoSeverity(String situacao) {
@@ -58,8 +67,8 @@ public class PerfilUsuarioBean implements Serializable {
             return "info";
         }
         return switch (situacao.toUpperCase()) {
-            case "ATIVO" -> "success";
-            case "INATIVO" -> "danger";
+            case "ATIVO" -> "badge-success";
+            case "INATIVO" -> "badge-danger";
             default -> "warning";
         };
     }
@@ -92,6 +101,13 @@ public class PerfilUsuarioBean implements Serializable {
                 } else {
                     perfilUsuarioDTO.setPerfil(null);
                 }
+                if (situacaoId != null){
+                    SituacaoEntity situacao = situacaoService.findById(situacaoId)
+                            .orElseThrow(() -> new IllegalArgumentException("Situacao inválida."));
+                    perfilUsuarioDTO.setSituacao(new SituacaoDTO(situacao));
+                } else {
+                    perfilUsuarioDTO.setSituacao(null);
+                }
                 service.vincular(perfilUsuarioDTO);
                 addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Usuário criado.");
             }
@@ -103,7 +119,22 @@ public class PerfilUsuarioBean implements Serializable {
     }
 
     public void filtrar() {
-        perfilUsuarios = service.listarPorFiltros(filtroUsuario, filtroPerfilId);
+        try {
+            Long perfilId = filtroPerfil == null ? null : filtroPerfil.getId();
+            Long situacaoId = filtroSituacao == null ? null : filtroSituacao.getId();
+            boolean filtroVazio = (filtroUsuario == null || filtroUsuario.isBlank())
+                    && perfilId == null
+                    && situacaoId == null;
+            if (filtroVazio) {
+                perfilUsuarios = service.listarDTO();
+            } else {
+                perfilUsuarios = service.listarPorFiltros(filtroUsuario, perfilId, situacaoId);
+            }
+            int total = perfilUsuarios == null ? 0 : perfilUsuarios.size();
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Filtro aplicado. Registros: " + total + ".");
+        } catch (Exception e) {
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao filtrar. " + e.getMessage());
+        }
     }
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
@@ -111,14 +142,29 @@ public class PerfilUsuarioBean implements Serializable {
     }
 
     public List<String> completeUsuario(String query) {
-        String queryLowerCase = query.toLowerCase();
+        String formatUsuario = query == null ? "" : query.toLowerCase();
         List<String> usuarioList = new ArrayList<>();
         List<PerfilUsuarioDTO> usuarios = service.listarDTO();
-        for (PerfilUsuarioDTO country : usuarios) {
-            usuarioList.add(country.getUsuario().getLogin());
+        for (PerfilUsuarioDTO perfilUsuarioDTO : usuarios) {
+            if (perfilUsuarioDTO.getUsuario() != null && perfilUsuarioDTO.getUsuario().getLogin() != null) {
+                usuarioList.add(perfilUsuarioDTO.getUsuario().getLogin());
+            }
         }
 
-        return usuarioList.stream().filter(t -> t.toLowerCase().startsWith(queryLowerCase)).collect(Collectors.toList());
+        return usuarioList.stream().filter(t -> t.toLowerCase().startsWith(formatUsuario)).collect(Collectors.toList());
+    }
+
+    public List<String> completeSituacao(String query) {
+        String formatSituacao = query == null ? "" : query.toLowerCase();
+        List<String> situacaoList = new ArrayList<>();
+        List<PerfilUsuarioDTO> situacoes = service.listarDTO();
+        for (PerfilUsuarioDTO perfilUsuarioDTO : situacoes) {
+            if (perfilUsuarioDTO.getSituacao() != null && perfilUsuarioDTO.getSituacao().getSituacao() != null) {
+                situacaoList.add(perfilUsuarioDTO.getSituacao().getSituacao());
+            }
+        }
+
+        return situacaoList.stream().filter(t -> t.toLowerCase().startsWith(formatSituacao)).collect(Collectors.toList());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.enterprise.controller.admin;
 
 import com.enterprise.dto.admin.PerfilDTO;
+import com.enterprise.dto.admin.PerfilUsuarioDTO;
 import com.enterprise.model.entity.admin.PerfilEntity;
 import com.enterprise.service.admin.PerfilService;
 import jakarta.annotation.PostConstruct;
@@ -15,6 +16,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Named("perfilBean")
 @ViewScoped
@@ -44,6 +46,15 @@ public class PerfilBean implements Serializable {
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));
+    }
+
+    public List<PerfilEntity> completePerfil(String query) {
+        String formatPerfil = query == null ? "" : query.toLowerCase();
+        return service.findAll()
+                .stream()
+                .filter(perfil -> perfil.getPerfil() != null
+                        && perfil.getPerfil().toLowerCase().startsWith(formatPerfil))
+                .collect(Collectors.toList());
     }
 
 }

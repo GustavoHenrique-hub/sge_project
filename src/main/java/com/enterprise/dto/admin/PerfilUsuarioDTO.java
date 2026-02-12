@@ -1,6 +1,7 @@
 package com.enterprise.dto.admin;
 
 import com.enterprise.model.entity.admin.PerfilUsuarioEntity;
+import com.enterprise.model.entity.admin.SituacaoEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +14,7 @@ public class PerfilUsuarioDTO {
     private Long id;
     private PerfilDTO perfil;
     private UsuarioDTO usuario;
-    private String situacao;
+    private SituacaoDTO situacao;
 
     public PerfilUsuarioDTO(PerfilUsuarioEntity perfilUsuario){
         this.id = perfilUsuario.getId();
@@ -23,6 +24,8 @@ public class PerfilUsuarioDTO {
         if(perfilUsuario.getUsuario() != null){
             this.usuario = new UsuarioDTO(perfilUsuario.getUsuario());
         }
-        this.situacao = perfilUsuario.getSituacao();
+        if(perfilUsuario.getSituacao() != null){
+            this.situacao = new SituacaoDTO(perfilUsuario.getSituacao());
+        }
     }
 }

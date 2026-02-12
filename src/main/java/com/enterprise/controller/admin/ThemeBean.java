@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Named
 @SessionScoped
 public class ThemeBean implements Serializable {
-    private boolean darkTheme = false;
+    private boolean darkTheme = true;
 
     public boolean isDarkTheme() {
         return darkTheme;

@@ -29,11 +29,12 @@ public class PerfilUsuarioRepository {
         ).getResultList();
     }
 
-    public List<PerfilUsuarioEntity> findByFilters(String login, Long perfilId){
+    public List<PerfilUsuarioEntity> findByFilters(String login, Long perfilId, Long situacaoId){
         StringBuilder jpql = new StringBuilder(
                 "select pu from PerfilUsuarioEntity pu " +
                         "left join fetch pu.perfil " +
                         "left join fetch pu.usuario " +
+                        "left join fetch pu.situacao " +
                         "where 1=1"
         );
 
@@ -43,6 +44,9 @@ public class PerfilUsuarioRepository {
         if (perfilId != null) {
             jpql.append(" and pu.perfil.id = :perfilId");
         }
+        if (situacaoId != null) {
+            jpql.append(" and pu.situacao.id = :situacaoId");
+        }
 
         TypedQuery<PerfilUsuarioEntity> query = em.createQuery(jpql.toString(), PerfilUsuarioEntity.class);
         if (login != null && !login.isBlank()) {
@@ -50,6 +54,9 @@ public class PerfilUsuarioRepository {
         }
         if (perfilId != null) {
             query.setParameter("perfilId", perfilId);
+        }
+        if (situacaoId != null){
+            query.setParameter("situacaoId", situacaoId);
         }
         return query.getResultList();
     }

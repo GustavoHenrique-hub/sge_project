@@ -22,8 +22,8 @@ public class PerfilUsuarioService {
                 .toList();
     }
 
-    public List<PerfilUsuarioDTO> listarPorFiltros(String login, Long perfilId) {
-        return repository.findByFilters(login, perfilId)
+    public List<PerfilUsuarioDTO> listarPorFiltros(String login, Long perfilId, Long situacaoId) {
+        return repository.findByFilters(login, perfilId, situacaoId)
                 .stream()
                 .map(PerfilUsuarioDTO::new)
                 .toList();

@@ -25,7 +25,9 @@ public class PerfilUsuarioEntity {
     @JoinColumn(name = "usuario_id")
     private UsuarioEntity usuario;
 
-    private String situacao;
+    @ManyToOne
+    @JoinColumn(name = "situacao_id")
+    private SituacaoEntity situacao;
 
     public PerfilUsuarioEntity(PerfilUsuarioDTO perfilUsuarioDTO){
         this.id = perfilUsuarioDTO.getId();
@@ -35,6 +37,8 @@ public class PerfilUsuarioEntity {
         if(perfilUsuarioDTO.getUsuario() != null){
             this.usuario = new UsuarioEntity(perfilUsuarioDTO.getUsuario());
         }
-        this.situacao = perfilUsuarioDTO.getSituacao();
+        if(perfilUsuarioDTO.getSituacao() != null){
+            this.situacao = new SituacaoEntity(perfilUsuarioDTO.getSituacao());
+        }
     }
 }

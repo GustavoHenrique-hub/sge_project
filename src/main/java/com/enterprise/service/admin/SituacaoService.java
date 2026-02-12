@@ -24,6 +24,10 @@ public class SituacaoService {
         return repository.findById(id);
     }
 
+    public Optional<SituacaoEntity> findBySituacao(String situacao) {
+        return repository.findBySituacao(situacao);
+    }
+
     public List<SituacaoEntity> findAll() {
         return repository.findAll();
     }

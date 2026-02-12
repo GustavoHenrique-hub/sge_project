@@ -9,29 +9,32 @@
 
         <div class="row g-3">
             <div class="col-md-4">
-                <label class="form-label" style="color: rgba(255,255,255,.70);">Login</label>
-                <h:selectOneMenu value="#{perfilUsuarioBean.usuarioId}" styleClass="form-select">
-                    <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
-                    <f:selectItems value="#{usuarioAdminBean.usuarios}" var="usuario"
-                                   itemLabel="ID: #{usuario.id} | Login: #{usuario.login}" itemValue="#{usuario.id}"/>
-                </h:selectOneMenu>
+                <h:outputText id="usuarioIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                              value="#{perfilUsuarioBean.filtroUsuario != null ? 'ID: '.concat(perfilUsuarioBean.filtroUsuario.id) : 'ID: -'}"/>
+                <p:autoComplete id="dropDownUsuarioModal" dropdown="true" value="#{perfilUsuarioBean.usuarioId}"
+                                styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                var="usuario" itemLabel="ID: #{usuario.id} | Login: #{usuario.login}"
+                                itemValue="#{usuario.id}" completeMethod="#{usuarioAdminBean.completeUsuario}"
+                                scrollHeight="250" forceSelection="true" appendTo="@(body)"/>
             </div>
             <div class="col-md-4">
-                <label class="form-label" style="color: rgba(255,255,255,.70);">Acesso</label>
-                <h:selectOneMenu value="#{perfilUsuarioBean.perfilId}" styleClass="form-select">
-                    <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
-                    <f:selectItems value="#{perfilBean.perfils}" var="perfil"
-                                   itemLabel="#{perfil.perfil}" itemValue="#{perfil.id}"/>
-                </h:selectOneMenu>
+                <h:outputText id="perfilIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                              value="#{perfilUsuarioBean.filtroPerfil != null ? 'ID: '.concat(perfilUsuarioBean.filtroPerfil.id) : 'ID: -'}"/>
+                <p:autoComplete id="dropDownPerfilModal" dropdown="true" value="#{perfilUsuarioBean.perfilId}"
+                                styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                var="perfil" itemLabel="#{perfil.perfil}" itemValue="#{perfil.id}"
+                                completeMethod="#{perfilBean.completePerfil}" scrollHeight="250"
+                                forceSelection="true" appendTo="@(body)"/>
             </div>
-        </div>
-        <div class="col-md-4">
-            <label class="form-label" style="color: rgba(255,255,255,.70);">Acesso</label>
-            <h:selectOneMenu value="#{perfilUsuarioBean.situacaoId}" styleClass="form-select">
-                <f:selectItem itemLabel="Selecione..." itemValue="" noSelectionOption="true"/>
-                <f:selectItems value="#{situacaoBean.situacao}" var="situacao"
-                               itemLabel="ID: #{situacao.id} | #{situacao.situacao}" itemValue="#{situacao.id}"/>
-            </h:selectOneMenu>
+            <div class="col-md-4">
+                <h:outputText id="situacaoIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                              value="#{perfilUsuarioBean.filtroSituacao != null ? 'ID: '.concat(perfilUsuarioBean.filtroSituacao.id) : 'ID: -'}"/>
+                <p:autoComplete id="dropDownSituacaoModal" dropdown="true" value="#{perfilUsuarioBean.situacaoId}"
+                                styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                var="situacao" itemLabel="ID: #{situacao.id} | #{situacao.situacao}"
+                                itemValue="#{situacao.id}" completeMethod="#{situacaoBean.completeSituacao}"
+                                scrollHeight="250" forceSelection="true" appendTo="@(body)"/>
+            </div>
         </div>
 
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
@@ -41,12 +44,12 @@
             </button>
 
             <!-- Submit do JSF -->
-            <h:commandButton value="Salvar"
-                             styleClass="btn-primaryx"
-                             action="#{perfilUsuarioBean.vincular}"
-                             process="@form"
-                             update=":growl :formPerfilUser"
-                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNewUser')).hide();}" />
+        <h:commandButton value="Salvar"
+                         styleClass="btn-primaryx"
+                         action="#{perfilUsuarioBean.vincular}"
+                         process="@form"
+                         update=":growl :formPerfilUser"
+                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPerfilUser')).hide();}" />
         </div>
 
     </h:form>

@@ -15,6 +15,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Named("usuarioAdminBean")
 @ViewScoped
@@ -72,6 +73,15 @@ public class UsuarioAdminBean implements Serializable {
 
     private void recarregarLista() {
         usuarios = service.listar();
+    }
+
+    public List<UsuarioEntity> completeUsuario(String query) {
+        String formatUsuario = query == null ? "" : query.toLowerCase();
+        return service.listar()
+                .stream()
+                .filter(usuario -> usuario.getLogin() != null
+                        && usuario.getLogin().toLowerCase().startsWith(formatUsuario))
+                .collect(Collectors.toList());
     }
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {

@@ -27,4 +27,17 @@ public class SituacaoRepository {
         return em.createQuery("select s from SituacaoEntity s order by s.id", SituacaoEntity.class)
                 .getResultList();
     }
+
+    public Optional<SituacaoEntity> findBySituacao(String situacao) {
+        if (situacao == null || situacao.isBlank()) {
+            return Optional.empty();
+        }
+        return em.createQuery(
+                        "select s from SituacaoEntity s where upper(s.situacao) = :situacao",
+                        SituacaoEntity.class
+                )
+                .setParameter("situacao", situacao.trim().toUpperCase())
+                .getResultStream()
+                .findFirst();
+    }
 }

@@ -2,6 +2,7 @@ package com.enterprise.service.admin;
 
 import com.enterprise.dto.admin.PerfilUsuarioDTO;
 import com.enterprise.model.entity.admin.PerfilUsuarioEntity;
+import com.enterprise.model.entity.admin.SituacaoEntity;
 import com.enterprise.repository.admin.PerfilUsuarioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -14,6 +15,8 @@ public class PerfilUsuarioService {
 
     @Inject
     private PerfilUsuarioRepository repository;
+    @Inject
+    private SituacaoService situacaoService;
 
     public List<PerfilUsuarioDTO> listarDTO() {
         return repository.findAll()
@@ -46,4 +49,32 @@ public class PerfilUsuarioService {
             throw new IllegalArgumentException("Perfil é obrigatório.");
         }
     }
+
+    @Transactional
+    public PerfilUsuarioDTO ativarVinculo(Long id) {
+        SituacaoEntity situacao = situacaoService.findBySituacao("ATIVO")
+                .orElseThrow(() -> new IllegalStateException("Situação ATIVO não encontrada."));
+        PerfilUsuarioEntity entity = repository.atualizarSituacao(id, situacao);
+        return new PerfilUsuarioDTO(entity);
+    }
+
+    @Transactional
+    public PerfilUsuarioDTO inativarVinculo(Long id) {
+        SituacaoEntity situacao = situacaoService.findBySituacao("INATIVO")
+                .orElseThrow(() -> new IllegalStateException("Situação INATIVO não encontrada."));
+        PerfilUsuarioEntity entity = repository.atualizarSituacao(id, situacao);
+        return new PerfilUsuarioDTO(entity);
+    }
+
+    @Transactional
+    public void excluirVinculoSeInativo(Long id) {
+        PerfilUsuarioEntity entity = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Vínculo não encontrado."));
+        String situacao = entity.getSituacao() == null ? null : entity.getSituacao().getSituacao();
+        if (situacao == null || !situacao.equalsIgnoreCase("INATIVO")) {
+            throw new IllegalStateException("Só é permitido excluir vínculos inativos.");
+        }
+        repository.excluir(entity);
+    }
+
 }

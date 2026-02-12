@@ -1,7 +1,7 @@
 package com.enterprise.repository.admin;
 
-import com.enterprise.dto.admin.PerfilUsuarioDTO;
 import com.enterprise.model.entity.admin.PerfilUsuarioEntity;
+import com.enterprise.model.entity.admin.SituacaoEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -64,5 +64,18 @@ public class PerfilUsuarioRepository {
     public PerfilUsuarioEntity vincular (PerfilUsuarioEntity entity){
         em.persist(entity);
         return entity;
+    }
+
+    public PerfilUsuarioEntity atualizarSituacao(Long id, SituacaoEntity situacao) {
+        PerfilUsuarioEntity entity = em.find(PerfilUsuarioEntity.class, id);
+        if (entity == null) {
+            throw new IllegalArgumentException("Vínculo não encontrado.");
+        }
+        entity.setSituacao(situacao);
+        return entity;
+    }
+
+    public void excluir(PerfilUsuarioEntity entity) {
+        em.remove(entity);
     }
 }

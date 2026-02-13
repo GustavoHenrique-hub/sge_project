@@ -18,7 +18,7 @@
   </servlet-mapping>
 
   <welcome-file-list>
-    <welcome-file>/pages/admin/admin.xhtml</welcome-file>
+    <welcome-file>/pages/alunos/alunos.xhtml</welcome-file>
   </welcome-file-list>
 
 </web-app>

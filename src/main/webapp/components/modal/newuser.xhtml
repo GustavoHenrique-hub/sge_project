@@ -11,21 +11,21 @@
 
             <div class="col-md-4">
                 <label class="form-label">Login</label>
-                <h:inputText value="#{usuarioAdminBean.form.login}"
+                <h:inputText value="#{usuarioBean.form.login}"
                              styleClass="form-control"
                              pt:placeholder="ex: admin"/>
             </div>
 
             <div class="col-md-4">
                 <label class="form-label">Usuário</label>
-                <h:inputText value="#{usuarioAdminBean.form.usuario}"
+                <h:inputText value="#{usuarioBean.form.usuario}"
                              styleClass="form-control"
                              pt:placeholder="Nome do usuário"/>
             </div>
 
             <div class="col-md-4">
                 <label class="form-label">Senha</label>
-                <h:inputSecret value="#{usuarioAdminBean.form.senha}"
+                <h:inputSecret value="#{usuarioBean.form.senha}"
                                styleClass="form-control"
                                pt:placeholder="••••••••"/>
             </div>
@@ -40,7 +40,7 @@
             <!-- Submit do JSF -->
             <h:commandButton value="Salvar"
                              styleClass="btn-primaryx"
-                             action="#{usuarioAdminBean.salvar}"
+                             action="#{usuarioBean.salvar}"
                              process="@form"
                              update=":growl :formNewUser"
                              oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNewUser')).hide();}" />

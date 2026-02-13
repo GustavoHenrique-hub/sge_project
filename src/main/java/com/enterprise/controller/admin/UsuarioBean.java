@@ -17,11 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Named("usuarioAdminBean")
+@Named("usuarioBean")
 @ViewScoped
 @Getter
 @Setter
-public class UsuarioAdminBean implements Serializable {
+public class UsuarioBean implements Serializable {
 
     @Inject
     private UsuarioService service;

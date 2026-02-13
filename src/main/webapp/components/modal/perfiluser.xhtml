@@ -9,13 +9,14 @@
 
         <div class="modal-link-grid">
             <div class="modal-link-item">
+                <label class="form-label cardx-title">Usuário</label>
                 <div class="modal-id-inline">
                     <h:outputText id="usuarioIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                  value="#{perfilUsuarioBean.usuarioId != null ? 'ID: '.concat(perfilUsuarioBean.usuarioId) : 'ID: -'}"/>
+                                  value="#{perfilUsuarioBean.usuarioId}"/>
                     <p:autoComplete id="dropDownUsuarioModal" dropdown="true" value="#{perfilUsuarioBean.usuarioId}"
                                     styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
                                     var="usuario" itemLabel="#{usuario.login}"
-                                    itemValue="#{usuario.id}" completeMethod="#{usuarioAdminBean.completeUsuario}"
+                                    itemValue="#{usuario.id}" completeMethod="#{usuarioBean.completeUsuario}"
                                     scrollHeight="250" forceSelection="true" appendTo="@(body)">
                         <p:ajax event="itemSelect" update="usuarioIdLabel"/>
                         <p:ajax event="clear" update="usuarioIdLabel"/>
@@ -24,9 +25,10 @@
             </div>
 
             <div class="modal-link-item">
+                <label class="form-label cardx-title">Perfil</label>
                 <div class="modal-id-inline">
                     <h:outputText id="perfilIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                  value="#{perfilUsuarioBean.perfilId != null ? 'ID: '.concat(perfilUsuarioBean.perfilId) : 'ID: -'}"/>
+                                  value="#{perfilUsuarioBean.perfilId}"/>
                     <p:autoComplete id="dropDownPerfilModal" dropdown="true" value="#{perfilUsuarioBean.perfilId}"
                                     styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
                                     var="perfil" itemLabel="#{perfil.perfil}" itemValue="#{perfil.id}"
@@ -39,9 +41,10 @@
             </div>
 
             <div class="modal-link-item">
+                <label class="form-label cardx-title">Situação</label>
                 <div class="modal-id-inline">
                     <h:outputText id="situacaoIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                  value="#{perfilUsuarioBean.situacaoId != null ? 'ID: '.concat(perfilUsuarioBean.situacaoId) : 'ID: -'}"/>
+                                  value="#{perfilUsuarioBean.situacaoId}"/>
                     <p:autoComplete id="dropDownSituacaoModal" dropdown="true" value="#{perfilUsuarioBean.situacaoId}"
                                     styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
                                     var="situacao" itemLabel="#{situacao.situacao}"

@@ -24,7 +24,7 @@
                         <label class="form-label cardx-title">Usuário</label>
                         <div class="filters-body-column-row">
                             <h:outputText id="usuarioIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                          value="#{perfilUsuarioBean.filtroUsuario != null ? 'ID: '.concat(perfilUsuarioBean.filtroUsuario.id) : 'ID: -'}"/>
+                                          value="#{perfilUsuarioBean.filtroUsuario.id}"/>
                             <p:autoComplete id="dropDownUsuario" dropdown="true"
                                             value="#{perfilUsuarioBean.filtroUsuario}"
                                             styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
@@ -42,7 +42,7 @@
                         <label class="form-label cardx-title">Perfil</label>
                         <div class="filters-body-column-row">
                             <h:outputText id="perfilIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                          value="#{perfilUsuarioBean.filtroPerfil != null ? 'ID: '.concat(perfilUsuarioBean.filtroPerfil.id) : 'ID: -'}"/>
+                                          value="#{perfilUsuarioBean.filtroPerfil.id}"/>
                             <p:autoComplete id="dropDownPerfil" dropdown="true"
                                             value="#{perfilUsuarioBean.filtroPerfil}"
                                             styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
@@ -60,7 +60,7 @@
                         <label class="form-label cardx-title">Situação</label>
                         <div class="filters-body-column-row">
                             <h:outputText id="situacaoIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                          value="#{perfilUsuarioBean.filtroSituacao != null ? 'ID: '.concat(perfilUsuarioBean.filtroSituacao.id) : 'ID: -'}"/>
+                                          value="#{perfilUsuarioBean.filtroSituacao.id}"/>
                             <p:autoComplete id="dropDownSituacao" dropdown="true"
                                             value="#{perfilUsuarioBean.filtroSituacao}"
                                             styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"

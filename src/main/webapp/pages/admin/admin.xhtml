@@ -116,7 +116,6 @@
                                                  styleClass="icon-action-btn icon-ban"
                                                  value="&#xe935;"
                                                  update=":formLista:listaUsers :growl">
-                                    <!--                                    <f:ajax execute="@this" render=":formLista:listaUsers :growl"/>-->
                                 </h:commandButton>
                                 <h:commandButton action="#{perfilUsuarioBean.ativarVinculo(usuario)}"
                                                  title="Ativar vínculo"
@@ -124,7 +123,6 @@
                                                  styleClass="icon-action-btn icon-check"
                                                  value="&#xe909;"
                                                  update=":formLista:listaUsers :growl">
-                                    <!--                                    <f:ajax execute="@this" render=":formLista:listaUsers :growl"/>-->
                                 </h:commandButton>
                                 <h:commandButton action="#{perfilUsuarioBean.excluirVinculo(usuario)}"
                                                  title="Excluir vínculo"
@@ -132,7 +130,6 @@
                                                  styleClass="icon-action-btn icon-trash"
                                                  value="&#xe93d;"
                                                  update=":formLista:listaUsers :growl">
-                                    <!--                                    <f:ajax execute="@this" render=":formLista:listaUsers :growl"/>-->
                                 </h:commandButton>
                             </h:column>
                             <h:column>
@@ -145,16 +142,10 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Perfil</f:facet>
-                                <!--                                <p:badge severity="warning" styleClass="badge-pill badge-muted"-->
-                                <!--                                         value="#{usuario.perfil != null ? usuario.perfil.perfil : '-'}" />-->
                                 <span class="badge-pill badge-muted">#{usuario.perfil != null ? usuario.perfil.perfil : '-'}</span>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Situação</f:facet>
-                                <!--                                <p:badge severity="#{perfilUsuarioBean.situacaoSeverity(usuario.situacao)}"-->
-                                <!--                                         styleClass="#{perfilUsuarioBean.situacaoBadgeClass(usuario.situacao)}"-->
-                                <!--                                         value="#{usuario.situacao}"/>-->
-
                                 <span class="badge-pill #{perfilUsuarioBean.situacaoSeverity(usuario.situacao != null ? usuario.situacao.situacao : null)}">
                                     #{usuario.situacao != null ? usuario.situacao.situacao : '-'}
                                 </span>
@@ -184,7 +175,6 @@
                     </div>
 
                     <div class="modal-body">
-                        <!-- âœ… inclui o conteÃºdo do arquivo separado -->
                         <ui:include src="/components/modal/newuser.xhtml"/>
                     </div>
                 </div>

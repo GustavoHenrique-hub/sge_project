@@ -7,33 +7,50 @@
 
     <h:form id="formPerfilUser">
 
-        <div class="row g-3">
-            <div class="col-md-4">
-                <h:outputText id="usuarioIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                              value="#{perfilUsuarioBean.filtroUsuario != null ? 'ID: '.concat(perfilUsuarioBean.filtroUsuario.id) : 'ID: -'}"/>
-                <p:autoComplete id="dropDownUsuarioModal" dropdown="true" value="#{perfilUsuarioBean.usuarioId}"
-                                styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
-                                var="usuario" itemLabel="ID: #{usuario.id} | Login: #{usuario.login}"
-                                itemValue="#{usuario.id}" completeMethod="#{usuarioAdminBean.completeUsuario}"
-                                scrollHeight="250" forceSelection="true" appendTo="@(body)"/>
+        <div class="modal-link-grid">
+            <div class="modal-link-item">
+                <div class="modal-id-inline">
+                    <h:outputText id="usuarioIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                                  value="#{perfilUsuarioBean.usuarioId != null ? 'ID: '.concat(perfilUsuarioBean.usuarioId) : 'ID: -'}"/>
+                    <p:autoComplete id="dropDownUsuarioModal" dropdown="true" value="#{perfilUsuarioBean.usuarioId}"
+                                    styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                    var="usuario" itemLabel="#{usuario.login}"
+                                    itemValue="#{usuario.id}" completeMethod="#{usuarioAdminBean.completeUsuario}"
+                                    scrollHeight="250" forceSelection="true" appendTo="@(body)">
+                        <p:ajax event="itemSelect" update="usuarioIdLabel"/>
+                        <p:ajax event="clear" update="usuarioIdLabel"/>
+                    </p:autoComplete>
+                </div>
             </div>
-            <div class="col-md-4">
-                <h:outputText id="perfilIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                              value="#{perfilUsuarioBean.filtroPerfil != null ? 'ID: '.concat(perfilUsuarioBean.filtroPerfil.id) : 'ID: -'}"/>
-                <p:autoComplete id="dropDownPerfilModal" dropdown="true" value="#{perfilUsuarioBean.perfilId}"
-                                styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
-                                var="perfil" itemLabel="#{perfil.perfil}" itemValue="#{perfil.id}"
-                                completeMethod="#{perfilBean.completePerfil}" scrollHeight="250"
-                                forceSelection="true" appendTo="@(body)"/>
+
+            <div class="modal-link-item">
+                <div class="modal-id-inline">
+                    <h:outputText id="perfilIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                                  value="#{perfilUsuarioBean.perfilId != null ? 'ID: '.concat(perfilUsuarioBean.perfilId) : 'ID: -'}"/>
+                    <p:autoComplete id="dropDownPerfilModal" dropdown="true" value="#{perfilUsuarioBean.perfilId}"
+                                    styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                    var="perfil" itemLabel="#{perfil.perfil}" itemValue="#{perfil.id}"
+                                    completeMethod="#{perfilBean.completePerfil}" scrollHeight="250"
+                                    forceSelection="true" appendTo="@(body)">
+                        <p:ajax event="itemSelect" update="perfilIdLabel"/>
+                        <p:ajax event="clear" update="perfilIdLabel"/>
+                    </p:autoComplete>
+                </div>
             </div>
-            <div class="col-md-4">
-                <h:outputText id="situacaoIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                              value="#{perfilUsuarioBean.filtroSituacao != null ? 'ID: '.concat(perfilUsuarioBean.filtroSituacao.id) : 'ID: -'}"/>
-                <p:autoComplete id="dropDownSituacaoModal" dropdown="true" value="#{perfilUsuarioBean.situacaoId}"
-                                styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
-                                var="situacao" itemLabel="ID: #{situacao.id} | #{situacao.situacao}"
-                                itemValue="#{situacao.id}" completeMethod="#{situacaoBean.completeSituacao}"
-                                scrollHeight="250" forceSelection="true" appendTo="@(body)"/>
+
+            <div class="modal-link-item">
+                <div class="modal-id-inline">
+                    <h:outputText id="situacaoIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                                  value="#{perfilUsuarioBean.situacaoId != null ? 'ID: '.concat(perfilUsuarioBean.situacaoId) : 'ID: -'}"/>
+                    <p:autoComplete id="dropDownSituacaoModal" dropdown="true" value="#{perfilUsuarioBean.situacaoId}"
+                                    styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                    var="situacao" itemLabel="#{situacao.situacao}"
+                                    itemValue="#{situacao.id}" completeMethod="#{situacaoBean.completeSituacao}"
+                                    scrollHeight="250" forceSelection="true" appendTo="@(body)">
+                        <p:ajax event="itemSelect" update="situacaoIdLabel"/>
+                        <p:ajax event="clear" update="situacaoIdLabel"/>
+                    </p:autoComplete>
+                </div>
             </div>
         </div>
 
@@ -44,12 +61,12 @@
             </button>
 
             <!-- Submit do JSF -->
-        <h:commandButton value="Salvar"
-                         styleClass="btn-primaryx"
-                         action="#{perfilUsuarioBean.vincular}"
-                         process="@form"
-                         update=":growl :formPerfilUser"
-                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPerfilUser')).hide();}" />
+            <h:commandButton value="Salvar"
+                             styleClass="btn-primaryx"
+                             action="#{perfilUsuarioBean.vincular}"
+                             process="@form"
+                             update=":growl :formPerfilUser"
+                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPerfilUser')).hide();}"/>
         </div>
 
     </h:form>

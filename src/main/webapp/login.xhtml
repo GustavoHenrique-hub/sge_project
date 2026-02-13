@@ -75,5 +75,87 @@
             </h:form>
         </div>
     </div>
+
+    <div id="pageLoader" class="app-loader-backdrop" aria-hidden="true">
+        <div class="app-loader-card">
+            <i class="pi pi-spin pi-spinner app-loader-icon"></i>
+            <span>Carregando...</span>
+        </div>
+    </div>
+
+    <p:ajaxStatus onstart="window.AppLoader &amp;&amp; AppLoader.show()"
+                  onsuccess="window.AppLoader &amp;&amp; AppLoader.hide()"
+                  onerror="window.AppLoader &amp;&amp; AppLoader.hide()"/>
+
+    <script>
+        //<![CDATA[
+        (function () {
+            var loaderEl = null;
+            var pending = 0;
+
+            function ensureEl() {
+                if (!loaderEl) {
+                    loaderEl = document.getElementById("pageLoader");
+                }
+                return loaderEl;
+            }
+
+            function showLoader() {
+                var el = ensureEl();
+                if (!el) {
+                    return;
+                }
+                pending++;
+                el.classList.add("is-visible");
+            }
+
+            function hideLoader() {
+                var el = ensureEl();
+                if (!el) {
+                    return;
+                }
+                pending = Math.max(0, pending - 1);
+                if (pending === 0) {
+                    el.classList.remove("is-visible");
+                }
+            }
+
+            function shouldIgnoreTrigger(target) {
+                if (!target) {
+                    return true;
+                }
+                if (target.closest("[data-no-loader='true']")) {
+                    return true;
+                }
+                if (target.tagName === "BUTTON") {
+                    var type = (target.getAttribute("type") || "submit").toLowerCase();
+                    if (type === "button") {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            window.AppLoader = {
+                show: showLoader,
+                hide: hideLoader
+            };
+
+            document.addEventListener("click", function (event) {
+                var trigger = event.target.closest("a[href], button, input[type='submit']");
+                if (!trigger || shouldIgnoreTrigger(trigger)) {
+                    return;
+                }
+                showLoader();
+            }, true);
+
+            window.addEventListener("beforeunload", showLoader);
+            window.addEventListener("pageshow", function () {
+                pending = 0;
+                hideLoader();
+            });
+        })();
+        //]]>
+    </script>
 </h:body>
 </html>

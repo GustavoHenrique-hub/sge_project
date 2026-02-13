@@ -42,16 +42,24 @@
             </div>
 
             <nav class="nav">
-                <h:link outcome="/pages/alunos/dashboard.xhtml" styleClass="active">
+                <h:link outcome="/pages/alunos/dashboard.xhtml"
+                        styleClass="#{request.servletPath eq '/pages/alunos/dashboard.xhtml' ? 'active' : ''}">
                     Dashboard
                 </h:link>
-                <h:link outcome="/pages/alunos/alunos.xhtml">Alunos</h:link>
-                <h:link outcome="/pages/professores/professores.xhtml">Professores</h:link>
-                <h:link outcome="/pages/alunos/turmas.xhtml">Turmas</h:link>
-                <h:link outcome="/pages/admin/matriculas.xhtml">Matrículas</h:link>
-                <h:link outcome="/pages/alunos/nota-frequencia.xhtml">Notas &amp; Frequência</h:link>
-                <h:link outcome="/pages/alunos/historico.xhtml">Histórico</h:link>
-                <h:link outcome="/pages/admin/admin.xhtml">Administração</h:link>
+                <h:link outcome="/pages/alunos/alunos.xhtml"
+                        styleClass="#{request.servletPath eq '/pages/alunos/alunos.xhtml' ? 'active' : ''}">Alunos</h:link>
+                <h:link outcome="/pages/professores/professores.xhtml"
+                        styleClass="#{request.servletPath eq '/pages/professores/professores.xhtml' ? 'active' : ''}">Professores</h:link>
+                <h:link outcome="/pages/alunos/turmas.xhtml"
+                        styleClass="#{request.servletPath eq '/pages/alunos/turmas.xhtml' ? 'active' : ''}">Turmas</h:link>
+                <h:link outcome="/pages/admin/matriculas.xhtml"
+                        styleClass="#{request.servletPath eq '/pages/admin/matriculas.xhtml' ? 'active' : ''}">Matrículas</h:link>
+                <h:link outcome="/pages/alunos/nota-frequencia.xhtml"
+                        styleClass="#{request.servletPath eq '/pages/alunos/nota-frequencia.xhtml' ? 'active' : ''}">Notas &amp; Frequência</h:link>
+                <h:link outcome="/pages/alunos/historico.xhtml"
+                        styleClass="#{request.servletPath eq '/pages/alunos/historico.xhtml' ? 'active' : ''}">Histórico</h:link>
+                <h:link outcome="/pages/admin/admin.xhtml"
+                        styleClass="#{request.servletPath eq '/pages/admin/admin.xhtml' ? 'active' : ''}">Administração</h:link>
             </nav>
 
             <div class="cardx" style="margin-top: 16px;">
@@ -119,8 +127,94 @@
                     fatalClass="jsf-msg jsf-fatal"/>
     </h:panelGroup>
 
+    <div id="pageLoader" class="app-loader-backdrop" aria-hidden="true">
+        <div class="app-loader-card">
+            <i class="pi pi-spin pi-spinner app-loader-icon" />
+            <span>Carregando...</span>
+        </div>
+    </div>
+
+    <p:ajaxStatus onstart="window.AppLoader &amp;&amp; AppLoader.show()"
+                  onsuccess="window.AppLoader &amp;&amp; AppLoader.hide()"
+                  onerror="window.AppLoader &amp;&amp; AppLoader.hide()"/>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" />
+    <script>
+        //<![CDATA[
+        (function () {
+            var loaderEl = null;
+            var pending = 0;
+
+            function ensureEl() {
+                if (!loaderEl) {
+                    loaderEl = document.getElementById("pageLoader");
+                }
+                return loaderEl;
+            }
+
+            function showLoader() {
+                var el = ensureEl();
+                if (!el) {
+                    return;
+                }
+                pending++;
+                el.classList.add("is-visible");
+            }
+
+            function hideLoader() {
+                var el = ensureEl();
+                if (!el) {
+                    return;
+                }
+                pending = Math.max(0, pending - 1);
+                if (pending === 0) {
+                    el.classList.remove("is-visible");
+                }
+            }
+
+            function shouldIgnoreTrigger(target) {
+                if (!target) {
+                    return true;
+                }
+                if (target.closest("[data-bs-dismiss='modal'], [data-bs-toggle='modal'], [data-no-loader='true']")) {
+                    return true;
+                }
+                if (target.tagName === "A") {
+                    var href = target.getAttribute("href");
+                    if (!href || href === "#" || href.startsWith("javascript:") || target.target === "_blank" || target.hasAttribute("download")) {
+                        return true;
+                    }
+                }
+                if (target.tagName === "BUTTON") {
+                    var type = (target.getAttribute("type") || "submit").toLowerCase();
+                    if (type === "button") {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            window.AppLoader = {
+                show: showLoader,
+                hide: hideLoader
+            };
+
+            document.addEventListener("click", function (event) {
+                var trigger = event.target.closest("a[href], button, input[type='submit']");
+                if (!trigger || shouldIgnoreTrigger(trigger)) {
+                    return;
+                }
+                showLoader();
+            }, true);
+
+            window.addEventListener("beforeunload", showLoader);
+            window.addEventListener("pageshow", function () {
+                pending = 0;
+                hideLoader();
+            });
+        })();
+        //]]>
+    </script>
 
     <!-- Seu CSS -->
     <h:outputStylesheet library="css" name="app-v2.css" target="body"/>

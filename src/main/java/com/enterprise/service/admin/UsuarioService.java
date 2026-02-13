@@ -8,6 +8,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class UsuarioService {
@@ -38,6 +39,10 @@ public class UsuarioService {
 
     public List<UsuarioEntity> listar() {
         return repository.findAll();
+    }
+
+    public Optional<UsuarioEntity> findById(Long id) {
+        return repository.findById(id);
     }
 
     @Transactional

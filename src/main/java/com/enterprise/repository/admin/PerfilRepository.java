@@ -17,8 +17,8 @@ public class PerfilRepository {
     private EntityManager em;
 
     public List<PerfilEntity> findAll(){
-    return em.createQuery("select p from PerfilEntity p order by p.id", PerfilEntity.class)
-            .getResultList();
+        return em.createQuery("select p from PerfilEntity p order by p.id", PerfilEntity.class)
+                .getResultList();
     }
 
     public Optional<PerfilEntity> findById(Long id) {

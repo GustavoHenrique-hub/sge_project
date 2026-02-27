@@ -21,8 +21,8 @@ public class AlunoRepository {
     }
 
     public List<AlunoEntity> findAll(){
-    return em.createQuery("select p from AlunoEntity p order by p.nome", AlunoEntity.class)
-            .getResultList();
+        return em.createQuery("select p from AlunoEntity p order by p.nome", AlunoEntity.class)
+                .getResultList();
     }
 
     public List<AlunoEntity> findByFilters(String nome, String cpf) {

@@ -1,10 +1,9 @@
-package com.enterprise.controller.app;
+package com.enterprise.controller.academico;
 
 import com.enterprise.dto.gestao.AlunoTurmaDTO;
-import com.enterprise.model.entity.gestao.AlunoEntity;
-import com.enterprise.service.gestao.AlunoService;
+import com.enterprise.model.entity.gestao.TurmaEntity;
 import com.enterprise.service.gestao.AlunoTurmaService;
-import jakarta.annotation.PostConstruct;
+import com.enterprise.service.gestao.TurmaService;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -18,48 +17,52 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Named("historicoBean")
+@Named("lancamentoBean")
 @ViewScoped
 @Getter
 @Setter
-public class HistoricoBean implements Serializable {
+public class LancamentoBean implements Serializable {
 
     @Inject
-    private AlunoService alunoService;
+    private TurmaService turmaService;
     @Inject
     private AlunoTurmaService alunoTurmaService;
 
-    private AlunoEntity filtroAluno;
-    private List<AlunoTurmaDTO> historico = new ArrayList<>();
+    private Long turmaId;
+    private Integer bimestre;
+    private TurmaEntity filtroTurma;
     private AlunoTurmaDTO detalheSelecionado;
+    private List<AlunoTurmaDTO> lancamentos = new ArrayList<>();
 
-    @PostConstruct
-    public void init() {
-        historico = alunoTurmaService.listarDTO();
+    public void carregar() {
+        try {
+            Long turmaSelecionada = filtroTurma != null && filtroTurma.getId() != null
+                    ? filtroTurma.getId()
+                    : turmaId;
+            if (turmaSelecionada == null) {
+                lancamentos = alunoTurmaService.listarDTO();
+            } else {
+                lancamentos = alunoTurmaService.listarPorFiltros(null, turmaSelecionada, null);
+            }
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Registros carregados: " + lancamentos.size() + ".");
+        } catch (Exception e) {
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao carregar. " + e.getMessage());
+        }
     }
 
-    public void buscar() {
-        try {
-            if (filtroAluno == null || filtroAluno.getId() == null) {
-                historico = alunoTurmaService.listarDTO();
-            } else {
-                historico = alunoTurmaService.listarPorFiltros(filtroAluno.getId(), null, null);
-            }
-            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Filtro aplicado. Registros: " + historico.size() + ".");
-        } catch (Exception e) {
-            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao filtrar. " + e.getMessage());
-        }
+    public void salvar() {
+        addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Lancamentos salvos.");
     }
 
     public void detalhar(AlunoTurmaDTO dto) {
         detalheSelecionado = dto;
     }
 
-    public List<AlunoEntity> completeAluno(String query) {
+    public List<TurmaEntity> completeTurma(String query) {
         String format = query == null ? "" : query.toLowerCase();
-        return alunoService.findAll()
+        return turmaService.findAll()
                 .stream()
-                .filter(aluno -> aluno.getNome() != null && aluno.getNome().toLowerCase().startsWith(format))
+                .filter(turma -> turma.getTurma() != null && turma.getTurma().toLowerCase().startsWith(format))
                 .collect(Collectors.toList());
     }
 

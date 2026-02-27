@@ -1,4 +1,4 @@
-package com.enterprise.controller.app;
+package com.enterprise.controller.academico;
 
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;

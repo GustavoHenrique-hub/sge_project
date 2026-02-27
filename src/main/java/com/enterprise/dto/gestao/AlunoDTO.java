@@ -1,33 +1,35 @@
 package com.enterprise.dto.gestao;
 
 import com.enterprise.model.entity.gestao.AlunoEntity;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
 public class AlunoDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private String rm;
     private String nome;
-    private Integer idade;
-
     private String cpf;
     private String rg;
+    private Date dtNasc;
+    private String email;
+    private String telefone;
 
     public AlunoDTO(AlunoEntity aluno) {
         this.id = aluno.getId();
+        this.rm = aluno.getRm();
         this.nome = aluno.getNome();
-        this.idade = aluno.getIdade();
         this.cpf = aluno.getCpf();
         this.rg = aluno.getRg();
+        this.dtNasc = aluno.getDtNasc();
+        this.email = aluno.getEmail();
+        this.telefone = aluno.getTelefone();
     }
 
 }

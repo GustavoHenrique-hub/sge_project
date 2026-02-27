@@ -1,17 +1,17 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+﻿<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
                 template="/template.xhtml">
 
-    <ui:define name="title">Matrículas</ui:define>
-    <ui:define name="subtitle">Aluno → Turma</ui:define>
+    <ui:define name="title">Matriculas</ui:define>
+    <ui:define name="subtitle">Aluno -> Turma</ui:define>
 
     <ui:define name="content">
         <div class="cardx">
             <div class="cardx-header">
                 <div>
-                    <div class="cardx-title">Nova matrícula</div>
+                    <div class="cardx-title">Nova matricula</div>
                     <div class="cardx-subtitle">Selecione aluno e turma</div>
                 </div>
                 <span class="badge-pill badge-muted">Etapa 1/2</span>
@@ -21,56 +21,28 @@
                 <div class="col-md-6">
                     <label class="form-label" style="color: rgba(255,255,255,.7);">Aluno</label>
                     <h:selectOneMenu value="#{matriculaBean.alunoId}" styleClass="form-select">
-                        <f:selectItem itemLabel="Selecione..." itemValue=""/>
-                        <f:selectItem itemLabel="Ana Silva" itemValue="1"/>
-                        <f:selectItem itemLabel="João Souza" itemValue="2"/>
+                        <f:selectItem itemLabel="Selecione..." noSelectionOption="true" itemValue="#{null}"/>
+                        <f:selectItems value="#{matriculaBean.alunos}" var="aluno"
+                                       itemLabel="#{aluno.nome}" itemValue="#{aluno.id}"/>
                     </h:selectOneMenu>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label" style="color: rgba(255,255,255,.7);">Turma</label>
                     <h:selectOneMenu value="#{matriculaBean.turmaId}" styleClass="form-select">
-                        <f:selectItem itemLabel="Selecione..." itemValue=""/>
-                        <f:selectItem itemLabel="2A - 2026" itemValue="10"/>
-                        <f:selectItem itemLabel="3B - 2026" itemValue="11"/>
+                        <f:selectItem itemLabel="Selecione..." noSelectionOption="true" itemValue="#{null}"/>
+                        <f:selectItems value="#{matriculaBean.turmas}" var="turma"
+                                       itemLabel="#{turma.turma}" itemValue="#{turma.id}"/>
                     </h:selectOneMenu>
                 </div>
 
                 <div class="col-md-12 d-flex gap-2 justify-content-end">
                     <button class="btn-ghostx" type="button">Cancelar</button>
-                    <h:commandButton value="Confirmar matrícula"
+                    <h:commandButton value="Confirmar matricula"
                                      styleClass="btn-primaryx"
                                      action="#{matriculaBean.confirmar}"/>
                 </div>
             </h:form>
-        </div>
-
-        <div class="cardx">
-            <div class="cardx-header">
-                <div>
-                    <div class="cardx-title">Matrículas recentes</div>
-                    <div class="cardx-subtitle">Últimas movimentações</div>
-                </div>
-            </div>
-
-            <table class="table-modern">
-                <thead>
-                <tr>
-                    <th>Aluno</th>
-                    <th>Turma</th>
-                    <th>Data</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Ana Silva</td>
-                    <td>2A - 2026</td>
-                    <td>16/01/2026</td>
-                    <td><span class="badge-pill badge-success">Ativa</span></td>
-                </tr>
-                </tbody>
-            </table>
         </div>
     </ui:define>
 </ui:composition>

@@ -107,7 +107,7 @@
                     <h:form id="formLista">
                         <h:dataTable styleClass="table-modern" id="listaUsers" var="usuario"
                                      value="#{perfilUsuarioBean.perfilUsuarios}"
-                                     rowKey="#{perfilUsuarioBean.perfilUsuarioDTO.id}">
+                                     rowKey="#{usuario.id}">
                             <h:column class="d-flex gap-2">
                                 <f:facet name="header">Ações</f:facet>
                                 <h:commandButton action="#{perfilUsuarioBean.inativarVinculo(usuario)}"
@@ -207,4 +207,5 @@
         </div>
     </ui:define>
 </ui:composition>
+
 

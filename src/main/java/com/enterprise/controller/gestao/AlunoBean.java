@@ -1,10 +1,7 @@
 package com.enterprise.controller.gestao;
 
-import com.enterprise.dto.admin.PerfilDTO;
 import com.enterprise.dto.gestao.AlunoDTO;
-import com.enterprise.model.entity.admin.PerfilEntity;
 import com.enterprise.model.entity.gestao.AlunoEntity;
-import com.enterprise.service.admin.PerfilService;
 import com.enterprise.service.gestao.AlunoService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
@@ -43,6 +40,14 @@ public class AlunoBean implements Serializable {
 
     private void recarregarLista() {
         alunos = service.findAll();
+    }
+
+    public void buscar() {
+        try {
+            alunos = service.buscar(filtroNome, filtroCpf, filtroStatus);
+        } catch (Exception e) {
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
+        }
     }
 
     public void limparFormulario() {

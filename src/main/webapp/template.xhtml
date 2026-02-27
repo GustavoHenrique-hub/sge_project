@@ -44,38 +44,75 @@
                     Painel / Visao geral
                 </h:link>
 
-                <div class="nav-group-title">Alunos</div>
-                <h:link outcome="/pages/alunos/alunos.xhtml"
-                        styleClass="#{request.servletPath eq '/pages/alunos/alunos.xhtml' ? 'active' : ''}">Cadastro</h:link>
-                <h:link outcome="/pages/admin/matriculas.xhtml"
-                        styleClass="#{request.servletPath eq '/pages/admin/matriculas.xhtml' ? 'active' : ''}">Matriculas</h:link>
-                <h:link outcome="/pages/alunos/historico.xhtml"
-                        styleClass="#{request.servletPath eq '/pages/alunos/historico.xhtml' ? 'active' : ''}">Historico</h:link>
-
-                <div class="nav-group-title">Turmas</div>
-                <h:link outcome="/pages/alunos/turmas.xhtml"
-                        styleClass="#{request.servletPath eq '/pages/alunos/turmas.xhtml' ? 'active' : ''}">Cadastro</h:link>
-
-                <div class="nav-group-title">Notas</div>
-                <h:link outcome="/pages/alunos/nota-frequencia.xhtml"
-                        styleClass="#{request.servletPath eq '/pages/alunos/nota-frequencia.xhtml' ? 'active' : ''}">Lancamentos</h:link>
-
-                <div class="nav-group-title">Professores</div>
-                <h:link outcome="/pages/professores/professores.xhtml"
-                        styleClass="#{request.servletPath eq '/pages/professores/professores.xhtml' ? 'active' : ''}">Cadastro</h:link>
-
-                <div class="nav-group-title">Administracao</div>
-                <h:link outcome="/pages/admin/admin.xhtml"
-                        styleClass="#{request.servletPath eq '/pages/admin/admin.xhtml' ? 'active' : ''}">Usuarios e Perfis</h:link>
-            </nav>
-
-            <div class="cardx" style="margin-top: 16px;">
-                <div class="cardx-title">Seu perfil</div>
-                <div class="cardx-subtitle">Ex.: Admin / Professor / Secretaria</div>
-                <div style="margin-top: 10px;">
-                    <h:link outcome="/login.xhtml" styleClass="btn-ghostx" value="Sair"/>
+                <div class="nav-module #{request.servletPath eq '/pages/alunos/alunos.xhtml' or request.servletPath eq '/pages/admin/matriculas.xhtml' or request.servletPath eq '/pages/alunos/historico.xhtml' ? 'is-expanded' : ''}">
+                    <button type="button"
+                            class="nav-module-toggle"
+                            aria-expanded="false">
+                        <span>Alunos</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </button>
+                    <div class="nav-module-links">
+                        <h:link outcome="/pages/alunos/alunos.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/alunos/alunos.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                        <h:link outcome="/pages/admin/matriculas.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/admin/matriculas.xhtml' ? 'active' : ''}">Matriculas</h:link>
+                        <h:link outcome="/pages/alunos/historico.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/alunos/historico.xhtml' ? 'active' : ''}">Historico</h:link>
+                    </div>
                 </div>
-            </div>
+
+                <div class="nav-module #{request.servletPath eq '/pages/alunos/turmas.xhtml' ? 'is-expanded' : ''}">
+                    <button type="button"
+                            class="nav-module-toggle"
+                            aria-expanded="false">
+                        <span>Turmas</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </button>
+                    <div class="nav-module-links">
+                        <h:link outcome="/pages/alunos/turmas.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/alunos/turmas.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                    </div>
+                </div>
+
+                <div class="nav-module #{request.servletPath eq '/pages/alunos/nota-frequencia.xhtml' ? 'is-expanded' : ''}">
+                    <button type="button"
+                            class="nav-module-toggle"
+                            aria-expanded="false">
+                        <span>Notas</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </button>
+                    <div class="nav-module-links">
+                        <h:link outcome="/pages/alunos/nota-frequencia.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/alunos/nota-frequencia.xhtml' ? 'active' : ''}">Lancamentos</h:link>
+                    </div>
+                </div>
+
+                <div class="nav-module #{request.servletPath eq '/pages/professores/professores.xhtml' ? 'is-expanded' : ''}">
+                    <button type="button"
+                            class="nav-module-toggle"
+                            aria-expanded="false">
+                        <span>Professores</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </button>
+                    <div class="nav-module-links">
+                        <h:link outcome="/pages/professores/professores.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/professores/professores.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                    </div>
+                </div>
+
+                <div class="nav-module #{request.servletPath eq '/pages/admin/admin.xhtml' ? 'is-expanded' : ''}">
+                    <button type="button"
+                            class="nav-module-toggle"
+                            aria-expanded="false">
+                        <span>Administracao</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </button>
+                    <div class="nav-module-links">
+                        <h:link outcome="/pages/admin/admin.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/admin/admin.xhtml' ? 'active' : ''}">Usuarios e Perfis</h:link>
+                    </div>
+                </div>
+            </nav>
         </aside>
 
         <main class="main">
@@ -89,9 +126,20 @@
                     </h:form>
                 </div>
 
-                <div class="d-flex align-items-center gap-2">
+                <div class="topbar-right">
                     <span class="badge-pill badge-muted">Notificacoes</span>
-                    <span class="badge-pill badge-muted">Gustavo</span>
+                    <div class="profile-inline">
+                        <div class="profile-inline-info">
+                            <span class="badge-pill badge-muted">Gustavo</span>
+                            <span class="profile-role">Admin / Professor / Secretaria</span>
+                        </div>
+                        <h:link outcome="/login.xhtml"
+                                styleClass="btn-ghostx profile-logout"
+                                title="Sair"
+                                pt:aria-label="Sair">
+                            <i class="pi pi-sign-out"></i>
+                        </h:link>
+                    </div>
                     <h:form styleClass="d-inline">
                         <p:commandButton action="#{themeBean.toggleTheme}"
                                          rendered="#{themeBean.darkTheme}"
@@ -215,6 +263,26 @@
             window.addEventListener("pageshow", function () {
                 pending = 0;
                 hideLoader();
+            });
+        })();
+
+        (function () {
+            var modules = document.querySelectorAll(".nav-module");
+
+            modules.forEach(function (module) {
+                var toggle = module.querySelector(".nav-module-toggle");
+                if (!toggle) {
+                    return;
+                }
+
+                var expanded = module.classList.contains("is-expanded");
+                toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+
+                toggle.addEventListener("click", function () {
+                    module.classList.toggle("is-expanded");
+                    toggle.setAttribute("aria-expanded",
+                        module.classList.contains("is-expanded") ? "true" : "false");
+                });
             });
         })();
         //]]>

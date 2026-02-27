@@ -1,69 +1,101 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core"
                 template="/template.xhtml">
 
     <ui:define name="title">Turmas</ui:define>
-    <ui:define name="subtitle">Cadastro e organização</ui:define>
+    <ui:define name="subtitle">Turmas / Cadastro</ui:define>
 
     <ui:define name="content">
         <div class="cardx">
             <div class="cardx-header">
                 <div>
-                    <div class="cardx-title">Turmas</div>
-                    <div class="cardx-subtitle">Criar e gerenciar turmas</div>
+                    <div class="cardx-title">Cadastro de turmas</div>
+                    <div class="cardx-subtitle">Filtros e consulta de turmas</div>
                 </div>
-                <button class="btn-primaryx" type="button">Nova turma</button>
             </div>
 
-            <div class="row g-2">
-                <div class="col-md-4">
-                    <input class="form-control" placeholder="Buscar por nome (ex: 2A)" />
+            <h:form id="formFiltrosTurma">
+                <div class="filters-body">
+                    <div class="filters-body-column">
+                        <label class="form-label cardx-title">Turma</label>
+                        <div class="filters-body-column-row">
+                            <h:outputText id="turmaIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                                          value="#{turmaBean.filtroTurma.id}"/>
+                            <p:autoComplete id="dropDownTurma" dropdown="true"
+                                            value="#{turmaBean.filtroTurma}"
+                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                            var="turma" itemLabel="#{turma.turma}" itemValue="#{turma}"
+                                            converter="#{turmaEntityConverter}"
+                                            completeMethod="#{turmaBean.completeTurma}" scrollHeight="250"
+                                            forceSelection="true">
+                                <p:ajax event="itemSelect" update="turmaIdLabel"/>
+                                <p:ajax event="clear" update="turmaIdLabel"/>
+                            </p:autoComplete>
+                        </div>
+                    </div>
+                    <div class="filters-body-button-column">
+                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{turmaBean.filtrar}">
+                            <f:ajax execute="@form" render=":growl :formListaTurma:listaTurmas"/>
+                        </h:commandButton>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <input class="form-control" placeholder="Ano letivo (ex: 2026)" />
-                </div>
-                <div class="col-md-2 d-grid">
-                    <button class="btn-ghostx" type="button">Filtrar</button>
-                </div>
-                <div class="col-md-2 d-grid">
-                    <button class="btn-ghostx" type="button">Limpar</button>
-                </div>
-            </div>
+            </h:form>
         </div>
 
-        <div class="cardx">
+        <div class="cardx-datatable">
             <div class="cardx-header">
                 <div>
-                    <div class="cardx-title">Lista</div>
-                    <div class="cardx-subtitle">Turmas ativas</div>
+                    <div class="cardx-title">Lista de turmas</div>
+                    <div class="cardx-subtitle">Submódulo de consulta</div>
                 </div>
             </div>
-
-            <table class="table-modern">
-                <thead>
-                <tr>
-                    <th>Turma</th>
-                    <th>Ano</th>
-                    <th>Professor</th>
-                    <th>Alunos</th>
-                    <th>Status</th>
-                    <th style="width: 180px;">Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>2A</td>
-                    <td>2026</td>
-                    <td>Marcos Lima</td>
-                    <td>34</td>
-                    <td><span class="badge-pill badge-success">Ativa</span></td>
-                    <td class="d-flex gap-2">
-                        <button class="btn-ghostx" type="button">Ver</button>
-                        <button class="btn-ghostx" type="button">Editar</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <h:form id="formListaTurma">
+                        <h:dataTable styleClass="table-modern" id="listaTurmas" var="turma"
+                                     value="#{turmaBean.turmas}" rowKey="#{turma.id}">
+                            <h:column class="d-flex gap-2">
+                                <f:facet name="header">Acoes</f:facet>
+                                <h:commandButton action="#{turmaBean.detalhar(turma)}"
+                                                 title="Detalhar"
+                                                 styleClass="icon-action-btn"
+                                                 value="&#xe908;">
+                                    <f:ajax execute="@this" render=":formDetalheTurma"/>
+                                </h:commandButton>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Codigo</f:facet>
+                                <h:outputText value="#{turma.codigo}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Turma</f:facet>
+                                <h:outputText value="#{turma.turma}"/>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+            </div>
         </div>
+
+        <h:form id="formDetalheTurma">
+            <h:panelGroup rendered="#{not empty turmaBean.detalheSelecionado}">
+                <div class="cardx">
+                    <div class="cardx-header">
+                        <div>
+                            <div class="cardx-title">Detalhes da turma</div>
+                            <div class="cardx-subtitle">Registro selecionado</div>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-4"><span class="badge-pill badge-muted">ID: #{turmaBean.detalheSelecionado.id}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Codigo: #{turmaBean.detalheSelecionado.codigo}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Turma: #{turmaBean.detalheSelecionado.turma}</span></div>
+                    </div>
+                </div>
+            </h:panelGroup>
+        </h:form>
     </ui:define>
 </ui:composition>

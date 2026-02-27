@@ -25,19 +25,24 @@ public class AlunoTurmaService {
     @Inject
     private SituacaoService situacaoService;
 
+    public List<AlunoTurmaDTO> listarDTO() {
+        return repository.findAll().stream().map(AlunoTurmaDTO::new).toList();
+    }
+
     public List<AlunoTurmaDTO> listarRecentesDTO(int limite) {
         return repository.findRecent(limite).stream().map(AlunoTurmaDTO::new).toList();
     }
 
+    public List<AlunoTurmaDTO> listarPorFiltros(Long alunoId, Long turmaId, Long situacaoId) {
+        return repository.findByFilters(alunoId, turmaId, situacaoId)
+                .stream()
+                .map(AlunoTurmaDTO::new)
+                .toList();
+    }
+
     @Transactional
     public AlunoTurmaDTO matricular(Long alunoId, Long turmaId) {
-        if (alunoId == null || turmaId == null) {
-            throw new IllegalArgumentException("Aluno e turma sao obrigatorios.");
-        }
-
-        if (repository.existsByAlunoAndTurma(alunoId, turmaId)) {
-            throw new IllegalArgumentException("Aluno ja matriculado nesta turma.");
-        }
+        validar(alunoId, turmaId);
 
         AlunoEntity aluno = alunoService.findById(alunoId)
                 .orElseThrow(() -> new IllegalArgumentException("Aluno nao encontrado."));
@@ -53,5 +58,14 @@ public class AlunoTurmaService {
 
         repository.save(entity);
         return new AlunoTurmaDTO(entity);
+    }
+
+    private void validar(Long alunoId, Long turmaId) {
+        if (alunoId == null || turmaId == null) {
+            throw new IllegalArgumentException("Aluno e turma sao obrigatorios.");
+        }
+        if (repository.existsByAlunoAndTurma(alunoId, turmaId)) {
+            throw new IllegalArgumentException("Aluno ja matriculado nesta turma.");
+        }
     }
 }

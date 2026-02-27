@@ -1,0 +1,5 @@
+
+Lists of 3 third-party dependencies.
+     (Apache License, Version 2.0) Apache Commons IO (commons-io:commons-io:2.11.0 - https://commons.apache.org/proper/commons-io/)
+     (Public Domain) JSON in Java (org.json:json:20231013 - https://github.com/douglascrockford/JSON-java)
+     (The BSD 3-Clause License) Java Encoder (org.owasp.encoder:encoder:1.2.3 - https://www.owasp.org/index.php/OWASP_Java_Encoder_Project/encoder)

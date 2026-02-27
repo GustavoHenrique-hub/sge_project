@@ -1,89 +1,149 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
                 xmlns:f="jakarta.faces.core"
                 template="/template.xhtml">
 
     <ui:define name="title">Alunos</ui:define>
-    <ui:define name="subtitle">Cadastro e busca</ui:define>
+    <ui:define name="subtitle">Matriculas e consulta</ui:define>
 
     <ui:define name="content">
         <div class="cardx">
             <div class="cardx-header">
                 <div>
-                    <div class="cardx-title">Alunos</div>
-                    <div class="cardx-subtitle">Buscar e gerenciar</div>
+                    <div class="cardx-title">Matriculas de alunos</div>
+                    <div class="cardx-subtitle">Filtros por aluno, turma e situacao</div>
                 </div>
-                <h:link outcome="/pages/alunos.xhtml" styleClass="btn-primaryx" value="Novo aluno"/>
+                <h:link outcome="/pages/admin/matriculas.xhtml" styleClass="btn-primaryx" value="Nova matricula"/>
             </div>
 
-            <h:form styleClass="row g-2">
-                <div class="col-md-4">
-                    <h:inputText value="#{alunoBean.filtroNome}"
-                                 styleClass="form-control"
-                                 pt:placeholder="Buscar por nome..."
-                                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"/>
-                </div>
-                <div class="col-md-3">
-                    <h:inputText value="#{alunoBean.filtroCpf}"
-                                 styleClass="form-control"
-                                 pt:placeholder="CPF"
-                                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"/>
-                </div>
-                <div class="col-md-3">
-                    <h:selectOneMenu value="#{alunoBean.filtroStatus}" styleClass="form-select">
-                        <f:selectItem itemLabel="Status (todos)" itemValue=""/>
-                        <f:selectItem itemLabel="Ativo" itemValue="ATIVO"/>
-                        <f:selectItem itemLabel="Inativo" itemValue="INATIVO"/>
-                    </h:selectOneMenu>
-                </div>
-                <div class="col-md-2 d-grid">
-                    <h:commandButton value="Filtrar" styleClass="btn-ghostx" action="#{alunoBean.buscar}"/>
+            <h:form id="formFiltrosAluno">
+                <div class="filters-body">
+                    <div class="filters-body-column">
+                        <label class="form-label cardx-title">Aluno</label>
+                        <div class="filters-body-column-row">
+                            <h:outputText id="alunoIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                                          value="#{alunoTurmaBean.filtroAluno.id}"/>
+                            <p:autoComplete id="dropDownAluno" dropdown="true"
+                                            value="#{alunoTurmaBean.filtroAluno}"
+                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                            var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}"
+                                            converter="#{alunoEntityConverter}"
+                                            completeMethod="#{alunoTurmaBean.completeAluno}" scrollHeight="250"
+                                            forceSelection="true">
+                                <p:ajax event="itemSelect" update="alunoIdLabel"/>
+                                <p:ajax event="clear" update="alunoIdLabel"/>
+                            </p:autoComplete>
+                        </div>
+                    </div>
+
+                    <div class="filters-body-column">
+                        <label class="form-label cardx-title">Turma</label>
+                        <div class="filters-body-column-row">
+                            <h:outputText id="turmaIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                                          value="#{alunoTurmaBean.filtroTurma.id}"/>
+                            <p:autoComplete id="dropDownTurma" dropdown="true"
+                                            value="#{alunoTurmaBean.filtroTurma}"
+                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                            var="turma" itemLabel="#{turma.turma}" itemValue="#{turma}"
+                                            converter="#{turmaEntityConverter}"
+                                            completeMethod="#{alunoTurmaBean.completeTurma}" scrollHeight="250"
+                                            forceSelection="true">
+                                <p:ajax event="itemSelect" update="turmaIdLabel"/>
+                                <p:ajax event="clear" update="turmaIdLabel"/>
+                            </p:autoComplete>
+                        </div>
+                    </div>
+
+                    <div class="filters-body-column">
+                        <label class="form-label cardx-title">Situacao</label>
+                        <div class="filters-body-column-row">
+                            <h:outputText id="situacaoIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                                          value="#{alunoTurmaBean.filtroSituacao.id}"/>
+                            <p:autoComplete id="dropDownSituacao" dropdown="true"
+                                            value="#{alunoTurmaBean.filtroSituacao}"
+                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                            var="situacao" itemLabel="#{situacao.situacao}" itemValue="#{situacao}"
+                                            converter="#{situacaoEntityConverter}"
+                                            completeMethod="#{alunoTurmaBean.completeSituacao}" scrollHeight="250"
+                                            forceSelection="true">
+                                <p:ajax event="itemSelect" update="situacaoIdLabel"/>
+                                <p:ajax event="clear" update="situacaoIdLabel"/>
+                            </p:autoComplete>
+                        </div>
+                    </div>
+                    <div class="filters-body-button-column">
+                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{alunoTurmaBean.filtrar}">
+                            <f:ajax execute="@form" render=":growl :formListaAluno:listaAlunos"/>
+                        </h:commandButton>
+                    </div>
                 </div>
             </h:form>
         </div>
 
-        <div class="cardx">
+        <div class="cardx-datatable">
             <div class="cardx-header">
                 <div>
-                    <div class="cardx-title">Resultados</div>
-                    <div class="cardx-subtitle">Lista de alunos</div>
+                    <div class="cardx-title">Lista de matriculas</div>
+                    <div class="cardx-subtitle">Vinculos entre aluno e turma</div>
                 </div>
             </div>
-
-            <table class="table-modern">
-                <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>CPF</th>
-                    <th>Turma</th>
-                    <th>Status</th>
-                    <th style="width: 180px;">Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Ana Silva</td>
-                    <td>000.000.000-00</td>
-                    <td>2A</td>
-                    <td><span class="badge-pill badge-success">Ativo</span></td>
-                    <td class="d-flex gap-2">
-                        <button class="btn-ghostx" type="button">Detalhes</button>
-                        <button class="btn-ghostx" type="button">Editar</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>João Souza</td>
-                    <td>111.111.111-11</td>
-                    <td>3B</td>
-                    <td><span class="badge-pill badge-muted">Inativo</span></td>
-                    <td class="d-flex gap-2">
-                        <button class="btn-ghostx" type="button">Detalhes</button>
-                        <button class="btn-ghostx" type="button">Editar</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <h:form id="formListaAluno">
+                        <h:dataTable styleClass="table-modern" id="listaAlunos" var="alunoTurma"
+                                     value="#{alunoTurmaBean.alunoTurmas}"
+                                     rowKey="#{alunoTurma.id}">
+                            <h:column class="d-flex gap-2">
+                                <f:facet name="header">Acoes</f:facet>
+                                <h:commandButton action="#{alunoTurmaBean.detalhar(alunoTurma)}"
+                                                 title="Detalhar"
+                                                 styleClass="icon-action-btn"
+                                                 value="&#xe908;">
+                                    <f:ajax execute="@this" render=":formDetalhe"/>
+                                </h:commandButton>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Nome</f:facet>
+                                <h:outputText value="#{alunoTurma.aluno.nome}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">CPF</f:facet>
+                                <h:outputText value="#{alunoTurma.aluno.cpf}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Turma</f:facet>
+                                <h:outputText value="#{alunoTurma.turma.turma}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Situacao</f:facet>
+                                <span class="badge-pill #{alunoTurmaBean.situacaoSeverity(alunoTurma.situacao != null ? alunoTurma.situacao.situacao : null)}">
+                                    #{alunoTurma.situacao != null ? alunoTurma.situacao.situacao : '-'}
+                                </span>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+            </div>
         </div>
+
+        <h:form id="formDetalhe">
+            <h:panelGroup rendered="#{not empty alunoTurmaBean.detalheSelecionado}">
+                <div class="cardx">
+                    <div class="cardx-header">
+                        <div>
+                            <div class="cardx-title">Detalhes da matricula</div>
+                            <div class="cardx-subtitle">Registro selecionado na tabela</div>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-4"><span class="badge-pill badge-muted">ID: #{alunoTurmaBean.detalheSelecionado.id}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">RM: #{alunoTurmaBean.detalheSelecionado.aluno.rm}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Codigo turma: #{alunoTurmaBean.detalheSelecionado.turma.codigo}</span></div>
+                    </div>
+                </div>
+            </h:panelGroup>
+        </h:form>
     </ui:define>
 </ui:composition>

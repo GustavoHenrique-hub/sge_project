@@ -1,48 +1,116 @@
-﻿<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
                 xmlns:f="jakarta.faces.core"
                 template="/template.xhtml">
 
     <ui:define name="title">Matriculas</ui:define>
-    <ui:define name="subtitle">Aluno -> Turma</ui:define>
+    <ui:define name="subtitle">Alunos / Matriculas</ui:define>
 
     <ui:define name="content">
         <div class="cardx">
             <div class="cardx-header">
                 <div>
                     <div class="cardx-title">Nova matricula</div>
-                    <div class="cardx-subtitle">Selecione aluno e turma</div>
+                    <div class="cardx-subtitle">Submódulo de cadastro</div>
                 </div>
-                <span class="badge-pill badge-muted">Etapa 1/2</span>
             </div>
 
-            <h:form styleClass="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label" style="color: rgba(255,255,255,.7);">Aluno</label>
-                    <h:selectOneMenu value="#{matriculaBean.alunoId}" styleClass="form-select">
-                        <f:selectItem itemLabel="Selecione..." noSelectionOption="true" itemValue="#{null}"/>
-                        <f:selectItems value="#{matriculaBean.alunos}" var="aluno"
-                                       itemLabel="#{aluno.nome}" itemValue="#{aluno.id}"/>
-                    </h:selectOneMenu>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label" style="color: rgba(255,255,255,.7);">Turma</label>
-                    <h:selectOneMenu value="#{matriculaBean.turmaId}" styleClass="form-select">
-                        <f:selectItem itemLabel="Selecione..." noSelectionOption="true" itemValue="#{null}"/>
-                        <f:selectItems value="#{matriculaBean.turmas}" var="turma"
-                                       itemLabel="#{turma.turma}" itemValue="#{turma.id}"/>
-                    </h:selectOneMenu>
-                </div>
-
-                <div class="col-md-12 d-flex gap-2 justify-content-end">
-                    <button class="btn-ghostx" type="button">Cancelar</button>
-                    <h:commandButton value="Confirmar matricula"
-                                     styleClass="btn-primaryx"
-                                     action="#{matriculaBean.confirmar}"/>
+            <h:form id="formNovaMatricula">
+                <div class="filters-body">
+                    <div class="filters-body-column">
+                        <label class="form-label cardx-title">Aluno</label>
+                        <div class="filters-body-column-row">
+                            <h:outputText id="alunoIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                                          value="#{alunoTurmaBean.alunoId}"/>
+                            <p:autoComplete id="dropDownAlunoMatricula" dropdown="true"
+                                            value="#{alunoTurmaBean.alunoId}"
+                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                            var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno.id}"
+                                            completeMethod="#{alunoBean.completeAluno}" scrollHeight="250"
+                                            forceSelection="true">
+                                <p:ajax event="itemSelect" update="alunoIdLabel"/>
+                                <p:ajax event="clear" update="alunoIdLabel"/>
+                            </p:autoComplete>
+                        </div>
+                    </div>
+                    <div class="filters-body-column">
+                        <label class="form-label cardx-title">Turma</label>
+                        <div class="filters-body-column-row">
+                            <h:outputText id="turmaIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                                          value="#{alunoTurmaBean.turmaId}"/>
+                            <p:autoComplete id="dropDownTurmaMatricula" dropdown="true"
+                                            value="#{alunoTurmaBean.turmaId}"
+                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                            var="turma" itemLabel="#{turma.turma}" itemValue="#{turma.id}"
+                                            completeMethod="#{turmaBean.completeTurma}" scrollHeight="250"
+                                            forceSelection="true">
+                                <p:ajax event="itemSelect" update="turmaIdLabel"/>
+                                <p:ajax event="clear" update="turmaIdLabel"/>
+                            </p:autoComplete>
+                        </div>
+                    </div>
+                    <div class="filters-body-button-column">
+                        <h:commandButton value="Confirmar" styleClass="btn-primaryx" action="#{alunoTurmaBean.confirmar}">
+                            <f:ajax execute="@form" render=":growl :formListaMatricula:listaMatriculas"/>
+                        </h:commandButton>
+                    </div>
                 </div>
             </h:form>
         </div>
+
+        <div class="cardx-datatable">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Matriculas registradas</div>
+                    <div class="cardx-subtitle">Consulta rápida</div>
+                </div>
+            </div>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <h:form id="formListaMatricula">
+                        <h:dataTable styleClass="table-modern" id="listaMatriculas" var="matricula"
+                                     value="#{alunoTurmaBean.alunoTurmas}" rowKey="#{matricula.id}">
+                            <h:column class="d-flex gap-2">
+                                <f:facet name="header">Acoes</f:facet>
+                                <h:commandButton action="#{alunoTurmaBean.detalhar(matricula)}"
+                                                 title="Detalhar"
+                                                 styleClass="icon-action-btn"
+                                                 value="&#xe908;">
+                                    <f:ajax execute="@this" render=":formDetalheMatricula"/>
+                                </h:commandButton>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Aluno</f:facet>
+                                <h:outputText value="#{matricula.aluno.nome}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Turma</f:facet>
+                                <h:outputText value="#{matricula.turma.turma}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Situacao</f:facet>
+                                <span class="badge-pill #{alunoTurmaBean.situacaoSeverity(matricula.situacao != null ? matricula.situacao.situacao : null)}">
+                                    #{matricula.situacao != null ? matricula.situacao.situacao : '-'}
+                                </span>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <h:form id="formDetalheMatricula">
+            <h:panelGroup rendered="#{not empty alunoTurmaBean.detalheSelecionado}">
+                <div class="cardx">
+                    <div class="row g-2">
+                        <div class="col-md-4"><span class="badge-pill badge-muted">ID: #{alunoTurmaBean.detalheSelecionado.id}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Aluno: #{alunoTurmaBean.detalheSelecionado.aluno.nome}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Turma: #{alunoTurmaBean.detalheSelecionado.turma.turma}</span></div>
+                    </div>
+                </div>
+            </h:panelGroup>
+        </h:form>
     </ui:define>
 </ui:composition>

@@ -28,10 +28,6 @@ public class AlunoBean implements Serializable {
 
     private AlunoDTO alunoDTO = new AlunoDTO();
     private List<AlunoEntity> alunos = new ArrayList<>();
-    private String filtroNome;
-    private String filtroCpf;
-    private String filtroStatus;
-
 
     @PostConstruct
     public void init() {
@@ -40,14 +36,6 @@ public class AlunoBean implements Serializable {
 
     private void recarregarLista() {
         alunos = service.findAll();
-    }
-
-    public void buscar() {
-        try {
-            alunos = service.buscar(filtroNome, filtroCpf, filtroStatus);
-        } catch (Exception e) {
-            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
-        }
     }
 
     public void limparFormulario() {

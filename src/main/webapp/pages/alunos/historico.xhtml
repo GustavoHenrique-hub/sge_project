@@ -1,150 +1,105 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core"
                 template="/template.xhtml">
 
-    <ui:define name="title">Histórico</ui:define>
-    <ui:define name="subtitle">Consulta escolar</ui:define>
+    <ui:define name="title">Historico</ui:define>
+    <ui:define name="subtitle">Alunos / Historico</ui:define>
 
     <ui:define name="content">
         <div class="cardx">
             <div class="cardx-header">
                 <div>
-                    <div class="cardx-title">Histórico do aluno</div>
-                    <div class="cardx-subtitle">Busque e visualize o perfil</div>
+                    <div class="cardx-title">Consulta de histórico</div>
+                    <div class="cardx-subtitle">Submódulo de visualização</div>
                 </div>
             </div>
 
-            <h:form styleClass="row g-2">
-                <div class="col-md-8">
-                    <h:inputText value="#{historicoBean.query}"
-                                 styleClass="form-control"
-                                 pt:placeholder="Digite nome ou matrícula..."
-                                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"/>
-                </div>
-                <div class="col-md-2 d-grid">
-                    <h:commandButton value="Buscar" styleClass="btn-ghostx" action="#{historicoBean.buscar}"/>
-                </div>
-                <div class="col-md-2 d-grid">
-                    <button type="button" class="btn-primaryx">Gerar PDF</button>
+            <h:form id="formFiltrosHistorico">
+                <div class="filters-body">
+                    <div class="filters-body-column">
+                        <label class="form-label cardx-title">Aluno</label>
+                        <div class="filters-body-column-row">
+                            <h:outputText id="alunoIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                                          value="#{historicoBean.filtroAluno.id}"/>
+                            <p:autoComplete id="dropDownAlunoHistorico" dropdown="true"
+                                            value="#{historicoBean.filtroAluno}"
+                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                            var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}"
+                                            converter="#{alunoEntityConverter}"
+                                            completeMethod="#{historicoBean.completeAluno}" scrollHeight="250"
+                                            forceSelection="true">
+                                <p:ajax event="itemSelect" update="alunoIdLabel"/>
+                                <p:ajax event="clear" update="alunoIdLabel"/>
+                            </p:autoComplete>
+                        </div>
+                    </div>
+                    <div class="filters-body-button-column">
+                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{historicoBean.buscar}">
+                            <f:ajax execute="@form" render=":growl :formListaHistorico:listaHistorico"/>
+                        </h:commandButton>
+                    </div>
                 </div>
             </h:form>
         </div>
 
-        <div class="cardx">
+        <div class="cardx-datatable">
             <div class="cardx-header">
                 <div>
-                    <div class="cardx-title">Aluno: Ana Silva</div>
-                    <div class="cardx-subtitle">Matrícula 2026-0001</div>
+                    <div class="cardx-title">Histórico de matrículas</div>
+                    <div class="cardx-subtitle">Registros por aluno</div>
                 </div>
-                <span class="badge-pill badge-success">Ativo</span>
             </div>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <h:form id="formListaHistorico">
+                        <h:dataTable styleClass="table-modern" id="listaHistorico" var="registro"
+                                     value="#{historicoBean.historico}" rowKey="#{registro.id}">
+                            <h:column class="d-flex gap-2">
+                                <f:facet name="header">Acoes</f:facet>
+                                <h:commandButton action="#{historicoBean.detalhar(registro)}"
+                                                 title="Detalhar"
+                                                 styleClass="icon-action-btn"
+                                                 value="&#xe908;">
+                                    <f:ajax execute="@this" render=":formDetalheHistorico"/>
+                                </h:commandButton>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Aluno</f:facet>
+                                <h:outputText value="#{registro.aluno.nome}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">RM</f:facet>
+                                <h:outputText value="#{registro.aluno.rm}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Turma</f:facet>
+                                <h:outputText value="#{registro.turma.turma}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Situacao</f:facet>
+                                <span class="badge-pill #{historicoBean.situacaoSeverity(registro.situacao != null ? registro.situacao.situacao : null)}">
+                                    #{registro.situacao != null ? registro.situacao.situacao : '-'}
+                                </span>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
 
-            <ul class="nav nav-tabs" role="tablist" style="border-bottom: 1px solid rgba(255,255,255,.10);">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-dados" type="button">Dados</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-matriculas" type="button">Matrículas</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-notas" type="button">Notas</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-frequencia" type="button">Frequência</button>
-                </li>
-            </ul>
-
-            <div class="tab-content" style="padding-top: 14px;">
-                <div class="tab-pane fade show active" id="tab-dados">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="cardx">
-                                <div class="cardx-title">Dados pessoais</div>
-                                <div class="cardx-subtitle">Nome, CPF, contato</div>
-                                <div style="margin-top: 10px;">
-                                    <div><strong>Nome:</strong> Ana Silva</div>
-                                    <div><strong>CPF:</strong> 000.000.000-00</div>
-                                    <div><strong>Contato:</strong> (11) 99999-9999</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="cardx">
-                                <div class="cardx-title">Situação</div>
-                                <div class="cardx-subtitle">Status atual</div>
-                                <div style="margin-top: 10px;">
-                                    <span class="badge-pill badge-success">Ativo</span>
-                                    <span class="badge-pill badge-muted">Ano: 2026</span>
-                                </div>
-                            </div>
-                        </div>
+        <h:form id="formDetalheHistorico">
+            <h:panelGroup rendered="#{not empty historicoBean.detalheSelecionado}">
+                <div class="cardx">
+                    <div class="row g-2">
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Aluno: #{historicoBean.detalheSelecionado.aluno.nome}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">CPF: #{historicoBean.detalheSelecionado.aluno.cpf}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Turma: #{historicoBean.detalheSelecionado.turma.turma}</span></div>
                     </div>
                 </div>
-
-                <div class="tab-pane fade" id="tab-matriculas">
-                    <table class="table-modern">
-                        <thead>
-                        <tr>
-                            <th>Ano</th>
-                            <th>Turma</th>
-                            <th>Status</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>2026</td>
-                            <td>2A</td>
-                            <td><span class="badge-pill badge-success">Ativa</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="tab-pane fade" id="tab-notas">
-                    <table class="table-modern">
-                        <thead>
-                        <tr>
-                            <th>Disciplina</th>
-                            <th>Média</th>
-                            <th>Resultado</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Matemática</td>
-                            <td>8.2</td>
-                            <td><span class="badge-pill badge-success">Aprovado</span></td>
-                        </tr>
-                        <tr>
-                            <td>Português</td>
-                            <td>6.0</td>
-                            <td><span class="badge-pill badge-warning">Recuperação</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="tab-pane fade" id="tab-frequencia">
-                    <table class="table-modern">
-                        <thead>
-                        <tr>
-                            <th>Mês</th>
-                            <th>Presença</th>
-                            <th>Status</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Março</td>
-                            <td>96%</td>
-                            <td><span class="badge-pill badge-success">OK</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
+            </h:panelGroup>
+        </h:form>
     </ui:define>
 </ui:composition>

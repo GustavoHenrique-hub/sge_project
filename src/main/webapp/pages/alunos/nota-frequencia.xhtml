@@ -1,78 +1,124 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
                 xmlns:f="jakarta.faces.core"
                 template="/template.xhtml">
 
-    <ui:define name="title">Notas &amp; Frequência</ui:define>
-    <ui:define name="subtitle">Lançamentos</ui:define>
+    <ui:define name="title">Notas e Frequencia</ui:define>
+    <ui:define name="subtitle">Notas / Lancamentos</ui:define>
 
     <ui:define name="content">
         <div class="cardx">
             <div class="cardx-header">
                 <div>
-                    <div class="cardx-title">Selecionar turma</div>
-                    <div class="cardx-subtitle">Escolha a turma e o bimestre</div>
+                    <div class="cardx-title">Lançamentos por turma</div>
+                    <div class="cardx-subtitle">Submódulo de notas e frequência</div>
                 </div>
             </div>
 
-            <h:form styleClass="row g-3">
-                <div class="col-md-5">
-                    <label class="form-label" style="color: rgba(255,255,255,.7);">Turma</label>
-                    <h:selectOneMenu value="#{lancamentoBean.turmaId}" styleClass="form-select">
-                        <f:selectItem itemLabel="2A - 2026" itemValue="10"/>
-                        <f:selectItem itemLabel="3B - 2026" itemValue="11"/>
-                    </h:selectOneMenu>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label" style="color: rgba(255,255,255,.7);">Bimestre</label>
-                    <h:selectOneMenu value="#{lancamentoBean.bimestre}" styleClass="form-select">
-                        <f:selectItem itemLabel="1º" itemValue="1"/>
-                        <f:selectItem itemLabel="2º" itemValue="2"/>
-                        <f:selectItem itemLabel="3º" itemValue="3"/>
-                        <f:selectItem itemLabel="4º" itemValue="4"/>
-                    </h:selectOneMenu>
-                </div>
-                <div class="col-md-4 d-flex align-items-end gap-2">
-                    <h:commandButton value="Carregar" styleClass="btn-ghostx" action="#{lancamentoBean.carregar}"/>
-                    <h:commandButton value="Salvar tudo" styleClass="btn-primaryx" action="#{lancamentoBean.salvar}"/>
+            <h:form id="formFiltroLancamento">
+                <div class="filters-body">
+                    <div class="filters-body-column">
+                        <label class="form-label cardx-title">Turma</label>
+                        <div class="filters-body-column-row">
+                            <h:outputText id="turmaIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                                          value="#{lancamentoBean.filtroTurma.id}"/>
+                            <p:autoComplete id="dropDownTurmaLancamento" dropdown="true"
+                                            value="#{lancamentoBean.filtroTurma}"
+                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                            var="turma" itemLabel="#{turma.turma}" itemValue="#{turma}"
+                                            converter="#{turmaEntityConverter}"
+                                            completeMethod="#{lancamentoBean.completeTurma}" scrollHeight="250"
+                                            forceSelection="true">
+                                <p:ajax event="itemSelect" update="turmaIdLabel"/>
+                                <p:ajax event="clear" update="turmaIdLabel"/>
+                            </p:autoComplete>
+                        </div>
+                    </div>
+                    <div class="filters-body-column">
+                        <label class="form-label cardx-title">Bimestre</label>
+                        <h:selectOneMenu value="#{lancamentoBean.bimestre}" styleClass="form-select">
+                            <f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="1o" itemValue="1"/>
+                            <f:selectItem itemLabel="2o" itemValue="2"/>
+                            <f:selectItem itemLabel="3o" itemValue="3"/>
+                            <f:selectItem itemLabel="4o" itemValue="4"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="filters-body-button-column">
+                        <h:commandButton styleClass="btn-ghostx" value="Carregar" action="#{lancamentoBean.carregar}">
+                            <f:ajax execute="@form" render=":growl :formListaLancamento:listaLancamentos"/>
+                        </h:commandButton>
+                    </div>
                 </div>
             </h:form>
         </div>
 
-        <div class="cardx">
+        <div class="cardx-datatable">
             <div class="cardx-header">
                 <div>
-                    <div class="cardx-title">Lançamentos</div>
-                    <div class="cardx-subtitle">Edite inline e salve em lote</div>
+                    <div class="cardx-title">Lista de lançamentos</div>
+                    <div class="cardx-subtitle">Registros por matrícula</div>
                 </div>
-                <span class="badge-pill badge-warning">Pendente</span>
+                <h:form>
+                    <h:commandButton value="Salvar tudo" styleClass="btn-primaryx" action="#{lancamentoBean.salvar}">
+                        <f:ajax execute="@form" render=":growl"/>
+                    </h:commandButton>
+                </h:form>
             </div>
-
-            <table class="table-modern">
-                <thead>
-                <tr>
-                    <th>Aluno</th>
-                    <th>Nota</th>
-                    <th>Frequência (%)</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Ana Silva</td>
-                    <td><input class="form-control" placeholder="0-10" /></td>
-                    <td><input class="form-control" placeholder="0-100" /></td>
-                    <td><span class="badge-pill badge-muted">—</span></td>
-                </tr>
-                <tr>
-                    <td>João Souza</td>
-                    <td><input class="form-control" placeholder="0-10" /></td>
-                    <td><input class="form-control" placeholder="0-100" /></td>
-                    <td><span class="badge-pill badge-muted">—</span></td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <h:form id="formListaLancamento">
+                        <h:dataTable styleClass="table-modern" id="listaLancamentos" var="registro"
+                                     value="#{lancamentoBean.lancamentos}" rowKey="#{registro.id}">
+                            <h:column class="d-flex gap-2">
+                                <f:facet name="header">Acoes</f:facet>
+                                <h:commandButton action="#{lancamentoBean.detalhar(registro)}"
+                                                 title="Detalhar"
+                                                 styleClass="icon-action-btn"
+                                                 value="&#xe908;">
+                                    <f:ajax execute="@this" render=":formDetalheLancamento"/>
+                                </h:commandButton>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Aluno</f:facet>
+                                <h:outputText value="#{registro.aluno.nome}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Turma</f:facet>
+                                <h:outputText value="#{registro.turma.turma}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Nota</f:facet>
+                                <h:outputText value="-" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Frequencia (%)</f:facet>
+                                <h:outputText value="-" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Situacao</f:facet>
+                                <span class="badge-pill #{lancamentoBean.situacaoSeverity(registro.situacao != null ? registro.situacao.situacao : null)}">
+                                    #{registro.situacao != null ? registro.situacao.situacao : '-'}
+                                </span>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+            </div>
         </div>
+
+        <h:form id="formDetalheLancamento">
+            <h:panelGroup rendered="#{not empty lancamentoBean.detalheSelecionado}">
+                <div class="cardx">
+                    <div class="row g-2">
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Aluno: #{lancamentoBean.detalheSelecionado.aluno.nome}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Turma: #{lancamentoBean.detalheSelecionado.turma.turma}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Situacao: #{lancamentoBean.detalheSelecionado.situacao != null ? lancamentoBean.detalheSelecionado.situacao.situacao : '-'}</span></div>
+                    </div>
+                </div>
+            </h:panelGroup>
+        </h:form>
     </ui:define>
 </ui:composition>

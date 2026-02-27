@@ -82,17 +82,6 @@ public class PerfilUsuarioBean implements Serializable {
         };
     }
 
-    public String situacaoBadgeClass(String situacao) {
-        if (situacao == null) {
-            return "badge-pill badge-muted";
-        }
-        return switch (situacao.toUpperCase()) {
-            case "ATIVO" -> "badge-pill badge-success";
-            case "INATIVO" -> "badge-pill badge-danger";
-            default -> "badge-pill badge-warning";
-        };
-    }
-
     public void vincular(){
         try{
             if(perfilUsuarioDTO.getId() == null){

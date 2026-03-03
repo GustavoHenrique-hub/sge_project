@@ -46,6 +46,16 @@ public class AlunoRepository {
     }
 
     public Optional<AlunoEntity> findById(Long id) {
-        return Optional.ofNullable(em.find(AlunoEntity.class, id));
+        if (id == null) {
+            return Optional.empty();
+        }
+        return em.createQuery(
+                        "select a from AlunoEntity a where a.id = :id",
+                        AlunoEntity.class
+                )
+                .setParameter("id", id)
+                .setMaxResults(1)
+                .getResultStream()
+                .findFirst();
     }
 }

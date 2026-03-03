@@ -14,7 +14,7 @@ public class JPAProducer {
 
     private EntityManagerFactory getEmf() {
         if (emf == null) {
-            emf = Persistence.createEntityManagerFactory("jsfPU");
+            emf = Persistence.createEntityManagerFactory("meuPU");
         }
         return emf;
     }

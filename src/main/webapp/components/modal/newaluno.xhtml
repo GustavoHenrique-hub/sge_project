@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="formNovoAluno">
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <label class="form-label">Nome Completo</label>
+                <h:inputText value="#{alunoBean.alunoDTO.nome}"
+                             styleClass="form-control"
+                             style="text-transform: uppercase;"
+                             required="true"
+                             requiredMessage="Nome e obrigatorio."
+                             />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">CPF</label>
+                <h:inputText value="#{alunoBean.alunoDTO.cpf}"
+                             styleClass="form-control"
+                             style="text-transform: uppercase;"
+                             required="true"
+                             requiredMessage="CPF e obrigatorio."
+                />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">RG</label>
+                <h:inputText value="#{alunoBean.alunoDTO.rg}"
+                             styleClass="form-control"
+                             style="text-transform: uppercase;"
+                             required="true"
+                             requiredMessage="RG e obrigatorio."
+                />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Data de Nascimento</label>
+                <h:inputText value="#{alunoBean.alunoDTO.dtNasc}"
+                             styleClass="form-control"
+                             type="date"
+                             required="true"
+                             requiredMessage="Data de nascimento e obrigatoria."
+                             converterMessage="Data invalida. Use o formato yyyy-MM-dd.">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                </h:inputText>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Email</label>
+                <h:inputText value="#{alunoBean.alunoDTO.email}"
+                             styleClass="form-control"
+                             type="email"
+                />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Telefone</label>
+                <h:inputText value="#{alunoBean.alunoDTO.telefone}"
+                             styleClass="form-control"
+                             style="text-transform: uppercase;"
+                />
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
+            <!-- Fecha modal sem submit -->
+            <button type="button" class="btn-ghostx" data-bs-dismiss="modal">
+                Cancelar
+            </button>
+
+            <!-- Submit do JSF -->
+            <h:commandButton value="Salvar"
+                             styleClass="btn-primaryx"
+                             action="#{alunoBean.salvar}"
+                             process="@form"
+                             update=":growl :msgs :formNovoAluno :formNovoAluno:msgsNovoAluno"
+                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovoAluno')).hide();}" />
+        </div>
+
+    </h:form>
+
+</ui:composition>

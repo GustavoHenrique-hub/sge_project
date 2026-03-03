@@ -4,8 +4,6 @@ import com.enterprise.dto.gestao.AlunoDTO;
 import com.enterprise.model.entity.embed.AlunoID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.PrePersist;
@@ -30,7 +28,7 @@ public class AlunoEntity {
     private static final SecureRandom RANDOM = new SecureRandom();
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true, updatable = false)
     private Long id;
 
     @Id
@@ -69,9 +67,23 @@ public class AlunoEntity {
 
     @PrePersist
     private void prePersist() {
+        if (id == null) {
+            id = generateId();
+        }
         if (rm == null || rm.isBlank()) {
             rm = String.format("%05d", RANDOM.nextInt(100000));
         }
+        if (this.nome != null) {
+            this.nome = this.nome.toUpperCase();
+        }
+    }
+
+    private Long generateId() {
+        long generated;
+        do {
+            generated = RANDOM.nextLong();
+        } while (generated <= 0);
+        return generated;
     }
 
 }

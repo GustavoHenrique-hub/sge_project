@@ -195,7 +195,7 @@
         //<![CDATA[
         (function () {
             var loaderEl = null;
-            var pending = 0;
+            var visible = false;
 
             function ensureEl() {
                 if (!loaderEl) {
@@ -209,8 +209,10 @@
                 if (!el) {
                     return;
                 }
-                pending++;
-                el.classList.add("is-visible");
+                if (!visible) {
+                    visible = true;
+                    el.classList.add("is-visible");
+                }
             }
 
             function hideLoader() {
@@ -218,10 +220,8 @@
                 if (!el) {
                     return;
                 }
-                pending = Math.max(0, pending - 1);
-                if (pending === 0) {
-                    el.classList.remove("is-visible");
-                }
+                visible = false;
+                el.classList.remove("is-visible");
             }
 
             function shouldIgnoreTrigger(target) {
@@ -251,17 +251,9 @@
                 hide: hideLoader
             };
 
-            document.addEventListener("click", function (event) {
-                var trigger = event.target.closest("a[href], button, input[type='submit']");
-                if (!trigger || shouldIgnoreTrigger(trigger)) {
-                    return;
-                }
-                showLoader();
-            }, true);
-
             window.addEventListener("beforeunload", showLoader);
             window.addEventListener("pageshow", function () {
-                pending = 0;
+                visible = false;
                 hideLoader();
             });
         })();

@@ -4,8 +4,6 @@ import com.enterprise.dto.gestao.TurmaDTO;
 import com.enterprise.model.entity.embed.TurmaID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.PrePersist;
@@ -27,7 +25,7 @@ public class TurmaEntity {
     private static final SecureRandom RANDOM = new SecureRandom();
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true, updatable = false)
     private Long id;
 
     @Id
@@ -45,8 +43,19 @@ public class TurmaEntity {
 
     @PrePersist
     private void prePersist() {
+        if (id == null) {
+            id = generateId();
+        }
         if (codigo == null || codigo.isBlank()) {
             codigo = String.format("%06d", RANDOM.nextInt(1_000_000));
         }
+    }
+
+    private Long generateId() {
+        long generated;
+        do {
+            generated = RANDOM.nextLong();
+        } while (generated <= 0);
+        return generated;
     }
 }

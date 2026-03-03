@@ -34,6 +34,19 @@ public class AlunoBean implements Serializable {
         recarregarLista();
     }
 
+    public void salvar() {
+        try {
+            if (alunoDTO.getId() == null) {
+                service.criar(alunoDTO);
+                addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Usuário criado.");
+            }
+            limparFormulario();
+            recarregarLista();
+        } catch (Exception e) {
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
+        }
+    }
+
     private void recarregarLista() {
         alunos = service.findAll();
     }

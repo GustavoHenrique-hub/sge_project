@@ -7,12 +7,15 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
 public class AlunoService {
+
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     @Inject
     private AlunoRepository repository;
@@ -55,6 +58,9 @@ public class AlunoService {
         }
         if (dto.getDtNasc().after(new Date())) {
             throw new IllegalArgumentException("Data de nascimento invalida.");
+        }
+        if (dto.getRm() == null){
+            dto.setRm(String.format("%05d", RANDOM.nextInt(100000)));
         }
     }
 }

@@ -20,7 +20,17 @@ public class TurmaRepository {
     }
 
     public Optional<TurmaEntity> findById(Long id) {
-        return Optional.ofNullable(em.find(TurmaEntity.class, id));
+        if (id == null) {
+            return Optional.empty();
+        }
+        return em.createQuery(
+                        "select t from TurmaEntity t where t.id = :id",
+                        TurmaEntity.class
+                )
+                .setParameter("id", id)
+                .setMaxResults(1)
+                .getResultStream()
+                .findFirst();
     }
 
     public List<TurmaEntity> findAll() {

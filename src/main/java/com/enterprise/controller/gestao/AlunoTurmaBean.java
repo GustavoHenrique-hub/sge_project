@@ -40,6 +40,7 @@ public class AlunoTurmaBean implements Serializable {
 
     private Long alunoId;
     private Long turmaId;
+    private Long situacaoId;
     private List<AlunoEntity> alunos = new ArrayList<>();
     private List<TurmaEntity> turmas = new ArrayList<>();
     private AlunoEntity filtroAluno;
@@ -93,6 +94,12 @@ public class AlunoTurmaBean implements Serializable {
         } catch (Exception e) {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
+    }
+
+    public void confirmarPelosFiltros() {
+        alunoId = filtroAluno == null ? null : filtroAluno.getId();
+        turmaId = filtroTurma == null ? null : filtroTurma.getId();
+        confirmar();
     }
 
     public void filtrar() {

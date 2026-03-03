@@ -29,27 +29,17 @@ public class AlunoTurmaService {
         return repository.findAll().stream().map(AlunoTurmaDTO::new).toList();
     }
 
-    public List<AlunoTurmaDTO> listarRecentesDTO(int limite) {
-        return repository.findRecent(limite).stream().map(AlunoTurmaDTO::new).toList();
-    }
-
     public List<AlunoTurmaDTO> listarPorFiltros(Long alunoId, Long turmaId, Long situacaoId) {
-        return repository.findByFilters(alunoId, turmaId, situacaoId)
-                .stream()
-                .map(AlunoTurmaDTO::new)
-                .toList();
+        return repository.findByFilters(alunoId, turmaId, situacaoId).stream().map(AlunoTurmaDTO::new).toList();
     }
 
     @Transactional
     public AlunoTurmaDTO matricular(Long alunoId, Long turmaId) {
         validar(alunoId, turmaId);
 
-        AlunoEntity aluno = alunoService.findById(alunoId)
-                .orElseThrow(() -> new IllegalArgumentException("Aluno nao encontrado."));
-        TurmaEntity turma = turmaService.findById(turmaId)
-                .orElseThrow(() -> new IllegalArgumentException("Turma nao encontrada."));
-        SituacaoEntity situacao = situacaoService.findBySituacao("ATIVO")
-                .orElseThrow(() -> new IllegalStateException("Situacao ATIVO nao encontrada."));
+        AlunoEntity aluno = alunoService.findById(alunoId).orElseThrow(() -> new IllegalArgumentException("Aluno nao encontrado."));
+        TurmaEntity turma = turmaService.findById(turmaId).orElseThrow(() -> new IllegalArgumentException("Turma nao encontrada."));
+        SituacaoEntity situacao = situacaoService.findBySituacao("ATIVO").orElseThrow(() -> new IllegalStateException("Situacao ATIVO nao encontrada."));
 
         AlunoTurmaEntity entity = new AlunoTurmaEntity();
         entity.setAluno(aluno);

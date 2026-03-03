@@ -15,7 +15,6 @@
                     <div class="cardx-title">Matriculas de alunos</div>
                     <div class="cardx-subtitle">Filtros por aluno, turma e situacao</div>
                 </div>
-                <h:link outcome="/pages/admin/matriculas.xhtml" styleClass="btn-primaryx" value="Nova matricula"/>
             </div>
 
             <h:form id="formFiltrosAluno">
@@ -24,7 +23,7 @@
                         <label class="form-label cardx-title">Aluno</label>
                         <div class="filters-body-column-row">
                             <h:outputText id="alunoIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                          value="#{alunoTurmaBean.filtroAluno.id}"/>
+                                          value="#{alunoTurmaBean.filtroAluno.rm}"/>
                             <p:autoComplete id="dropDownAluno" dropdown="true"
                                             value="#{alunoTurmaBean.filtroAluno}"
                                             styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
@@ -88,6 +87,18 @@
                     <div class="cardx-title">Lista de matriculas</div>
                     <div class="cardx-subtitle">Vinculos entre aluno e turma</div>
                 </div>
+                <div>
+                    <button class="btn-primaryx"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalNovoAluno">Cadastrar Aluno
+                    </button>
+                    <button class="btn-primaryx"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalAlunoTurma">Vincular Turma
+                    </button>
+                </div>
             </div>
             <div class="cardx-body">
                 <div class="table-scroll">
@@ -96,7 +107,7 @@
                                      value="#{alunoTurmaBean.alunoTurmas}"
                                      rowKey="#{alunoTurma.id}">
                             <h:column class="d-flex gap-2">
-                                <f:facet name="header">Acoes</f:facet>
+                                <f:facet name="header">Ações</f:facet>
                                 <h:commandButton action="#{alunoTurmaBean.detalhar(alunoTurma)}"
                                                  title="Detalhar"
                                                  styleClass="icon-action-btn"
@@ -145,5 +156,55 @@
                 </div>
             </h:panelGroup>
         </h:form>
+
+        <!-- Modal cadastro aluno -->
+        <div class="modal fade modal-modern"
+             id="modalNovoAluno"
+             tabindex="-1"
+             aria-labelledby="modalNovoAlunoLabel"
+             aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered modal-reference-size modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalNovoAlunoLabel">
+                            Cadastrar Aluno
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"/>
+                    </div>
+
+                    <div class="modal-body">
+                        <ui:include src="/components/modal/newaluno.xhtml"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal vínculo aluno x turma -->
+        <div class="modal fade modal-modern"
+             id="modalAlunoTurma"
+             tabindex="-1"
+             aria-labelledby="modalAlunoTurmaLabel"
+             aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered modal-reference-size modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalAlunoTurmaLabel">
+                            Vincular aluno à turma
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"/>
+                    </div>
+
+                    <div class="modal-body">
+                        <ui:include src="/components/modal/alunoturma.xhtml"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </ui:define>
 </ui:composition>

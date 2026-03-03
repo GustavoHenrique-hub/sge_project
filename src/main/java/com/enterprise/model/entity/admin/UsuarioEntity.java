@@ -29,4 +29,14 @@ public class UsuarioEntity {
         this.login = user.getLogin();
         this.senha = user.getSenha();
     }
+
+    @PrePersist
+    public void prePersist(){
+        if(this.usuario != null){
+            this.usuario = this.usuario.toUpperCase();
+        }
+        if(this.login != null){
+            this.login = this.login.toUpperCase();
+        }
+    }
 }

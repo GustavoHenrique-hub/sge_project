@@ -44,6 +44,11 @@ public class AlunoService {
         if (dto == null) {
             throw new IllegalArgumentException("Aluno invalido.");
         }
+
+        dto.setCpf(apenasDigitos(dto.getCpf()));
+        dto.setRg(normalizarRg(dto.getRg()));
+        dto.setTelefone(apenasDigitos(dto.getTelefone()));
+
         if (dto.getNome() == null || dto.getNome().isBlank()) {
             throw new IllegalArgumentException("Nome e obrigatorio.");
         }
@@ -62,5 +67,13 @@ public class AlunoService {
         if (dto.getRm() == null){
             dto.setRm(String.format("%05d", RANDOM.nextInt(100000)));
         }
+    }
+
+    private String apenasDigitos(String valor) {
+        return valor == null ? null : valor.replaceAll("\\D", "");
+    }
+
+    private String normalizarRg(String valor) {
+        return valor == null ? null : valor.replaceAll("[^0-9A-Za-z]", "").toUpperCase();
     }
 }

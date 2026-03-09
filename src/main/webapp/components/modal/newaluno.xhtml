@@ -24,6 +24,9 @@
                 <h:inputText value="#{alunoBean.alunoDTO.cpf}"
                              styleClass="form-control"
                              style="text-transform: uppercase;"
+                             pt:maxlength="14"
+                             pt:inputmode="numeric"
+                             pt:oninput="this.value = formatarCpf(this.value);"
                              required="true"
                              requiredMessage="CPF e obrigatorio."
                 />
@@ -34,6 +37,9 @@
                 <h:inputText value="#{alunoBean.alunoDTO.rg}"
                              styleClass="form-control"
                              style="text-transform: uppercase;"
+                             pt:maxlength="12"
+                             pt:inputmode="numeric"
+                             pt:oninput="this.value = formatarRg(this.value);"
                              required="true"
                              requiredMessage="RG e obrigatorio."
                 />
@@ -64,6 +70,9 @@
                 <h:inputText value="#{alunoBean.alunoDTO.telefone}"
                              styleClass="form-control"
                              style="text-transform: uppercase;"
+                             pt:maxlength="14"
+                             pt:inputmode="numeric"
+                             pt:oninput="this.value = formatarTelefone(this.value);"
                 />
             </div>
         </div>
@@ -84,5 +93,82 @@
         </div>
 
     </h:form>
+
+    <h:outputScript target="body">
+        function somenteNumeros(value) {
+            return (value || '').replace(/\D/g, '');
+        }
+
+        function formatarCpf(value) {
+            const digits = somenteNumeros(value).slice(0, 11);
+            let formatted = digits;
+
+            if (digits.length > 3) {
+                formatted = digits.slice(0, 3) + '.' + digits.slice(3);
+            }
+            if (digits.length > 6) {
+                formatted = formatted.slice(0, 7) + '.' + formatted.slice(7);
+            }
+            if (digits.length > 9) {
+                formatted = formatted.slice(0, 11) + '-' + formatted.slice(11);
+            }
+
+            return formatted;
+        }
+
+        function formatarRg(value) {
+            const digits = somenteNumeros(value).slice(0, 9);
+            let formatted = digits;
+
+            if (digits.length > 2) {
+                formatted = digits.slice(0, 2) + '.' + digits.slice(2);
+            }
+            if (digits.length > 5) {
+                formatted = formatted.slice(0, 6) + '.' + formatted.slice(6);
+            }
+            if (digits.length > 8) {
+                formatted = formatted.slice(0, 10) + '-' + formatted.slice(10);
+            }
+
+            return formatted;
+        }
+
+        function formatarTel(value){
+            const digits = somenteNumeros(values).slice(0, 11);
+            let formatted = digits;
+
+            if (digits.length > 1) {
+                formatted = digits.slice(0, 3) + '(' + digits.slice(0) + digits.slice(1) + ')';
+            }
+            if (digits.length > 5) {
+                formatted = formatted.slice(0, 6) + '.' + formatted.slice(6);
+            }
+            if (digits.length > 8) {
+                formatted = formatted.slice(0, 10) + '-' + formatted.slice(10);
+            }
+
+            return formatted;
+        }
+
+        function formatarTelefone(value) {
+            const digits = somenteNumeros(value).slice(0, 11);
+            let formatted = digits;
+
+            if (digits.length > 0) {
+                formatted = '(' + digits.slice(0, 2);
+            }
+            if (digits.length >= 2) {
+                formatted += ')';
+            }
+            if (digits.length > 2) {
+                formatted += digits.slice(2, 7);
+            }
+            if (digits.length > 7) {
+                formatted += '-' + digits.slice(7);
+            }
+
+            return formatted;
+        }
+    </h:outputScript>
 
 </ui:composition>

@@ -24,36 +24,57 @@
                         <div class="filters-body-column-row">
                             <h:outputText id="alunoIdLabel" styleClass="form-label badge-pill-id badge-muted"
                                           value="#{alunoTurmaBean.filtroAluno.rm}"/>
-                            <p:autoComplete id="dropDownAlunoMatricula" dropdown="true"
-                                            value="#{alunoTurmaBean.alunoId}"
+                            <p:autoComplete id="dropDownAluno" dropdown="true"
+                                            value="#{alunoTurmaBean.filtroAluno}"
                                             styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
-                                            var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno.id}"
-                                            completeMethod="#{alunoBean.completeAluno}" scrollHeight="250"
+                                            var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}"
+                                            converter="#{alunoEntityConverter}"
+                                            completeMethod="#{alunoTurmaBean.completeAluno}" scrollHeight="250"
                                             forceSelection="true">
                                 <p:ajax event="itemSelect" update="alunoIdLabel"/>
                                 <p:ajax event="clear" update="alunoIdLabel"/>
                             </p:autoComplete>
                         </div>
                     </div>
+
                     <div class="filters-body-column">
                         <label class="form-label cardx-title">Turma</label>
                         <div class="filters-body-column-row">
                             <h:outputText id="turmaIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                          value="#{alunoTurmaBean.turmaId}"/>
-                            <p:autoComplete id="dropDownTurmaMatricula" dropdown="true"
-                                            value="#{alunoTurmaBean.turmaId}"
+                                          value="#{alunoTurmaBean.filtroTurma.id}"/>
+                            <p:autoComplete id="dropDownTurma" dropdown="true"
+                                            value="#{alunoTurmaBean.filtroTurma}"
                                             styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
-                                            var="turma" itemLabel="#{turma.turma}" itemValue="#{turma.id}"
-                                            completeMethod="#{turmaBean.completeTurma}" scrollHeight="250"
+                                            var="turma" itemLabel="#{turma.turma}" itemValue="#{turma}"
+                                            converter="#{turmaEntityConverter}"
+                                            completeMethod="#{alunoTurmaBean.completeTurma}" scrollHeight="250"
                                             forceSelection="true">
                                 <p:ajax event="itemSelect" update="turmaIdLabel"/>
                                 <p:ajax event="clear" update="turmaIdLabel"/>
                             </p:autoComplete>
                         </div>
                     </div>
+
+                    <div class="filters-body-column">
+                        <label class="form-label cardx-title">Situacao</label>
+                        <div class="filters-body-column-row">
+                            <h:outputText id="situacaoIdLabel" styleClass="form-label badge-pill-id badge-muted"
+                                          value="#{alunoTurmaBean.filtroSituacao.id}"/>
+                            <p:autoComplete id="dropDownSituacao" dropdown="true"
+                                            value="#{alunoTurmaBean.filtroSituacao}"
+                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
+                                            var="situacao" itemLabel="#{situacao.situacao}" itemValue="#{situacao}"
+                                            converter="#{situacaoEntityConverter}"
+                                            completeMethod="#{alunoTurmaBean.completeSituacao}" scrollHeight="250"
+                                            forceSelection="true">
+                                <p:ajax event="itemSelect" update="situacaoIdLabel"/>
+                                <p:ajax event="clear" update="situacaoIdLabel"/>
+                            </p:autoComplete>
+                        </div>
+                    </div>
                     <div class="filters-body-button-column">
-                        <h:commandButton value="Confirmar" styleClass="btn-primaryx" action="#{alunoTurmaBean.confirmar}">
-                            <f:ajax execute="@form" render=":growl :formListaMatricula:listaMatriculas"/>
+                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{alunoTurmaBean.filtrar}">
+                            <f:ajax execute="@form" render=":growl :formMatricula:listaMatriculas"/>
                         </h:commandButton>
                     </div>
                 </div>
@@ -66,14 +87,22 @@
                     <div class="cardx-title">Matriculas registradas</div>
                     <div class="cardx-subtitle">Consulta rápida</div>
                 </div>
+                <div>
+                    <button class="btn-primaryx"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalMatricula">Vincular Turma
+                    </button>
+                </div>
             </div>
             <div class="cardx-body">
                 <div class="table-scroll">
-                    <h:form id="formListaMatricula">
+                    <h:form id="formMatricula">
                         <h:dataTable styleClass="table-modern" id="listaMatriculas" var="matricula"
-                                     value="#{alunoTurmaBean.alunoTurmas}" rowKey="#{matricula.id}">
+                                     value="#{alunoTurmaBean.alunoTurmas}"
+                                     rowKey="#{matricula.id}">
                             <h:column class="d-flex gap-2">
-                                <f:facet name="header">Acoes</f:facet>
+                                <f:facet name="header">Ações</f:facet>
                                 <h:commandButton action="#{alunoTurmaBean.detalhar(matricula)}"
                                                  title="Detalhar"
                                                  styleClass="icon-action-btn"
@@ -82,8 +111,12 @@
                                 </h:commandButton>
                             </h:column>
                             <h:column>
-                                <f:facet name="header">Aluno</f:facet>
+                                <f:facet name="header">Nome</f:facet>
                                 <h:outputText value="#{matricula.aluno.nome}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">CPF</f:facet>
+                                <h:outputText value="#{matricula.aluno.cpf}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Turma</f:facet>
@@ -112,5 +145,30 @@
                 </div>
             </h:panelGroup>
         </h:form>
+
+        <!-- Modal vínculo aluno x turma -->
+        <div class="modal fade modal-modern"
+             id="modalMatricula"
+             tabindex="-1"
+             aria-labelledby="modalMatriculaLabel"
+             aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered modal-reference-size modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalMatriculaLabel">
+                            Vincular aluno à turma
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"/>
+                    </div>
+
+                    <div class="modal-body">
+                        <ui:include src="/components/modal/newmatricula.xhtml"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </ui:define>
 </ui:composition>

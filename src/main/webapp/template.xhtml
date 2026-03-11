@@ -44,33 +44,43 @@
                     Painel / Visao geral
                 </h:link>
 
-                <div class="nav-module #{request.servletPath eq '/pages/alunos/alunos.xhtml' or request.servletPath eq '/pages/admin/matriculas.xhtml' or request.servletPath eq '/pages/alunos/historico.xhtml' ? 'is-expanded' : ''}">
+                <div class="nav-module #{request.servletPath eq '/pages/alunos/alunos.xhtml' or request.servletPath eq '/pages/admin/matriculas.xhtml' or request.servletPath eq '/pages/alunos/historico.xhtml' or request.servletPath eq '/pages/alunos/turmas.xhtml' ? 'is-expanded' : ''}">
                     <button type="button"
                             class="nav-module-toggle"
                             aria-expanded="false">
-                        <span>Alunos</span>
+                        <span>Gestao</span>
                         <i class="pi pi-chevron-down"></i>
                     </button>
                     <div class="nav-module-links">
-                        <h:link outcome="/pages/alunos/alunos.xhtml"
-                                styleClass="#{request.servletPath eq '/pages/alunos/alunos.xhtml' ? 'active' : ''}">Cadastro</h:link>
-                        <h:link outcome="/pages/admin/matriculas.xhtml"
-                                styleClass="#{request.servletPath eq '/pages/admin/matriculas.xhtml' ? 'active' : ''}">Matriculas</h:link>
-                        <h:link outcome="/pages/alunos/historico.xhtml"
-                                styleClass="#{request.servletPath eq '/pages/alunos/historico.xhtml' ? 'active' : ''}">Historico</h:link>
-                    </div>
-                </div>
+                        <div class="nav-module #{request.servletPath eq '/pages/alunos/alunos.xhtml' or request.servletPath eq '/pages/admin/matriculas.xhtml' or request.servletPath eq '/pages/alunos/historico.xhtml' ? 'is-expanded' : ''}">
+                            <button type="button"
+                                    class="nav-module-toggle"
+                                    aria-expanded="false">
+                                <span>Alunos</span>
+                                <i class="pi pi-chevron-down"></i>
+                            </button>
+                            <div class="nav-module-links">
+                                <h:link outcome="/pages/alunos/alunos.xhtml"
+                                        styleClass="#{request.servletPath eq '/pages/alunos/alunos.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                                <h:link outcome="/pages/admin/matriculas.xhtml"
+                                        styleClass="#{request.servletPath eq '/pages/admin/matriculas.xhtml' ? 'active' : ''}">Matriculas</h:link>
+                                <h:link outcome="/pages/alunos/historico.xhtml"
+                                        styleClass="#{request.servletPath eq '/pages/alunos/historico.xhtml' ? 'active' : ''}">Historico</h:link>
+                            </div>
+                        </div>
 
-                <div class="nav-module #{request.servletPath eq '/pages/alunos/turmas.xhtml' ? 'is-expanded' : ''}">
-                    <button type="button"
-                            class="nav-module-toggle"
-                            aria-expanded="false">
-                        <span>Turmas</span>
-                        <i class="pi pi-chevron-down"></i>
-                    </button>
-                    <div class="nav-module-links">
-                        <h:link outcome="/pages/alunos/turmas.xhtml"
-                                styleClass="#{request.servletPath eq '/pages/alunos/turmas.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                        <div class="nav-module #{request.servletPath eq '/pages/alunos/turmas.xhtml' ? 'is-expanded' : ''}">
+                            <button type="button"
+                                    class="nav-module-toggle"
+                                    aria-expanded="false">
+                                <span>Turmas</span>
+                                <i class="pi pi-chevron-down"></i>
+                            </button>
+                            <div class="nav-module-links">
+                                <h:link outcome="/pages/alunos/turmas.xhtml"
+                                        styleClass="#{request.servletPath eq '/pages/alunos/turmas.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

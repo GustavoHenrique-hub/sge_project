@@ -93,22 +93,17 @@
                             data-bs-toggle="modal"
                             data-bs-target="#modalNovoAluno">Cadastrar Aluno
                     </button>
-                    <button class="btn-primaryx"
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalAlunoTurma">Vincular Turma
-                    </button>
                 </div>
             </div>
             <div class="cardx-body">
                 <div class="table-scroll">
                     <h:form id="formListaAluno">
-                        <h:dataTable styleClass="table-modern" id="listaAlunos" var="alunoTurma"
-                                     value="#{alunoTurmaBean.alunoTurmas}"
-                                     rowKey="#{alunoTurma.id}">
+                        <h:dataTable styleClass="table-modern" id="listaAlunos" var="alunos"
+                                     value="#{alunoBean.alunos}"
+                                     rowKey="#{alunos.id}">
                             <h:column class="d-flex gap-2">
                                 <f:facet name="header">Ações</f:facet>
-                                <h:commandButton action="#{alunoTurmaBean.detalhar(alunoTurma)}"
+                                <h:commandButton action="#{alunoTurmaBean.detalhar(alunos)}"
                                                  title="Detalhar"
                                                  styleClass="icon-action-btn"
                                                  value="&#xe908;">
@@ -117,21 +112,27 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Nome</f:facet>
-                                <h:outputText value="#{alunoTurma.aluno.nome}"/>
+                                <h:outputText value="#{alunos.nome}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">RM</f:facet>
+                                <h:outputText value="#{alunos.rm}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">CPF</f:facet>
-                                <h:outputText value="#{alunoTurma.aluno.cpf}"/>
+                                <h:outputText value="#{alunos.cpf}"/>
                             </h:column>
                             <h:column>
-                                <f:facet name="header">Turma</f:facet>
-                                <h:outputText value="#{alunoTurma.turma.turma}"/>
+                                <f:facet name="header">RG</f:facet>
+                                <h:outputText value="#{alunos.rg}"/>
                             </h:column>
                             <h:column>
-                                <f:facet name="header">Situacao</f:facet>
-                                <span class="badge-pill #{alunoTurmaBean.situacaoSeverity(alunoTurma.situacao != null ? alunoTurma.situacao.situacao : null)}">
-                                    #{alunoTurma.situacao != null ? alunoTurma.situacao.situacao : '-'}
-                                </span>
+                                <f:facet name="header">Email</f:facet>
+                                <h:outputText value="#{alunos.email}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Telefone</f:facet>
+                                <h:outputText value="#{alunos.telefone}"/>
                             </h:column>
                         </h:dataTable>
                     </h:form>
@@ -177,31 +178,6 @@
 
                     <div class="modal-body">
                         <ui:include src="/components/modal/newaluno.xhtml"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal vínculo aluno x turma -->
-        <div class="modal fade modal-modern"
-             id="modalAlunoTurma"
-             tabindex="-1"
-             aria-labelledby="modalAlunoTurmaLabel"
-             aria-hidden="true">
-
-            <div class="modal-dialog modal-dialog-centered modal-reference-size modal-lg">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalAlunoTurmaLabel">
-                            Vincular aluno à turma
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"/>
-                    </div>
-
-                    <div class="modal-body">
-                        <ui:include src="/components/modal/alunoturma.xhtml"/>
                     </div>
                 </div>
             </div>

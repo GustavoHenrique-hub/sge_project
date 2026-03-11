@@ -23,7 +23,7 @@
                         <label class="form-label cardx-title">Turma</label>
                         <div class="filters-body-column-row">
                             <h:outputText id="turmaIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                          value="#{turmaBean.filtroTurma.id}"/>
+                                          value="#{turmaBean.filtroTurma.codigo}"/>
                             <p:autoComplete id="dropDownTurma" dropdown="true"
                                             value="#{turmaBean.filtroTurma}"
                                             styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
@@ -50,6 +50,13 @@
                 <div>
                     <div class="cardx-title">Lista de turmas</div>
                     <div class="cardx-subtitle">Submódulo de consulta</div>
+                </div>
+                <div>
+                    <button class="btn-primaryx"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalNovaTurma">Cadastrar Turma
+                    </button>
                 </div>
             </div>
             <div class="cardx-body">
@@ -97,5 +104,30 @@
                 </div>
             </h:panelGroup>
         </h:form>
+
+        <!-- Modal cadastro turma -->
+        <div class="modal fade modal-modern"
+             id="modalNovaTurma"
+             tabindex="-1"
+             aria-labelledby="modalNovaTurmaLabel"
+             aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered modal-reference-size modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalNovaTurmaLabel">
+                            Cadastrar Turma
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"/>
+                    </div>
+
+                    <div class="modal-body">
+                        <ui:include src="/components/modal/newturma.xhtml"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </ui:define>
 </ui:composition>

@@ -37,4 +37,8 @@ public class TurmaRepository {
         return em.createQuery("select t from TurmaEntity t order by t.turma", TurmaEntity.class)
                 .getResultList();
     }
+
+    public void remove(TurmaEntity entity) {
+        em.remove(entity);
+    }
 }

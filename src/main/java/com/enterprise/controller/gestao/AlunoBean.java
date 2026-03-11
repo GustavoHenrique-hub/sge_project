@@ -38,7 +38,7 @@ public class AlunoBean implements Serializable {
         try {
             if (alunoDTO.getId() == null) {
                 service.criar(alunoDTO);
-                addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Usuário criado.");
+                addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Aluno criado.");
             }
             limparFormulario();
             recarregarLista();

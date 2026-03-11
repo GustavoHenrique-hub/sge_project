@@ -193,11 +193,19 @@ body {
 }
 
 .nav-module.is-expanded .nav-module-links {
-    max-height: 220px;
+    max-height: 420px;
 }
 
 .nav-module .nav-module-links a {
     margin-left: 10px;
+}
+
+.nav-module .nav-module-links .nav-module {
+    margin-left: 10px;
+}
+
+.nav-module .nav-module-links .nav-module-toggle {
+    padding-left: 10px;
 }
 
 .main {

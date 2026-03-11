@@ -1,5 +1,6 @@
 package com.enterprise.controller.gestao;
 
+import com.enterprise.dto.gestao.TurmaDTO;
 import com.enterprise.model.entity.gestao.TurmaEntity;
 import com.enterprise.service.gestao.TurmaService;
 import jakarta.annotation.PostConstruct;
@@ -28,6 +29,7 @@ public class TurmaBean implements Serializable {
     private TurmaEntity filtroTurma;
     private List<TurmaEntity> turmas = new ArrayList<>();
     private TurmaEntity detalheSelecionado;
+    private TurmaDTO turmaDTO = new TurmaDTO();
 
     @PostConstruct
     public void init() {
@@ -52,6 +54,23 @@ public class TurmaBean implements Serializable {
         } catch (Exception e) {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao filtrar. " + e.getMessage());
         }
+    }
+
+    public void salvar() {
+        try {
+            if (turmaDTO.getId() == null) {
+                service.criar(turmaDTO);
+                addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Turma criada.");
+            }
+            limparFormulario();
+            recarregarLista();
+        } catch (Exception e) {
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
+        }
+    }
+
+    public void limparFormulario() {
+        turmaDTO = new TurmaDTO();
     }
 
     public void detalhar(TurmaEntity turma) {

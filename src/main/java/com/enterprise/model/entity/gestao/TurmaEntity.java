@@ -49,6 +49,9 @@ public class TurmaEntity {
         if (codigo == null || codigo.isBlank()) {
             codigo = String.format("%06d", RANDOM.nextInt(1_000_000));
         }
+        if (turma != null && !turma.isBlank()) {
+            turma = turma.toUpperCase();
+        }
     }
 
     private Long generateId() {

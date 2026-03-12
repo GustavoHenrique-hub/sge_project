@@ -7,6 +7,12 @@
 
     <h:form id="formNewUser">
 
+        <p:messages id="msgsNewUser"
+                    showSummary="true"
+                    showDetail="true"
+                    closable="true"
+                    styleClass="mb-3"/>
+
         <div class="row g-3">
 
             <div class="col-md-4">
@@ -14,6 +20,8 @@
                 <h:inputText value="#{usuarioBean.form.login}"
                              styleClass="form-control"
                              style="text-transform: uppercase;"
+                             required="true"
+                             requiredMessage="Login e obrigatorio."
                              />
             </div>
 
@@ -22,6 +30,8 @@
                 <h:inputText value="#{usuarioBean.form.usuario}"
                              styleClass="form-control"
                              style="text-transform: uppercase;"
+                             required="true"
+                             requiredMessage="Usuario e obrigatorio."
                              />
             </div>
 
@@ -29,6 +39,8 @@
                 <label class="form-label">Senha</label>
                 <h:inputSecret value="#{usuarioBean.form.senha}"
                                styleClass="form-control"
+                               required="true"
+                               requiredMessage="Senha e obrigatoria."
                                />
             </div>
         </div>
@@ -40,11 +52,11 @@
             </button>
 
             <!-- Submit do JSF -->
-            <h:commandButton value="Salvar"
+            <p:commandButton value="Salvar"
                              styleClass="btn-primaryx"
                              action="#{usuarioBean.salvar}"
                              process="@form"
-                             update=":growl :formNewUser"
+                             update=":growl :msgs :formLista:listaUsers @form msgsNewUser"
                              oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNewUser')).hide();}" />
         </div>
 

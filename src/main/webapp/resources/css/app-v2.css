@@ -356,6 +356,31 @@ body {
     box-shadow: 0 10px 20px color-mix(in srgb, var(--primary) 25%, transparent);
 }
 
+.custom-save.ui-button,
+.custom-save.ui-button * {
+    transition: all .2s ease;
+}
+
+.custom-save.ui-button.ui-state-loading {
+    opacity: 1;
+    filter: saturate(.75);
+}
+
+.custom-save.ui-button.ui-state-loading .ui-button-text {
+    opacity: 1;
+    padding-left: 2rem;
+}
+
+.custom-save.ui-button .ui-icon-loading {
+    opacity: 0;
+    left: .75rem;
+    margin-top: -.5rem;
+}
+
+.custom-save.ui-button.ui-state-loading .ui-icon-loading {
+    opacity: 1;
+}
+
 .btn-ghostx {
     background: color-mix(in srgb, var(--chip) 100%, transparent);
     border: 1px solid var(--card-border);
@@ -426,7 +451,7 @@ body {
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    gap: 10px;
     align-items: flex-end;
 }
 
@@ -770,12 +795,27 @@ body {
     font-weight: 600;
 }
 
+.field-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.field-error {
+    display: block;
+    min-height: 18px;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #dc3545;
+}
+
 .modal-modern .form-control {
     border-radius: 14px;
     border: 1px solid var(--input-border);
     background: var(--input-bg);
     color: var(--text);
     box-shadow: none;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .modal-modern .form-control::placeholder {

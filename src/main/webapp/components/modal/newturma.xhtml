@@ -7,6 +7,12 @@
 
     <h:form id="formNovaTurma">
 
+        <p:messages id="msgsNovaTurma"
+                    showSummary="true"
+                    showDetail="true"
+                    closable="true"
+                    styleClass="mb-3"/>
+
         <div class="row g-3">
 
             <div class="col-md-4">
@@ -26,11 +32,11 @@
                 </button>
 
                 <!-- Submit do JSF -->
-                <h:commandButton value="Salvar"
+                <p:commandButton value="Salvar"
                                  styleClass="btn-primaryx"
                                  action="#{turmaBean.salvar}"
                                  process="@form"
-                                 update=":growl :msgs :formNovaTurma :formNovaTurma:msgsNovaTurma"
+                                 update=":growl :msgs :formListaTurma:listaTurmas @form msgsNovaTurma"
                                  oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovaTurma')).hide();}" />
             </div>
         </div>

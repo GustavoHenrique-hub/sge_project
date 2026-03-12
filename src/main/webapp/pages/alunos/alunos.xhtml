@@ -3,7 +3,7 @@
                 xmlns:h="jakarta.faces.html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="jakarta.faces.core"
-                xmlns:cmp="jakarta.faces.composite/components/autocomplete"
+                xmlns:cmp="jakarta.faces.composite/components"
                 template="/template.xhtml">
 
     <ui:define name="title">Alunos</ui:define>
@@ -29,28 +29,18 @@
                             converter="#{alunoEntityConverter}"
                             itemLabelProperty="nome" />
 
-                    <cmp:baseAutocomplete
-                            id="turma"
-                            label="Turma"
-                            value="#{alunoTurmaBean.filtroTurma}"
-                            badgeValue="#{alunoTurmaBean.filtroTurma != null ? alunoTurmaBean.filtroTurma.codigo : null}"
-                            completeMethod="#{alunoTurmaBean.completeTurma}"
-                            converter="#{turmaEntityConverter}"
-                            itemLabelProperty="turma" />
-
-                    <cmp:baseAutocomplete
-                            id="situacao"
-                            label="Situacao"
-                            value="#{alunoTurmaBean.filtroSituacao}"
-                            badgeValue="#{alunoTurmaBean.filtroSituacao != null ? alunoTurmaBean.filtroSituacao.id : null}"
-                            completeMethod="#{alunoTurmaBean.completeSituacao}"
-                            converter="#{situacaoEntityConverter}"
-                            itemLabelProperty="situacao" />
-
                     <div class="filters-body-button-column">
                         <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{alunoTurmaBean.filtrar}">
                             <f:ajax execute="@form" render=":growl :formListaAluno:listaAlunos"/>
                         </h:commandButton>
+                    </div>
+
+                    <div>
+                        <button class="btn-primaryx"
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalNovoAluno">Cadastrar Aluno
+                        </button>
                     </div>
                 </div>
             </h:form>
@@ -61,13 +51,6 @@
                 <div>
                     <div class="cardx-title">Lista de matriculas</div>
                     <div class="cardx-subtitle">Vinculos entre aluno e turma</div>
-                </div>
-                <div>
-                    <button class="btn-primaryx"
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalNovoAluno">Cadastrar Aluno
-                    </button>
                 </div>
             </div>
             <div class="cardx-body">
@@ -133,29 +116,12 @@
             </h:panelGroup>
         </h:form>
 
-        <!-- Modal cadastro aluno -->
-        <div class="modal fade modal-modern"
-             id="modalNovoAluno"
-             tabindex="-1"
-             aria-labelledby="modalNovoAlunoLabel"
-             aria-hidden="true">
-
-            <div class="modal-dialog modal-dialog-centered modal-reference-size modal-lg">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalNovoAlunoLabel">
-                            Cadastrar Aluno
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"/>
-                    </div>
-
-                    <div class="modal-body">
-                        <ui:include src="/components/modal/newaluno.xhtml"/>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <cmp:baseModal
+                modalId="modalNovoAluno"
+                labelledby="modalNovoAlunoLabel"
+                modalTitle="Cadastrar Aluno"
+                modalTitleId="modalNovoAlunoLabel"
+                modalImport="newaluno.xhtml"
+        />
     </ui:define>
 </ui:composition>

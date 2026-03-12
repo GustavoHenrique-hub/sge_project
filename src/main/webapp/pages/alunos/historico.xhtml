@@ -3,6 +3,7 @@
                 xmlns:h="jakarta.faces.html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="jakarta.faces.core"
+                xmlns:cmp="jakarta.faces.composite/components"
                 template="/template.xhtml">
 
     <ui:define name="title">Historico</ui:define>
@@ -19,23 +20,14 @@
 
             <h:form id="formFiltrosHistorico">
                 <div class="filters-body">
-                    <div class="filters-body-column">
-                        <label class="form-label cardx-title">Aluno</label>
-                        <div class="filters-body-column-row">
-                            <h:outputText id="alunoIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                          value="#{historicoBean.filtroAluno.id}"/>
-                            <p:autoComplete id="dropDownAlunoHistorico" dropdown="true"
-                                            value="#{historicoBean.filtroAluno}"
-                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
-                                            var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}"
-                                            converter="#{alunoEntityConverter}"
-                                            completeMethod="#{historicoBean.completeAluno}" scrollHeight="250"
-                                            forceSelection="true">
-                                <p:ajax event="itemSelect" update="alunoIdLabel"/>
-                                <p:ajax event="clear" update="alunoIdLabel"/>
-                            </p:autoComplete>
-                        </div>
-                    </div>
+                    <cmp:baseAutocomplete
+                            id="dropDownAlunoHistorico"
+                            label="Aluno"
+                            value="#{historicoBean.filtroAluno}"
+                            badgeValue="#{historicoBean.filtroAluno != null ? historicoBean.filtroAluno.id : null}"
+                            completeMethod="#{historicoBean.completeAluno}"
+                            converter="#{alunoEntityConverter}"
+                            itemLabelProperty="nome" />
                     <div class="filters-body-button-column">
                         <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{historicoBean.buscar}">
                             <f:ajax execute="@form" render=":growl :formListaHistorico:listaHistorico"/>

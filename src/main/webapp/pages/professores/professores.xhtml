@@ -3,6 +3,7 @@
                 xmlns:h="jakarta.faces.html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="jakarta.faces.core"
+                xmlns:cmp="jakarta.faces.composite/components"
                 template="/template.xhtml">
 
     <ui:define name="title">Professores</ui:define>
@@ -19,15 +20,14 @@
 
             <h:form id="formFiltrosProfessor">
                 <div class="filters-body">
-                    <div class="filters-body-column">
-                        <label class="form-label cardx-title">Professor</label>
-                        <div class="filters-body-column-row">
-                            <p:autoComplete id="dropDownProfessor" dropdown="true"
-                                            value="#{professorBean.filtroNome}"
-                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
-                                            completeMethod="#{professorBean.completeProfessor}" scrollHeight="250"/>
-                        </div>
-                    </div>
+                    <cmp:baseAutocomplete
+                            id="dropDownProfessor"
+                            label="Professor"
+                            value="#{professorBean.filtroNome}"
+                            badgeValue="#{professorBean.filtroNome}"
+                            completeMethod="#{professorBean.completeProfessor}"
+                            itemLabel="#{item}"
+                            itemValue="#{item}" />
                     <div class="filters-body-button-column">
                         <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{professorBean.filtrar}">
                             <f:ajax execute="@form" render=":growl :formListaProfessor:listaProfessores"/>

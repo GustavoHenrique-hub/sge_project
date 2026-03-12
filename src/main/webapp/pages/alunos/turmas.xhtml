@@ -3,6 +3,7 @@
                 xmlns:h="jakarta.faces.html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="jakarta.faces.core"
+                xmlns:cmp="jakarta.faces.composite/components"
                 template="/template.xhtml">
 
     <ui:define name="title">Turmas</ui:define>
@@ -19,23 +20,14 @@
 
             <h:form id="formFiltrosTurma">
                 <div class="filters-body">
-                    <div class="filters-body-column">
-                        <label class="form-label cardx-title">Turma</label>
-                        <div class="filters-body-column-row">
-                            <h:outputText id="turmaIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                          value="#{turmaBean.filtroTurma.codigo}"/>
-                            <p:autoComplete id="dropDownTurma" dropdown="true"
-                                            value="#{turmaBean.filtroTurma}"
-                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
-                                            var="turma" itemLabel="#{turma.turma}" itemValue="#{turma}"
-                                            converter="#{turmaEntityConverter}"
-                                            completeMethod="#{turmaBean.completeTurma}" scrollHeight="250"
-                                            forceSelection="true">
-                                <p:ajax event="itemSelect" update="turmaIdLabel"/>
-                                <p:ajax event="clear" update="turmaIdLabel"/>
-                            </p:autoComplete>
-                        </div>
-                    </div>
+                    <cmp:baseAutocomplete
+                            id="dropDownTurma"
+                            label="Turma"
+                            value="#{turmaBean.filtroTurma}"
+                            badgeValue="#{turmaBean.filtroTurma != null ? turmaBean.filtroTurma.codigo : null}"
+                            completeMethod="#{turmaBean.completeTurma}"
+                            converter="#{turmaEntityConverter}"
+                            itemLabelProperty="turma" />
                     <div class="filters-body-button-column">
                         <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{turmaBean.filtrar}">
                             <f:ajax execute="@form" render=":growl :formListaTurma:listaTurmas"/>
@@ -105,29 +97,11 @@
             </h:panelGroup>
         </h:form>
 
-        <!-- Modal cadastro turma -->
-        <div class="modal fade modal-modern"
-             id="modalNovaTurma"
-             tabindex="-1"
-             aria-labelledby="modalNovaTurmaLabel"
-             aria-hidden="true">
-
-            <div class="modal-dialog modal-dialog-centered modal-reference-size modal-lg">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalNovaTurmaLabel">
-                            Cadastrar Turma
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"/>
-                    </div>
-
-                    <div class="modal-body">
-                        <ui:include src="/components/modal/newturma.xhtml"/>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <cmp:baseModal
+                modalId="modalNovaTurma"
+                labelledby="modalNovaTurmaLabel"
+                modalTitle="Cadastrar Turma"
+                modalTitleId="modalNovaTurmaLabel"
+                modalImport="newturma.xhtml" />
     </ui:define>
 </ui:composition>

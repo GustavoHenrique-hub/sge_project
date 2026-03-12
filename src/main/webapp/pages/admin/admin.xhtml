@@ -4,6 +4,7 @@
                 template="/template.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="jakarta.faces.core"
+                xmlns:cmp="jakarta.faces.composite/components"
                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
     <ui:define name="title">Administração</ui:define>
@@ -20,59 +21,32 @@
             </div>
             <h:form id="formFiltros">
                 <div class="filters-body">
-                    <div class="filters-body-column">
-                        <label class="form-label cardx-title">Usuário</label>
-                        <div class="filters-body-column-row">
-                            <h:outputText id="usuarioIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                          value="#{perfilUsuarioBean.filtroUsuario.id}"/>
-                            <p:autoComplete id="dropDownUsuario" dropdown="true"
-                                            value="#{perfilUsuarioBean.filtroUsuario}"
-                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
-                                            var="usuario" itemLabel="#{usuario.login}"
-                                            itemValue="#{usuario}" converter="#{usuarioEntityConverter}"
-                                            completeMethod="#{perfilUsuarioBean.completeUsuario}" scrollHeight="250"
-                                            forceSelection="true">
-                                <p:ajax event="itemSelect" update="usuarioIdLabel"/>
-                                <p:ajax event="clear" update="usuarioIdLabel"/>
-                            </p:autoComplete>
-                        </div>
-                    </div>
+                    <cmp:baseAutocomplete
+                            id="dropDownUsuario"
+                            label="Usuário"
+                            value="#{perfilUsuarioBean.filtroUsuario}"
+                            badgeValue="#{perfilUsuarioBean.filtroUsuario != null ? perfilUsuarioBean.filtroUsuario.id : null}"
+                            completeMethod="#{perfilUsuarioBean.completeUsuario}"
+                            converter="#{usuarioEntityConverter}"
+                            itemLabelProperty="login" />
 
-                    <div class="filters-body-column">
-                        <label class="form-label cardx-title">Perfil</label>
-                        <div class="filters-body-column-row">
-                            <h:outputText id="perfilIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                          value="#{perfilUsuarioBean.filtroPerfil.id}"/>
-                            <p:autoComplete id="dropDownPerfil" dropdown="true"
-                                            value="#{perfilUsuarioBean.filtroPerfil}"
-                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
-                                            var="perfil" itemLabel="#{perfil.perfil}" itemValue="#{perfil}"
-                                            converter="#{perfilEntityConverter}"
-                                            completeMethod="#{perfilBean.completePerfil}" scrollHeight="250"
-                                            forceSelection="true">
-                                <p:ajax event="itemSelect" update="perfilIdLabel"/>
-                                <p:ajax event="clear" update="perfilIdLabel"/>
-                            </p:autoComplete>
-                        </div>
-                    </div>
+                    <cmp:baseAutocomplete
+                            id="dropDownPerfil"
+                            label="Perfil"
+                            value="#{perfilUsuarioBean.filtroPerfil}"
+                            badgeValue="#{perfilUsuarioBean.filtroPerfil != null ? perfilUsuarioBean.filtroPerfil.id : null}"
+                            completeMethod="#{perfilBean.completePerfil}"
+                            converter="#{perfilEntityConverter}"
+                            itemLabelProperty="perfil" />
 
-                    <div class="filters-body-column">
-                        <label class="form-label cardx-title">Situação</label>
-                        <div class="filters-body-column-row">
-                            <h:outputText id="situacaoIdLabel" styleClass="form-label badge-pill-id badge-muted"
-                                          value="#{perfilUsuarioBean.filtroSituacao.id}"/>
-                            <p:autoComplete id="dropDownSituacao" dropdown="true"
-                                            value="#{perfilUsuarioBean.filtroSituacao}"
-                                            styleClass="autocomplete-modern" inputStyleClass="autocomplete-input"
-                                            var="situacao" itemLabel="#{situacao.situacao}" itemValue="#{situacao}"
-                                            converter="#{situacaoEntityConverter}"
-                                            completeMethod="#{situacaoBean.completeSituacao}" scrollHeight="250"
-                                            forceSelection="true">
-                                <p:ajax event="itemSelect" update="situacaoIdLabel"/>
-                                <p:ajax event="clear" update="situacaoIdLabel"/>
-                            </p:autoComplete>
-                        </div>
-                    </div>
+                    <cmp:baseAutocomplete
+                            id="dropDownSituacao"
+                            label="Situação"
+                            value="#{perfilUsuarioBean.filtroSituacao}"
+                            badgeValue="#{perfilUsuarioBean.filtroSituacao != null ? perfilUsuarioBean.filtroSituacao.id : null}"
+                            completeMethod="#{situacaoBean.completeSituacao}"
+                            converter="#{situacaoEntityConverter}"
+                            itemLabelProperty="situacao" />
                     <div class="filters-body-button-column">
                         <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{perfilUsuarioBean.filtrar}"
                                          update=":growl :formLista:listaUsers"/>
@@ -154,55 +128,19 @@
             </div>
         </div>
 
-        <!-- MODAL Novo UsuÃ¡rio -->
-        <div class="modal fade modal-modern"
-             id="modalNewUser"
-             tabindex="-1"
-             aria-labelledby="modalNewUserLabel"
-             aria-hidden="true">
+        <cmp:baseModal
+                modalId="modalNewUser"
+                labelledby="modalNewUserLabel"
+                modalTitle="Novo usuário"
+                modalTitleId="modalNewUserLabel"
+                modalImport="newuser.xhtml" />
 
-            <div class="modal-dialog modal-dialog-centered modal-reference-size modal-lg">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalNewUserLabel">
-                            Novo usuário
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"/>
-                    </div>
-
-                    <div class="modal-body">
-                        <ui:include src="/components/modal/newuser.xhtml"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- MODAL Vínculo Perfil x Usuário -->
-        <div class="modal fade modal-modern"
-             id="modalPerfilUser"
-             tabindex="-1"
-             aria-labelledby="modalPerfilUserLabel"
-             aria-hidden="true">
-
-            <div class="modal-dialog modal-dialog-centered modal-reference-size modal-lg">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalPerfilUserLabel">
-                            Novo vínculo
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"/>
-                    </div>
-
-                    <div class="modal-body">
-                        <ui:include src="/components/modal/perfiluser.xhtml"/>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <cmp:baseModal
+                modalId="modalPerfilUser"
+                labelledby="modalPerfilUserLabel"
+                modalTitle="Novo vínculo"
+                modalTitleId="modalPerfilUserLabel"
+                modalImport="perfiluser.xhtml" />
     </ui:define>
 </ui:composition>
 

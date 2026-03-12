@@ -1,0 +1,52 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="jakarta.faces.facelets"
+              xmlns:h="jakarta.faces.html"
+              xmlns:f="jakarta.faces.core"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:cc="jakarta.faces.composite">
+
+    <cc:interface>
+        <cc:attribute name="id" required="true" />
+        <cc:attribute name="label" required="true" />
+        <cc:attribute name="value" required="true" />
+        <cc:attribute name="badgeValue" required="false" />
+        <cc:attribute name="completeMethod" required="true"
+                      method-signature="java.util.List complete(java.lang.String)" />
+        <cc:attribute name="converter" required="true" />
+        <cc:attribute name="itemLabelProperty" required="true" />
+        <cc:attribute name="update" required="false" />
+        <cc:attribute name="scrollHeight" required="false" default="250" />
+        <cc:attribute name="dropdown" required="false" default="true" />
+        <cc:attribute name="forceSelection" required="false" default="true" />
+    </cc:interface>
+
+    <cc:implementation>
+        <div class="filters-body-column">
+            <label class="form-label cardx-title">#{cc.attrs.label}</label>
+
+            <div class="filters-body-column-row">
+                <h:outputText id="#{cc.attrs.id}IdLabel"
+                              styleClass="form-label badge-pill-id badge-muted"
+                              value="#{cc.attrs.badgeValue}" />
+
+                <p:autoComplete id="#{cc.attrs.id}"
+                                dropdown="#{cc.attrs.dropdown}"
+                                value="#{cc.attrs.value}"
+                                styleClass="autocomplete-modern"
+                                inputStyleClass="autocomplete-input"
+                                var="item"
+                                itemLabel="#{item[cc.attrs.itemLabelProperty]}"
+                                itemValue="#{item}"
+                                converter="#{cc.attrs.converter}"
+                                completeMethod="#{cc.attrs.completeMethod}"
+                                scrollHeight="#{cc.attrs.scrollHeight}"
+                                forceSelection="#{cc.attrs.forceSelection}">
+                    <p:ajax event="itemSelect"
+                            update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}" />
+                    <p:ajax event="clear"
+                            update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}" />
+                </p:autoComplete>
+            </div>
+        </div>
+    </cc:implementation>
+</ui:component>

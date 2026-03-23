@@ -368,7 +368,7 @@ body {
 
 .custom-save.ui-button.ui-state-loading .ui-button-text {
     opacity: 1;
-    padding-left: 2rem;
+    padding-left: 1rem;
 }
 
 .custom-save.ui-button .ui-icon-loading {

@@ -23,15 +23,16 @@
                     <cmp:baseAutocomplete
                             id="aluno"
                             label="Aluno"
-                            value="#{alunoTurmaBean.filtroAluno}"
-                            badgeValue="#{alunoTurmaBean.filtroAluno != null ? alunoTurmaBean.filtroAluno.rm : null}"
-                            completeMethod="#{alunoTurmaBean.completeAluno}"
+                            value="#{alunoBean.filtroAluno}"
+                            badgeValue="#{alunoBean.filtroAluno != null ? alunoBean.filtroAluno.rm : null}"
+                            completeMethod="#{alunoBean.completeAluno}"
                             converter="#{alunoEntityConverter}"
                             itemLabelProperty="nome"
+                            required="false"
                             showMessage="false"/>
 
                     <div class="filters-body-button-column">
-                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{alunoTurmaBean.filtrar}">
+                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{alunoBean.filtrar}">
                             <f:ajax execute="@form" render=":growl :formListaAluno:listaAlunos"/>
                         </h:commandButton>
                     </div>
@@ -58,8 +59,7 @@
                 <div class="table-scroll">
                     <h:form id="formListaAluno">
                         <h:dataTable styleClass="table-modern" id="listaAlunos" var="alunos"
-                                     value="#{alunoBean.alunos}"
-                                     rowKey="#{alunos.id}">
+                                     value="#{alunoBean.alunos}">
                             <h:column class="d-flex gap-2">
                                 <f:facet name="header">Ações</f:facet>
                                 <h:commandButton action="#{alunoTurmaBean.detalhar(alunos)}"

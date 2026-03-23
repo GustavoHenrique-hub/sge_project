@@ -30,7 +30,8 @@
                             itemLabelProperty="nome"
                             parentDivStyle="filters-body-column"
                             childrenDivStyle="filters-body-column-row"
-                            showMessage="false"/>
+                            showMessage="false"
+                            required="false"/>
 
                     <cmp:baseAutocomplete
                             id="dropDownTurma"
@@ -42,7 +43,8 @@
                             itemLabelProperty="turma"
                             parentDivStyle="filters-body-column"
                             childrenDivStyle="filters-body-column-row"
-                            showMessage="false"/>
+                            showMessage="false"
+                            required="false"/>
 
                     <cmp:baseAutocomplete
                             id="dropDownSituacao"
@@ -54,7 +56,8 @@
                             itemLabelProperty="situacao"
                             parentDivStyle="filters-body-column"
                             childrenDivStyle="filters-body-column-row"
-                            showMessage="false"/>
+                            showMessage="false"
+                            required="false"/>
                     <div class="filters-body-button-column">
                         <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{alunoTurmaBean.filtrar}">
                             <f:ajax execute="@form" render=":growl :formMatricula:listaMatriculas"/>

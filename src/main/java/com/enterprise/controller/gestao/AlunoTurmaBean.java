@@ -1,5 +1,6 @@
 package com.enterprise.controller.gestao;
 
+import com.enterprise.dto.gestao.AlunoDTO;
 import com.enterprise.dto.gestao.AlunoTurmaDTO;
 import com.enterprise.model.entity.admin.SituacaoEntity;
 import com.enterprise.model.entity.gestao.AlunoEntity;
@@ -84,6 +85,10 @@ public class AlunoTurmaBean implements Serializable {
         };
     }
 
+    public void detalhar(AlunoTurmaDTO dto) {
+        detalheSelecionado = dto;
+    }
+
     public void confirmar() {
         try {
             service.matricular(alunoId, turmaId);
@@ -119,10 +124,6 @@ public class AlunoTurmaBean implements Serializable {
         } catch (Exception e) {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao filtrar. " + e.getMessage());
         }
-    }
-
-    public void detalhar(AlunoTurmaDTO dto) {
-        detalheSelecionado = dto;
     }
 
     public List<AlunoEntity> completeAluno(String query) {

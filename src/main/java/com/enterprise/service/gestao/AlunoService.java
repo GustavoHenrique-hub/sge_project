@@ -32,7 +32,7 @@ public class AlunoService {
         return repository.findAll();
     }
 
-    public List<AlunoEntity> buscar(String nome, String cpf, String status) {
+    public List<AlunoEntity> findByFilters(String nome, String cpf) {
         return repository.findByFilters(nome, cpf);
     }
 

@@ -29,7 +29,8 @@
                             completeMethod="#{perfilUsuarioBean.completeUsuario}"
                             converter="#{usuarioEntityConverter}"
                             itemLabelProperty="login"
-                            showMessage="false"/>
+                            showMessage="false"
+                            required="false"/>
 
                     <cmp:baseAutocomplete
                             id="dropDownPerfil"
@@ -39,7 +40,8 @@
                             completeMethod="#{perfilBean.completePerfil}"
                             converter="#{perfilEntityConverter}"
                             itemLabelProperty="perfil"
-                            showMessage="false"/>
+                            showMessage="false"
+                            required="false"/>
 
                     <cmp:baseAutocomplete
                             id="dropDownSituacao"
@@ -49,7 +51,8 @@
                             completeMethod="#{situacaoBean.completeSituacao}"
                             converter="#{situacaoEntityConverter}"
                             itemLabelProperty="situacao"
-                            showMessage="false"/>
+                            showMessage="false"
+                            required="false"/>
                     <div class="filters-body-button-column">
                         <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{perfilUsuarioBean.filtrar}"
                                          update=":growl :formLista:listaUsers"/>

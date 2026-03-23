@@ -1,6 +1,7 @@
 package com.enterprise.controller.gestao;
 
 import com.enterprise.dto.gestao.AlunoDTO;
+import com.enterprise.dto.gestao.AlunoTurmaDTO;
 import com.enterprise.model.entity.gestao.AlunoEntity;
 import com.enterprise.service.gestao.AlunoService;
 import jakarta.annotation.PostConstruct;
@@ -27,6 +28,8 @@ public class AlunoBean implements Serializable {
     private AlunoService service;
 
     private AlunoDTO alunoDTO = new AlunoDTO();
+    private AlunoDTO detalheSelecionado;
+    private AlunoEntity filtroAluno;
     private List<AlunoEntity> alunos = new ArrayList<>();
 
     @PostConstruct
@@ -66,6 +69,27 @@ public class AlunoBean implements Serializable {
                 .filter(aluno -> aluno.getNome() != null
                         && aluno.getNome().toLowerCase().startsWith(formatAluno))
                 .collect(Collectors.toList());
+    }
+
+    public void detalhar(AlunoDTO dto) {
+        detalheSelecionado = dto;
+    }
+
+    public void filtrar() {
+        try {
+            Long alunoIdFiltro = filtroAluno == null ? null : filtroAluno.getId();
+            boolean filtroVazio = alunoIdFiltro == null;
+
+            if (filtroVazio) {
+                alunos = service.findAll();
+            } else {
+                alunos = service.findByFilters(filtroAluno.getNome(), filtroAluno.getCpf());
+            }
+            int total = alunos == null ? 0 : alunos.size();
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Filtro aplicado. Registros: " + total + ".");
+        } catch (Exception e) {
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao filtrar. " + e.getMessage());
+        }
     }
 
 }

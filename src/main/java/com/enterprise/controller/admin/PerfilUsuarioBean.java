@@ -45,6 +45,9 @@ public class PerfilUsuarioBean implements Serializable {
     private Long perfilId;
     private Long usuarioId;
     private Long situacaoId;
+    private UsuarioEntity usuarioSelecionado;
+    private PerfilEntity perfilSelecionado;
+    private SituacaoEntity situacaoSelecionada;
     private UsuarioEntity filtroUsuario;
     private PerfilEntity filtroPerfil;
     private SituacaoEntity filtroSituacao;
@@ -69,6 +72,9 @@ public class PerfilUsuarioBean implements Serializable {
         perfilId = null;
         usuarioId = null;
         situacaoId = null;
+        usuarioSelecionado = null;
+        perfilSelecionado = null;
+        situacaoSelecionada = null;
     }
 
     public String situacaoSeverity(String situacao) {
@@ -85,6 +91,10 @@ public class PerfilUsuarioBean implements Serializable {
     public void vincular(){
         try{
             if(perfilUsuarioDTO.getId() == null){
+                usuarioId = usuarioSelecionado == null ? null : usuarioSelecionado.getId();
+                perfilId = perfilSelecionado == null ? null : perfilSelecionado.getId();
+                situacaoId = situacaoSelecionada == null ? null : situacaoSelecionada.getId();
+
                 if (usuarioId != null) {
                     UsuarioDTO usuario = new UsuarioDTO();
                     usuario.setId(usuarioId);

@@ -6,28 +6,33 @@
               xmlns:cc="jakarta.faces.composite">
 
     <cc:interface>
-        <cc:attribute name="id" required="true" />
-        <cc:attribute name="label" required="true" />
-        <cc:attribute name="value" required="true" />
-        <cc:attribute name="badgeValue" required="false" />
+        <cc:attribute name="id" required="true"/>
+        <cc:attribute name="label" required="true"/>
+        <cc:attribute name="value" required="true"/>
+        <cc:attribute name="badgeValue" required="true"/>
         <cc:attribute name="completeMethod" required="true"
-                      method-signature="java.util.List complete(java.lang.String)" />
-        <cc:attribute name="converter" required="true" />
-        <cc:attribute name="itemLabelProperty" required="true" />
-        <cc:attribute name="update" required="false" />
-        <cc:attribute name="scrollHeight" required="false" default="250" />
-        <cc:attribute name="dropdown" required="false" default="true" />
-        <cc:attribute name="forceSelection" required="false" default="true" />
+                      method-signature="java.util.List complete(java.lang.String)"/>
+        <cc:attribute name="converter" required="true"/>
+        <cc:attribute name="itemLabelProperty" required="true"/>
+        <cc:attribute name="parentDivStyle" required="false" default="filters-body-column"/>
+        <cc:attribute name="childrenDivStyle" required="false" default="filters-body-column-row"/>
+        <cc:attribute name="required" required="false" default="true"/>
+        <cc:attribute name="requiredMessage" required="false" default="Campo é obrigatório!"/>
+        <cc:attribute name="update" required="false"/>
+        <cc:attribute name="scrollHeight" required="false" default="250"/>
+        <cc:attribute name="dropdown" required="false" default="true"/>
+        <cc:attribute name="forceSelection" required="false" default="true"/>
+        <cc:attribute name="showMessage" required="false" default="true"/>
     </cc:interface>
 
     <cc:implementation>
-        <div class="filters-body-column">
+        <div class="#{cc.attrs.parentDivStyle}">
             <label class="form-label cardx-title">#{cc.attrs.label}</label>
 
-            <div class="filters-body-column-row">
+            <div class="#{cc.attrs.childrenDivStyle}">
                 <h:outputText id="#{cc.attrs.id}IdLabel"
                               styleClass="form-label badge-pill-id badge-muted"
-                              value="#{cc.attrs.badgeValue}" />
+                              value="#{cc.attrs.badgeValue}"/>
 
                 <p:autoComplete id="#{cc.attrs.id}"
                                 dropdown="#{cc.attrs.dropdown}"
@@ -40,13 +45,16 @@
                                 converter="#{cc.attrs.converter}"
                                 completeMethod="#{cc.attrs.completeMethod}"
                                 scrollHeight="#{cc.attrs.scrollHeight}"
-                                forceSelection="#{cc.attrs.forceSelection}">
+                                forceSelection="#{cc.attrs.forceSelection}"
+                                required="#{cc.attrs.required}"
+                                requiredMessage="#{cc.attrs.requiredMessage}">
                     <p:ajax event="itemSelect"
-                            update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}" />
+                            update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}"/>
                     <p:ajax event="clear"
-                            update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}" />
+                            update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}"/>
                 </p:autoComplete>
             </div>
+            <p:message for="@previous" styleClass="field-error" rendered="#{cc.attrs.showMessage}"/>
         </div>
     </cc:implementation>
 </ui:component>

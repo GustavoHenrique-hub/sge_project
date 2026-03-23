@@ -23,15 +23,33 @@
                     <cmp:baseAutocomplete
                             id="dropDownProfessor"
                             label="Professor"
-                            value="#{professorBean.filtroNome}"
-                            badgeValue="#{professorBean.filtroNome}"
+                            value="#{professorDisciplinaBean.filtroProfessor}"
+                            badgeValue="#{professorDisciplinaBean.filtroProfessor != null ? professorDisciplinaBean.filtroProfessor.rm : null}"
                             completeMethod="#{professorBean.completeProfessor}"
-                            itemLabel="#{item}"
-                            itemValue="#{item}" />
+                            converter="#{professorEntityConverter}"
+                            itemLabelProperty="nome"
+                            parentDivStyle="filters-body-column"
+                            childrenDivStyle="filters-body-column-row"
+                            showMessage="false"/>
+
                     <div class="filters-body-button-column">
-                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{professorBean.filtrar}">
+                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{professorDisciplinaBean.filtrar}">
                             <f:ajax execute="@form" render=":growl :formListaProfessor:listaProfessores"/>
                         </h:commandButton>
+                    </div>
+                    <div class="filters-body-button-column">
+                        <button class="btn-primaryx"
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalNovoProfessor">Cadastrar Professor
+                        </button>
+                    </div>
+                    <div class="filters-body-button-column">
+                        <button class="btn-primaryx"
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalNovaMateria">Cadastrar Matéria
+                        </button>
                     </div>
                 </div>
             </h:form>
@@ -47,11 +65,11 @@
             <div class="cardx-body">
                 <div class="table-scroll">
                     <h:form id="formListaProfessor">
-                        <h:dataTable styleClass="table-modern" id="listaProfessores" var="professor"
-                                     value="#{professorBean.professores}" rowKey="#{professor.id}">
+                        <h:dataTable styleClass="table-modern" id="listaProfessores" var="professores"
+                                     value="#{professorDisciplinaBean.professorDisciplinas}" rowKey="#{professores.id}">
                             <h:column class="d-flex gap-2">
                                 <f:facet name="header">Acoes</f:facet>
-                                <h:commandButton action="#{professorBean.detalhar(professor)}"
+                                <h:commandButton action="#{professorDisciplinaBean.detalhar(professores)}"
                                                  title="Detalhar"
                                                  styleClass="icon-action-btn"
                                                  value="&#xe908;">
@@ -60,20 +78,20 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Nome</f:facet>
-                                <h:outputText value="#{professor.nome}"/>
+                                <h:outputText value="#{professores.professor.nome}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Disciplina</f:facet>
-                                <h:outputText value="#{professor.disciplina}"/>
+                                <h:outputText value="#{professores.disciplina.descricao}"/>
                             </h:column>
                             <h:column>
-                                <f:facet name="header">Contato</f:facet>
-                                <h:outputText value="#{professor.contato}"/>
+                                <f:facet name="header">RM</f:facet>
+                                <h:outputText value="#{professores.professor.rm}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Situacao</f:facet>
-                                <span class="badge-pill #{professorBean.situacaoSeverity(professor.situacao)}">
-                                    #{professor.situacao}
+                                <span class="badge-pill #{professorDisciplinaBean.situacaoSeverity(professores.situacao != null ? professores.situacao.situacao : null)}">
+                                    #{professores.situacao != null ? professores.situacao.situacao : '-'}
                                 </span>
                             </h:column>
                         </h:dataTable>
@@ -83,7 +101,7 @@
         </div>
 
         <h:form id="formDetalheProfessor">
-            <h:panelGroup rendered="#{not empty professorBean.detalheSelecionado}">
+            <h:panelGroup rendered="#{not empty professorDisciplinaBean.detalheSelecionado}">
                 <div class="cardx">
                     <div class="cardx-header">
                         <div>
@@ -92,13 +110,29 @@
                         </div>
                     </div>
                     <div class="row g-2">
-                        <div class="col-md-3"><span class="badge-pill badge-muted">ID: #{professorBean.detalheSelecionado.id}</span></div>
-                        <div class="col-md-3"><span class="badge-pill badge-muted">Nome: #{professorBean.detalheSelecionado.nome}</span></div>
-                        <div class="col-md-3"><span class="badge-pill badge-muted">Disciplina: #{professorBean.detalheSelecionado.disciplina}</span></div>
-                        <div class="col-md-3"><span class="badge-pill badge-muted">Contato: #{professorBean.detalheSelecionado.contato}</span></div>
+                        <div class="col-md-3"><span class="badge-pill badge-muted">ID: #{professorDisciplinaBean.detalheSelecionado.id}</span></div>
+                        <div class="col-md-3"><span class="badge-pill badge-muted">Nome: #{professorDisciplinaBean.detalheSelecionado.professor.nome}</span></div>
+                        <div class="col-md-3"><span class="badge-pill badge-muted">Disciplina: #{professorDisciplinaBean.detalheSelecionado.disciplina.descricao}</span></div>
+                        <div class="col-md-3"><span class="badge-pill badge-muted">RM: #{professorDisciplinaBean.detalheSelecionado.professor.rm}</span></div>
                     </div>
                 </div>
             </h:panelGroup>
         </h:form>
+
+        <cmp:baseModal
+                modalId="modalNovoProfessor"
+                labelledby="modalNovoProfessorLabel"
+                modalTitle="Cadastrar Professor"
+                modalTitleId="modalNovoProfessorLabel"
+                modalImport="newprofessor.xhtml"
+        />
+
+        <cmp:baseModal
+                modalId="modalNovaMateria"
+                labelledby="modalNovaMateriaLabel"
+                modalTitle="Cadastrar Matéria"
+                modalTitleId="modalNovaMateriaLabel"
+                modalImport="newmateria.xhtml"
+        />
     </ui:define>
 </ui:composition>

@@ -6,14 +6,7 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <h:form id="formAlunoTurma">
-
-        <p:messages id="msgsAlunoTurma"
-                    showSummary="true"
-                    showDetail="true"
-                    closable="true"
-                    styleClass="mb-3"/>
-
-        <div class="modal-link-grid">
+        <div id="grid" class="modal-link-grid">
             <div class="modal-link-item">
                 <label class="form-label cardx-title">Aluno</label>
                 <div class="modal-id-inline">
@@ -31,6 +24,7 @@
                         <p:ajax event="clear" update="alunoIdLabel"/>
                     </p:autoComplete>
                 </div>
+                <p:message for="dropDownAlunoModal" styleClass="field-error"/>
             </div>
 
             <div class="modal-link-item">
@@ -50,6 +44,7 @@
                         <p:ajax event="clear" update="turmaIdLabel"/>
                     </p:autoComplete>
                 </div>
+                <p:message for="dropDownTurmaModal" styleClass="field-error"/>
             </div>
         </div>
 
@@ -61,10 +56,11 @@
 
             <!-- Submit do JSF -->
             <p:commandButton value="Salvar"
-                             styleClass="btn-primaryx"
+                             styleClass="btn-primaryx ui-button-outlined"
+                             style="border-radius: 10px"
                              action="#{alunoTurmaBean.confirmarPelosFiltros}"
                              process="@form"
-                             update=":growl :msgs :formMatricula:listaMatriculas @form msgsAlunoTurma"
+                             update=":growl :formMatricula:listaMatriculas @form"
                              oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalMatricula')).hide();}"/>
         </div>
 

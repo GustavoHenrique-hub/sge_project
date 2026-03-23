@@ -6,12 +6,12 @@
                 xmlns:cmp="jakarta.faces.composite/components"
                 xmlns:p="http://primefaces.org/ui">
 
-    <h:form id="formNovoAluno">
+    <h:form id="formNovoProfessor">
         <div class="field-group">
             <h:panelGrid id="grid" columns="3" cellpadding="7">
                 <div class="field-group">
                     <label class="form-label">Nome Completo</label>
-                    <h:inputText value="#{alunoBean.alunoDTO.nome}"
+                    <h:inputText value="#{professorBean.professorDTO.nome}"
                                  styleClass="form-control"
                                  style="text-transform: uppercase;"
                                  required="true"
@@ -22,7 +22,7 @@
 
                 <div class="field-group">
                     <label class="form-label">CPF</label>
-                    <h:inputText value="#{alunoBean.alunoDTO.cpf}"
+                    <h:inputText value="#{professorBean.professorDTO.cpf}"
                                  styleClass="form-control"
                                  style="text-transform: uppercase;"
                                  pt:maxlength="14"
@@ -36,7 +36,7 @@
 
                 <div class="field-group">
                     <label class="form-label">RG</label>
-                    <h:inputText value="#{alunoBean.alunoDTO.rg}"
+                    <h:inputText value="#{professorBean.professorDTO.rg}"
                                  styleClass="form-control"
                                  style="text-transform: uppercase;"
                                  pt:maxlength="12"
@@ -50,7 +50,7 @@
 
                 <div class="field-group">
                     <label class="form-label">Data de Nascimento</label>
-                    <h:inputText value="#{alunoBean.alunoDTO.dtNasc}"
+                    <h:inputText value="#{professorBean.professorDTO.dtNasc}"
                                  styleClass="form-control"
                                  type="date"
                                  required="true"
@@ -64,7 +64,7 @@
                 <div class="field-group">
                     <div class="field-group">
                         <label class="form-label">Email</label>
-                        <h:inputText value="#{alunoBean.alunoDTO.email}"
+                        <h:inputText value="#{professorBean.professorDTO.email}"
                                      styleClass="form-control"
                                      type="email"
                         />
@@ -74,7 +74,7 @@
 
                 <div class="field-group">
                     <label class="form-label">Telefone</label>
-                    <h:inputText value="#{alunoBean.alunoDTO.telefone}"
+                    <h:inputText value="#{professorBean.professorDTO.telefone}"
                                  styleClass="form-control"
                                  style="text-transform: uppercase;"
                                  pt:maxlength="14"
@@ -95,10 +95,10 @@
             <p:commandButton value="Salvar"
                              styleClass="btn-primaryx ui-button-outlined"
                              style="border-radius: 10px"
-                             action="#{alunoBean.salvar}"
+                             action="#{professorBean.salvar}"
                              process="@form"
                              update=":growl @form grid"
-                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovoAluno')).hide();}" />
+                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovoProfessor')).hide();}" />
         </div>
 
     </h:form>

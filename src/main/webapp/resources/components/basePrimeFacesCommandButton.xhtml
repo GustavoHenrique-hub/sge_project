@@ -1,0 +1,28 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="jakarta.faces.facelets"
+              xmlns:h="jakarta.faces.html"
+              xmlns:f="jakarta.faces.core"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:cc="jakarta.faces.composite">
+
+    <cc:interface>
+        <cc:attribute name="value" required="true"/>
+        <cc:attribute name="myAction" required="true" method-signature="void action()"/>
+        <cc:attribute name="modal" required="true"/>
+        <cc:attribute name="formlista" required="false"/>
+        <cc:attribute name="grid" required="false"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <div>
+            <p:commandButton value="#{cc.attrs.value}"
+                             styleClass="btn-primaryx ui-button-outlined"
+                             style="border-radius: 10px"
+                             action="#{cc.attrs.myAction}"
+                             process="@form"
+                             update=":growl @form #{cc.attrs.formlista}"
+                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('#{cc.attrs.modal}')).hide();}"
+            />
+        </div>
+    </cc:implementation>
+</ui:component>

@@ -27,7 +27,8 @@
                             badgeValue="#{alunoTurmaBean.filtroAluno != null ? alunoTurmaBean.filtroAluno.rm : null}"
                             completeMethod="#{alunoTurmaBean.completeAluno}"
                             converter="#{alunoEntityConverter}"
-                            itemLabelProperty="nome" />
+                            itemLabelProperty="nome"
+                            showMessage="false"/>
 
                     <div class="filters-body-button-column">
                         <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{alunoTurmaBean.filtrar}">

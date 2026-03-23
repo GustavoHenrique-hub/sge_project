@@ -1,10 +1,13 @@
 package com.enterprise.controller.gestao;
 
 import com.enterprise.dto.gestao.ProfessorDTO;
+import com.enterprise.model.entity.gestao.ProfessorEntity;
+import com.enterprise.service.gestao.ProfessorService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,66 +23,49 @@ import java.util.stream.Collectors;
 @Setter
 public class ProfessorBean implements Serializable {
 
-    private String filtroNome;
-    private List<ProfessorDTO> professores = new ArrayList<>();
-    private ProfessorDTO detalheSelecionado;
+    @Inject
+    private ProfessorService service;
+
+    private ProfessorDTO professorDTO = new ProfessorDTO();
+    private List<ProfessorEntity> professores = new ArrayList<>();
 
     @PostConstruct
     public void init() {
         recarregarLista();
     }
 
-    private void recarregarLista() {
-        professores = new ArrayList<>(List.of(
-                new ProfessorDTO(1L, "Marcos Lima", "Matematica", "(11) 99999-9999", "ATIVO"),
-                new ProfessorDTO(2L, "Carla Souza", "Portugues", "(11) 98888-7777", "ATIVO"),
-                new ProfessorDTO(3L, "Roberto Alves", "Historia", "(11) 97777-6666", "INATIVO")
-        ));
-    }
-
-    public void filtrar() {
+    public void salvar() {
         try {
-            List<ProfessorDTO> listaBase = new ArrayList<>(List.of(
-                    new ProfessorDTO(1L, "Marcos Lima", "Matematica", "(11) 99999-9999", "ATIVO"),
-                    new ProfessorDTO(2L, "Carla Souza", "Portugues", "(11) 98888-7777", "ATIVO"),
-                    new ProfessorDTO(3L, "Roberto Alves", "Historia", "(11) 97777-6666", "INATIVO")
-            ));
-            if (filtroNome != null && !filtroNome.isBlank()) {
-                professores = listaBase.stream()
-                        .filter(p -> p.getNome() != null && p.getNome().toLowerCase().contains(filtroNome.toLowerCase()))
-                        .collect(Collectors.toList());
-            } else {
-                professores = listaBase;
+            if (professorDTO.getId() == null) {
+                service.criar(professorDTO);
+                addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Professor criado.");
             }
-            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Filtro aplicado. Registros: " + professores.size() + ".");
+            limparFormulario();
+            recarregarLista();
         } catch (Exception e) {
-            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao filtrar. " + e.getMessage());
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
 
-    public void detalhar(ProfessorDTO professor) {
-        detalheSelecionado = professor;
+    private void recarregarLista() {
+        professores = service.findAll();
     }
 
-    public List<String> completeProfessor(String query) {
-        String format = query == null ? "" : query.toLowerCase();
-        return new ArrayList<>(List.of("Marcos Lima", "Carla Souza", "Roberto Alves")).stream()
-                .filter(nome -> nome != null && nome.toLowerCase().startsWith(format))
-                .collect(Collectors.toList());
-    }
-
-    public String situacaoSeverity(String situacao) {
-        if (situacao == null) {
-            return "info";
-        }
-        return switch (situacao.toUpperCase()) {
-            case "ATIVO" -> "badge-success";
-            case "INATIVO" -> "badge-danger";
-            default -> "warning";
-        };
+    public void limparFormulario() {
+        professorDTO = new ProfessorDTO();
     }
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));
     }
+
+    public List<ProfessorEntity> completeProfessor(String query) {
+        String formatProfessor = query == null ? "" : query.toLowerCase();
+        return service.findAll()
+                .stream()
+                .filter(professor -> professor.getNome() != null
+                        && professor.getNome().toLowerCase().startsWith(formatProfessor))
+                .collect(Collectors.toList());
+    }
+
 }

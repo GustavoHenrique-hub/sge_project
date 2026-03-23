@@ -28,7 +28,8 @@
                             badgeValue="#{perfilUsuarioBean.filtroUsuario != null ? perfilUsuarioBean.filtroUsuario.id : null}"
                             completeMethod="#{perfilUsuarioBean.completeUsuario}"
                             converter="#{usuarioEntityConverter}"
-                            itemLabelProperty="login" />
+                            itemLabelProperty="login"
+                            showMessage="false"/>
 
                     <cmp:baseAutocomplete
                             id="dropDownPerfil"
@@ -37,7 +38,8 @@
                             badgeValue="#{perfilUsuarioBean.filtroPerfil != null ? perfilUsuarioBean.filtroPerfil.id : null}"
                             completeMethod="#{perfilBean.completePerfil}"
                             converter="#{perfilEntityConverter}"
-                            itemLabelProperty="perfil" />
+                            itemLabelProperty="perfil"
+                            showMessage="false"/>
 
                     <cmp:baseAutocomplete
                             id="dropDownSituacao"
@@ -46,7 +48,8 @@
                             badgeValue="#{perfilUsuarioBean.filtroSituacao != null ? perfilUsuarioBean.filtroSituacao.id : null}"
                             completeMethod="#{situacaoBean.completeSituacao}"
                             converter="#{situacaoEntityConverter}"
-                            itemLabelProperty="situacao" />
+                            itemLabelProperty="situacao"
+                            showMessage="false"/>
                     <div class="filters-body-button-column">
                         <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{perfilUsuarioBean.filtrar}"
                                          update=":growl :formLista:listaUsers"/>

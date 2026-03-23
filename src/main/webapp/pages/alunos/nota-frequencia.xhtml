@@ -27,7 +27,8 @@
                             badgeValue="#{lancamentoBean.filtroTurma != null ? lancamentoBean.filtroTurma.id : null}"
                             completeMethod="#{lancamentoBean.completeTurma}"
                             converter="#{turmaEntityConverter}"
-                            itemLabelProperty="turma" />
+                            itemLabelProperty="turma"
+                            showMessage="false"/>
                     <div class="filters-body-column">
                         <label class="form-label cardx-title">Bimestre</label>
                         <h:selectOneMenu value="#{lancamentoBean.bimestre}" styleClass="form-select">

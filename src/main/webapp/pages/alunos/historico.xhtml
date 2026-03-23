@@ -24,10 +24,13 @@
                             id="dropDownAlunoHistorico"
                             label="Aluno"
                             value="#{historicoBean.filtroAluno}"
-                            badgeValue="#{historicoBean.filtroAluno != null ? historicoBean.filtroAluno.id : null}"
+                            badgeValue="#{historicoBean.filtroAluno != null ? historicoBean.filtroAluno.rm : null}"
                             completeMethod="#{historicoBean.completeAluno}"
                             converter="#{alunoEntityConverter}"
-                            itemLabelProperty="nome" />
+                            itemLabelProperty="nome"
+                            parentDivStyle="filters-body-column"
+                            childrenDivStyle="filters-body-column-row"
+                            showMessage="false"/>
                     <div class="filters-body-button-column">
                         <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{historicoBean.buscar}">
                             <f:ajax execute="@form" render=":growl :formListaHistorico:listaHistorico"/>

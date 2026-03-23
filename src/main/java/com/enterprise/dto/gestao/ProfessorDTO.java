@@ -1,8 +1,11 @@
 package com.enterprise.dto.gestao;
 
+import com.enterprise.model.entity.gestao.ProfessorEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Date;
 
 @Getter
 @Setter
@@ -10,16 +13,22 @@ import lombok.Setter;
 public class ProfessorDTO {
 
     private Long id;
+    private String rm;
     private String nome;
-    private String disciplina;
-    private String contato;
-    private String situacao;
+    private String cpf;
+    private String rg;
+    private Date dtNasc;
+    private String email;
+    private String telefone;
 
-    public ProfessorDTO(Long id, String nome, String disciplina, String contato, String situacao) {
-        this.id = id;
-        this.nome = nome;
-        this.disciplina = disciplina;
-        this.contato = contato;
-        this.situacao = situacao;
+    public ProfessorDTO(ProfessorEntity professor) {
+        this.id = professor.getId();
+        this.rm = professor.getRm();
+        this.cpf = professor.getCpf();
+        this.rg = professor.getRg();
+        this.nome = professor.getNome();
+        this.dtNasc = professor.getDtNasc();
+        this.email = professor.getEmail();
+        this.telefone = professor.getTelefone();
     }
 }

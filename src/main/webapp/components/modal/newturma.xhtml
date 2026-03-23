@@ -6,39 +6,33 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <h:form id="formNovaTurma">
+        <div class="field-group">
+            <h:panelGrid id="grid" columns="3" cellpadding="7">
+                <div class="field-group">
+                    <label class="form-label">Nome da Turma</label>
+                    <h:inputText value="#{turmaBean.turmaDTO.turma}"
+                                 styleClass="form-control"
+                                 style="text-transform: uppercase;"
+                                 required="true"
+                                 requiredMessage="Nome da turma é obrigatório."
+                    />
+                    <p:message for="@previous"/>
+                </div>
+            </h:panelGrid>
+        </div>
 
-        <p:messages id="msgsNovaTurma"
-                    showSummary="true"
-                    showDetail="true"
-                    closable="true"
-                    styleClass="mb-3"/>
+        <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
+            <button type="button" class="btn-ghostx" data-bs-dismiss="modal">
+                Cancelar
+            </button>
 
-        <div class="row g-3">
-
-            <div class="col-md-4">
-                <label class="form-label">Nome da Turma</label>
-                <h:inputText value="#{turmaBean.turmaDTO.turma}"
-                             styleClass="form-control"
-                             style="text-transform: uppercase;"
-                             required="true"
-                             requiredMessage="Nome e obrigatorio."
-                             />
-            </div>
-
-            <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
-                <!-- Fecha modal sem submit -->
-                <button type="button" class="btn-ghostx" data-bs-dismiss="modal">
-                    Cancelar
-                </button>
-
-                <!-- Submit do JSF -->
-                <p:commandButton value="Salvar"
-                                 styleClass="btn-primaryx"
-                                 action="#{turmaBean.salvar}"
-                                 process="@form"
-                                 update=":growl :msgs :formListaTurma:listaTurmas @form msgsNovaTurma"
-                                 oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovaTurma')).hide();}" />
-            </div>
+            <p:commandButton value="Salvar"
+                             styleClass="btn-primaryx ui-button-outlined"
+                             style="border-radius: 10px"
+                             action="#{turmaBean.salvar}"
+                             process="@form"
+                             update=":growl :formListaTurma:listaTurmas @form grid"
+                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovaTurma')).hide();}" />
         </div>
     </h:form>
 </ui:composition>

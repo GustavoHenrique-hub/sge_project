@@ -6,57 +6,53 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <h:form id="formNewUser">
+        <div class="field-group">
+            <h:panelGrid id="grid" columns="3" cellpadding="7">
+                <div class="field-group">
+                    <label class="form-label">Login</label>
+                    <h:inputText value="#{usuarioBean.form.login}"
+                                 styleClass="form-control"
+                                 style="text-transform: uppercase;"
+                                 required="true"
+                                 requiredMessage="Login e obrigatorio."
+                    />
+                    <p:message for="@previous"/>
+                </div>
 
-        <p:messages id="msgsNewUser"
-                    showSummary="true"
-                    showDetail="true"
-                    closable="true"
-                    styleClass="mb-3"/>
+                <div class="field-group">
+                    <label class="form-label">Usuário</label>
+                    <h:inputText value="#{usuarioBean.form.usuario}"
+                                 styleClass="form-control"
+                                 style="text-transform: uppercase;"
+                                 required="true"
+                                 requiredMessage="Usuario e obrigatorio."
+                    />
+                    <p:message for="@previous"/>
+                </div>
 
-        <div class="row g-3">
-
-            <div class="col-md-4">
-                <label class="form-label">Login</label>
-                <h:inputText value="#{usuarioBean.form.login}"
-                             styleClass="form-control"
-                             style="text-transform: uppercase;"
-                             required="true"
-                             requiredMessage="Login e obrigatorio."
-                             />
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label">Usuário</label>
-                <h:inputText value="#{usuarioBean.form.usuario}"
-                             styleClass="form-control"
-                             style="text-transform: uppercase;"
-                             required="true"
-                             requiredMessage="Usuario e obrigatorio."
-                             />
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label">Senha</label>
-                <h:inputSecret value="#{usuarioBean.form.senha}"
-                               styleClass="form-control"
-                               required="true"
-                               requiredMessage="Senha e obrigatoria."
-                               />
-            </div>
+                <div class="field-group">
+                    <label class="form-label">Senha</label>
+                    <h:inputSecret value="#{usuarioBean.form.senha}"
+                                   styleClass="form-control"
+                                   required="true"
+                                   requiredMessage="Senha e obrigatoria."
+                    />
+                    <p:message for="@previous"/>
+                </div>
+            </h:panelGrid>
         </div>
 
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
-            <!-- Fecha modal sem submit -->
             <button type="button" class="btn-ghostx" data-bs-dismiss="modal">
                 Cancelar
             </button>
 
-            <!-- Submit do JSF -->
             <p:commandButton value="Salvar"
-                             styleClass="btn-primaryx"
+                             styleClass="btn-primaryx ui-button-outlined"
+                             style="border-radius: 10px"
                              action="#{usuarioBean.salvar}"
                              process="@form"
-                             update=":growl :msgs :formLista:listaUsers @form msgsNewUser"
+                             update=":growl :formLista:listaUsers @form grid"
                              oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNewUser')).hide();}" />
         </div>
 

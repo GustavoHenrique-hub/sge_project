@@ -27,11 +27,21 @@
                             badgeValue="#{turmaBean.filtroTurma != null ? turmaBean.filtroTurma.codigo : null}"
                             completeMethod="#{turmaBean.completeTurma}"
                             converter="#{turmaEntityConverter}"
-                            itemLabelProperty="turma" />
+                            itemLabelProperty="turma"
+                            parentDivStyle="filters-body-column"
+                            childrenDivStyle="filters-body-column-row"
+                            showMessage="false"/>
                     <div class="filters-body-button-column">
                         <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{turmaBean.filtrar}">
                             <f:ajax execute="@form" render=":growl :formListaTurma:listaTurmas"/>
                         </h:commandButton>
+                    </div>
+                    <div class="filters-body-button-column">
+                        <button class="btn-primaryx"
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalNovaTurma">Cadastrar Turma
+                        </button>
                     </div>
                 </div>
             </h:form>
@@ -42,13 +52,6 @@
                 <div>
                     <div class="cardx-title">Lista de turmas</div>
                     <div class="cardx-subtitle">Submódulo de consulta</div>
-                </div>
-                <div>
-                    <button class="btn-primaryx"
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalNovaTurma">Cadastrar Turma
-                    </button>
                 </div>
             </div>
             <div class="cardx-body">

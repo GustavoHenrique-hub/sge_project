@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:cmp="jakarta.faces.composite/components"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="formNewMateria">
+        <div id="grid" class="modal-link-grid">
+                <cmp:baseAutocomplete id="dropDownProfessorModal"
+                                      label="Professor"
+                                      value="#{professorDisciplinaBean.filtroProfessor}"
+                                      badgeValue="#{professorDisciplinaBean.filtroProfessor != null ? professorDisciplinaBean.filtroProfessor.rm : null}"
+                                      completeMethod="#{professorBean.completeProfessor}"
+                                      converter="#{professorEntityConverter}"
+                                      itemLabelProperty="nome"
+                                      parentDivStyle="modal-link-item"
+                                      childrenDivStyle="modal-id-inline"
+                                      required="true"
+                                      requiredMessage="Professor é obrigatório!"/>
+
+                <cmp:baseAutocomplete id="dropDownDisciplinaModal"
+                                      label="Disciplina"
+                                      value="#{professorDisciplinaBean.filtroDisciplina}"
+                                      badgeValue="#{professorDisciplinaBean.filtroDisciplina != null ? professorDisciplinaBean.filtroDisciplina.codigo : null}"
+                                      completeMethod="#{disciplinaBean.completeDisciplina}"
+                                      converter="#{disciplinaEntityConverter}"
+                                      itemLabelProperty="descricao"
+                                      parentDivStyle="modal-link-item"
+                                      childrenDivStyle="modal-id-inline"
+                                      required="true"
+                                      requiredMessage="Disciplina é obrigatório!"/>
+            </div>
+
+
+        <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
+            <!-- Fecha modal sem submit -->
+            <button type="button" class="btn-ghostx" data-bs-dismiss="modal">
+                Cancelar
+            </button>
+
+            <!-- Submit do JSF -->
+            <p:commandButton value="Salvar"
+                             styleClass="btn-primaryx ui-button-outlined"
+                             style="border-radius: 10px"
+                             action="#{alunoTurmaBean.confirmarPelosFiltros}"
+                             process="@form"
+                             update=":growl :formListaProfessor:listaProfessores @form"
+                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalMatricula')).hide();}"/>
+        </div>
+
+    </h:form>
+
+</ui:composition>

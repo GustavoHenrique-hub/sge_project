@@ -32,26 +32,14 @@
                             childrenDivStyle="filters-body-column-row"
                             showMessage="false"
                             required="false"/>
+                    <cmp:baseCommandButton value="Filtrar"
+                                           action="#{professorDisciplinaBean.filtrar}"
+                                           render=":growl :formListaProfessor:listaProfessores"/>
+                    <cmp:baseButton dataBsToggle="modal" styleClass="btn-primaryx" dataBsTarget="#modalNovoProfessor"
+                                    buttonLabel="Cadastrar Professor" parentDivStyle="filters-body-button-column"/>
 
-                    <div class="filters-body-button-column">
-                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{professorDisciplinaBean.filtrar}">
-                            <f:ajax execute="@form" render=":growl :formListaProfessor:listaProfessores"/>
-                        </h:commandButton>
-                    </div>
-                    <div class="filters-body-button-column">
-                        <button class="btn-primaryx"
-                                type="button"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalNovoProfessor">Cadastrar Professor
-                        </button>
-                    </div>
-                    <div class="filters-body-button-column">
-                        <button class="btn-primaryx"
-                                type="button"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalNovaMateria">Cadastrar Matéria
-                        </button>
-                    </div>
+                    <cmp:baseButton dataBsToggle="modal" styleClass="btn-primaryx" dataBsTarget="#modalNovaMateria"
+                                    buttonLabel="Cadastrar Matéria" parentDivStyle="filters-body-button-column"/>
                 </div>
             </h:form>
         </div>
@@ -70,12 +58,13 @@
                                      value="#{professorDisciplinaBean.professorDisciplinas}" rowKey="#{professores.id}">
                             <h:column class="d-flex gap-2">
                                 <f:facet name="header">Acoes</f:facet>
-                                <h:commandButton action="#{professorDisciplinaBean.detalhar(professores)}"
-                                                 title="Detalhar"
-                                                 styleClass="icon-action-btn"
-                                                 value="&#xe908;">
-                                    <f:ajax execute="@this" render=":formDetalheProfessor"/>
-                                </h:commandButton>
+                                <cmp:baseIconButton id="detalharProfessor"
+                                                    action="#{professorDisciplinaBean.detalhar(professores)}"
+                                                    title="Detalhar"
+                                                    styleClass="icon-action-btn"
+                                                    ajax="true"
+                                                    render=":formDetalheProfessor"
+                                                    value="&#xe908;"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Nome</f:facet>
@@ -111,10 +100,18 @@
                         </div>
                     </div>
                     <div class="row g-2">
-                        <div class="col-md-3"><span class="badge-pill badge-muted">ID: #{professorDisciplinaBean.detalheSelecionado.id}</span></div>
-                        <div class="col-md-3"><span class="badge-pill badge-muted">Nome: #{professorDisciplinaBean.detalheSelecionado.professor.nome}</span></div>
-                        <div class="col-md-3"><span class="badge-pill badge-muted">Disciplina: #{professorDisciplinaBean.detalheSelecionado.disciplina.descricao}</span></div>
-                        <div class="col-md-3"><span class="badge-pill badge-muted">RM: #{professorDisciplinaBean.detalheSelecionado.professor.rm}</span></div>
+                        <div class="col-md-3"><span
+                                class="badge-pill badge-muted">ID: #{professorDisciplinaBean.detalheSelecionado.id}</span>
+                        </div>
+                        <div class="col-md-3"><span
+                                class="badge-pill badge-muted">Nome: #{professorDisciplinaBean.detalheSelecionado.professor.nome}</span>
+                        </div>
+                        <div class="col-md-3"><span
+                                class="badge-pill badge-muted">Disciplina: #{professorDisciplinaBean.detalheSelecionado.disciplina.descricao}</span>
+                        </div>
+                        <div class="col-md-3"><span
+                                class="badge-pill badge-muted">RM: #{professorDisciplinaBean.detalheSelecionado.professor.rm}</span>
+                        </div>
                     </div>
                 </div>
             </h:panelGroup>

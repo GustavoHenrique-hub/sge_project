@@ -8,7 +8,6 @@
 
     <h:form id="formPerfilUser">
         <div id="grid" class="modal-link-grid">
-            <div class="modal-link-item">
                 <cmp:baseAutocomplete
                         id="dropDownUsuarioModal"
                         label="Usuário"
@@ -21,9 +20,6 @@
                         childrenDivStyle="modal-id-inline"
                         required="false"
                         requiredMessage="Usuario e obrigatorio."/>
-            </div>
-
-            <div class="modal-link-item">
                 <cmp:baseAutocomplete
                         id="dropDownPerfilModal"
                         label="Perfil"
@@ -36,9 +32,6 @@
                         childrenDivStyle="modal-id-inline"
                         required="false"
                         requiredMessage="Perfil e obrigatorio."/>
-            </div>
-
-            <div class="modal-link-item">
                 <cmp:baseAutocomplete
                         id="dropDownSituacaoModal"
                         label="Situação"
@@ -51,13 +44,13 @@
                         childrenDivStyle="modal-id-inline"
                         required="true"
                         requiredMessage="Situacao e obrigatoria."/>
-            </div>
         </div>
 
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
-            <button type="button" class="btn-ghostx" data-bs-dismiss="modal">
-                Cancelar
-            </button>
+            <cmp:baseButton styleClass="btn-ghostx"
+                            dataBsDismiss="modal"
+                            buttonLabel="Cancelar"
+                            parentDivStyle=""/>
 
             <p:commandButton value="Salvar"
                              styleClass="btn-primaryx"

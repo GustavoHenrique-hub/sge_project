@@ -53,10 +53,9 @@
                             itemLabelProperty="situacao"
                             showMessage="false"
                             required="false"/>
-                    <div class="filters-body-button-column">
-                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{perfilUsuarioBean.filtrar}"
-                                         update=":growl :formLista:listaUsers"/>
-                    </div>
+                    <cmp:baseCommandButton value="Filtrar"
+                                           action="#{perfilUsuarioBean.filtrar}"
+                                           render=":growl :formLista:listaUsers"/>
                 </div>
             </h:form>
         </div>
@@ -67,17 +66,15 @@
                     <div class="cardx-title">Lista de usuários</div>
                     <div class="cardx-subtitle">Controle de acesso</div>
                 </div>
-                <div>
-                    <button class="btn-primaryx"
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalPerfilUser">Novo vínculo
-                    </button>
-                    <button class="btn-primaryx"
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalNewUser">Novo usuário
-                    </button>
+                <div class="d-flex gap-2">
+                    <cmp:baseButton dataBsToggle="modal"
+                                    dataBsTarget="#modalPerfilUser"
+                                    buttonLabel="Novo vínculo"
+                                    parentDivStyle=""/>
+                    <cmp:baseButton dataBsToggle="modal"
+                                    dataBsTarget="#modalNewUser"
+                                    buttonLabel="Novo usuário"
+                                    parentDivStyle=""/>
                 </div>
             </div>
             <div class="cardx-body">
@@ -88,27 +85,33 @@
                                      rowKey="#{usuario.id}">
                             <h:column class="d-flex gap-2">
                                 <f:facet name="header">Ações</f:facet>
-                                <h:commandButton action="#{perfilUsuarioBean.inativarVinculo(usuario)}"
-                                                 title="Inativar vínculo"
-                                                 rendered="#{!perfilUsuarioBean.isSituacaoInativa(usuario)}"
-                                                 styleClass="icon-action-btn icon-ban"
-                                                 value="&#xe935;"
-                                                 update=":formLista:listaUsers :growl">
-                                </h:commandButton>
-                                <h:commandButton action="#{perfilUsuarioBean.ativarVinculo(usuario)}"
-                                                 title="Ativar vínculo"
-                                                 rendered="#{perfilUsuarioBean.isSituacaoInativa(usuario)}"
-                                                 styleClass="icon-action-btn icon-check"
-                                                 value="&#xe909;"
-                                                 update=":formLista:listaUsers :growl">
-                                </h:commandButton>
-                                <h:commandButton action="#{perfilUsuarioBean.excluirVinculo(usuario)}"
-                                                 title="Excluir vínculo"
-                                                 rendered="#{perfilUsuarioBean.isSituacaoInativa(usuario)}"
-                                                 styleClass="icon-action-btn icon-trash"
-                                                 value="&#xe93d;"
-                                                 update=":formLista:listaUsers :growl">
-                                </h:commandButton>
+
+                                <cmp:baseIconButton id="inativarVinculo"
+                                                    action="#{perfilUsuarioBean.inativarVinculo(usuario)}"
+                                                    title="Inativar vínculo"
+                                                    styleclass="icon-action-btn icon-ban"
+                                                    rendered="#{!perfilUsuarioBean.isSituacaoInativa(usuario)}"
+                                                    ajax="true"
+                                                    value="&#xe935;"
+                                                    update=":formLista:listaUsers :growl" />
+
+                                <cmp:baseIconButton id="ativarVinculo"
+                                                    action="#{perfilUsuarioBean.ativarVinculo(usuario)}"
+                                                    title="Ativar vínculo"
+                                                    styleclass="icon-action-btn icon-check"
+                                                    rendered="#{perfilUsuarioBean.isSituacaoInativa(usuario)}"
+                                                    ajax="true"
+                                                    value="&#xe909;"
+                                                    update=":formLista:listaUsers :growl" />
+
+                                <cmp:baseIconButton id="excluirVinculo"
+                                                    action="#{perfilUsuarioBean.excluirVinculo(usuario)}"
+                                                    title="Excluir vínculo"
+                                                    styleclass="icon-action-btn icon-trash"
+                                                    rendered="#{perfilUsuarioBean.isSituacaoInativa(usuario)}"
+                                                    ajax="true"
+                                                    value="&#xe93d;"
+                                                    update=":formLista:listaUsers :growl" />
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Usuário</f:facet>
@@ -139,14 +142,14 @@
                 labelledby="modalNewUserLabel"
                 modalTitle="Novo usuário"
                 modalTitleId="modalNewUserLabel"
-                modalImport="newuser.xhtml" />
+                modalImport="newuser.xhtml"/>
 
         <cmp:baseModal
                 modalId="modalPerfilUser"
                 labelledby="modalPerfilUserLabel"
                 modalTitle="Novo vínculo"
                 modalTitleId="modalPerfilUserLabel"
-                modalImport="perfiluser.xhtml" />
+                modalImport="perfiluser.xhtml"/>
     </ui:define>
 </ui:composition>
 

@@ -40,11 +40,9 @@
                             <f:selectItem itemLabel="4o" itemValue="4"/>
                         </h:selectOneMenu>
                     </div>
-                    <div class="filters-body-button-column">
-                        <h:commandButton styleClass="btn-ghostx" value="Carregar" action="#{lancamentoBean.carregar}">
-                            <f:ajax execute="@form" render=":growl :formListaLancamento:listaLancamentos"/>
-                        </h:commandButton>
-                    </div>
+                    <cmp:baseCommandButton value="Carregar"
+                                           action="#{lancamentoBean.carregar}"
+                                           render=":growl :formListaLancamento:listaLancamentos"/>
                 </div>
             </h:form>
         </div>
@@ -56,9 +54,11 @@
                     <div class="cardx-subtitle">Registros por matrícula</div>
                 </div>
                 <h:form>
-                    <h:commandButton value="Salvar tudo" styleClass="btn-primaryx" action="#{lancamentoBean.salvar}">
-                        <f:ajax execute="@form" render=":growl"/>
-                    </h:commandButton>
+                    <cmp:baseCommandButton value="Salvar tudo"
+                                           styleClass="btn-primaryx"
+                                           action="#{lancamentoBean.salvar}"
+                                           render=":growl"
+                                           parentDivStyle=""/>
                 </h:form>
             </div>
             <div class="cardx-body">
@@ -68,12 +68,13 @@
                                      value="#{lancamentoBean.lancamentos}" rowKey="#{registro.id}">
                             <h:column class="d-flex gap-2">
                                 <f:facet name="header">Acoes</f:facet>
-                                <h:commandButton action="#{lancamentoBean.detalhar(registro)}"
-                                                 title="Detalhar"
-                                                 styleClass="icon-action-btn"
-                                                 value="&#xe908;">
-                                    <f:ajax execute="@this" render=":formDetalheLancamento"/>
-                                </h:commandButton>
+                                <cmp:baseIconButton id="detalharLancamento"
+                                                    action="#{lancamentoBean.detalhar(registro)}"
+                                                    title="Detalhar"
+                                                    styleClass="icon-action-btn"
+                                                    ajax="true"
+                                                    render=":formDetalheLancamento"
+                                                    value="&#xe908;"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Aluno</f:facet>

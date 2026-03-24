@@ -31,19 +31,14 @@
                             required="false"
                             showMessage="false"/>
 
-                    <div class="filters-body-button-column">
-                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{alunoBean.filtrar}">
-                            <f:ajax execute="@form" render=":growl :formListaAluno:listaAlunos"/>
-                        </h:commandButton>
-                    </div>
+                    <cmp:baseCommandButton value="Filtrar"
+                                           action="#{alunoBean.filtrar}"
+                                           render=":growl :formListaAluno:listaAlunos"/>
 
-                    <div>
-                        <button class="btn-primaryx"
-                                type="button"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalNovoAluno">Cadastrar Aluno
-                        </button>
-                    </div>
+                    <cmp:baseButton dataBsToggle="modal"
+                                    dataBsTarget="#modalNovoAluno"
+                                    buttonLabel="Cadastrar Aluno"
+                                    parentDivStyle="filters-body-button-column"/>
                 </div>
             </h:form>
         </div>
@@ -62,12 +57,13 @@
                                      value="#{alunoBean.alunos}">
                             <h:column class="d-flex gap-2">
                                 <f:facet name="header">Ações</f:facet>
-                                <h:commandButton action="#{alunoTurmaBean.detalhar(alunos)}"
-                                                 title="Detalhar"
-                                                 styleClass="icon-action-btn"
-                                                 value="&#xe908;">
-                                    <f:ajax execute="@this" render=":formDetalhe"/>
-                                </h:commandButton>
+                                <cmp:baseIconButton id="detalharAluno"
+                                                    action="#{alunoBean.detalhar(alunos)}"
+                                                    title="Detalhar"
+                                                    styleClass="icon-action-btn"
+                                                    ajax="true"
+                                                    render=":formDetalhe"
+                                                    value="&#xe908;"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Nome</f:facet>
@@ -100,7 +96,7 @@
         </div>
 
         <h:form id="formDetalhe">
-            <h:panelGroup rendered="#{not empty alunoTurmaBean.detalheSelecionado}">
+            <h:panelGroup rendered="#{not empty alunoBean.detalheSelecionado}">
                 <div class="cardx">
                     <div class="cardx-header">
                         <div>
@@ -109,9 +105,9 @@
                         </div>
                     </div>
                     <div class="row g-2">
-                        <div class="col-md-4"><span class="badge-pill badge-muted">ID: #{alunoTurmaBean.detalheSelecionado.id}</span></div>
-                        <div class="col-md-4"><span class="badge-pill badge-muted">RM: #{alunoTurmaBean.detalheSelecionado.aluno.rm}</span></div>
-                        <div class="col-md-4"><span class="badge-pill badge-muted">Codigo turma: #{alunoTurmaBean.detalheSelecionado.turma.codigo}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">ID: #{alunoBean.detalheSelecionado.id}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">RM: #{alunoBean.detalheSelecionado.rm}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">CPF: #{alunoBean.detalheSelecionado.cpf}</span></div>
                     </div>
                 </div>
             </h:panelGroup>

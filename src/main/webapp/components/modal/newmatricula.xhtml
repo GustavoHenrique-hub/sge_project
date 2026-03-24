@@ -35,9 +35,10 @@
 
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
             <!-- Fecha modal sem submit -->
-            <button type="button" class="btn-ghostx" data-bs-dismiss="modal">
-                Cancelar
-            </button>
+            <cmp:baseButton styleClass="btn-ghostx"
+                            dataBsDismiss="modal"
+                            buttonLabel="Cancelar"
+                            parentDivStyle=""/>
 
             <!-- Submit do JSF -->
             <p:commandButton value="Salvar"

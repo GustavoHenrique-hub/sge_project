@@ -6,47 +6,36 @@
               xmlns:cc="jakarta.faces.composite">
 
     <cc:interface>
-        <cc:attribute name="id" required="true" />
-        <cc:attribute name="label" required="true" />
-        <cc:attribute name="value" required="true" />
-        <cc:attribute name="badgeValue" required="false" />
-        <cc:attribute name="completeMethod" required="true"
-                      method-signature="java.util.List complete(java.lang.String)" />
-        <cc:attribute name="converter" required="true" />
-        <cc:attribute name="itemLabelProperty" required="true" />
-        <cc:attribute name="update" required="false" />
-        <cc:attribute name="scrollHeight" required="false" default="250" />
-        <cc:attribute name="dropdown" required="false" default="true" />
-        <cc:attribute name="forceSelection" required="false" default="true" />
+        <cc:attribute name="styleClass" required="false" default="btn-primaryx" />
+        <cc:attribute name="class" required="false" />
+        <cc:attribute name="buttonType" required="false" default="button" />
+        <cc:attribute name="dataBsToggle" required="false"/>
+        <cc:attribute name="dataBsTarget" required="false" />
+        <cc:attribute name="dataBsDismiss" required="false" />
+        <cc:attribute name="buttonLabel" required="true"/>
+        <cc:attribute name="rendered" required="false" default="true" />
+        <cc:attribute name="parentDivStyle" required="false" default="filters-body-button-column"/>
     </cc:interface>
 
     <cc:implementation>
-        <div class="filters-body-column">
-            <label class="form-label cardx-title">#{cc.attrs.label}</label>
-
-            <div class="filters-body-column-row">
-                <h:outputText id="#{cc.attrs.id}IdLabel"
-                              styleClass="form-label badge-pill-id badge-muted"
-                              value="#{cc.attrs.badgeValue}" />
-
-                <p:autoComplete id="#{cc.attrs.id}"
-                                dropdown="#{cc.attrs.dropdown}"
-                                value="#{cc.attrs.value}"
-                                styleClass="autocomplete-modern"
-                                inputStyleClass="autocomplete-input"
-                                var="item"
-                                itemLabel="#{item[cc.attrs.itemLabelProperty]}"
-                                itemValue="#{item}"
-                                converter="#{cc.attrs.converter}"
-                                completeMethod="#{cc.attrs.completeMethod}"
-                                scrollHeight="#{cc.attrs.scrollHeight}"
-                                forceSelection="#{cc.attrs.forceSelection}">
-                    <p:ajax event="itemSelect"
-                            update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}" />
-                    <p:ajax event="clear"
-                            update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}" />
-                </p:autoComplete>
+        <ui:fragment rendered="#{cc.attrs.rendered and not empty cc.attrs.parentDivStyle}">
+            <div class="#{cc.attrs.parentDivStyle}">
+                <button class="#{empty cc.attrs.styleClass ? cc.attrs['class'] : cc.attrs.styleClass}"
+                        type="#{cc.attrs.buttonType}"
+                        data-bs-toggle="#{cc.attrs.dataBsToggle}"
+                        data-bs-target="#{cc.attrs.dataBsTarget}"
+                        data-bs-dismiss="#{cc.attrs.dataBsDismiss}">#{cc.attrs.buttonLabel}
+                </button>
             </div>
-        </div>
+        </ui:fragment>
+
+        <ui:fragment rendered="#{cc.attrs.rendered and empty cc.attrs.parentDivStyle}">
+            <button class="#{empty cc.attrs.styleClass ? cc.attrs['class'] : cc.attrs.styleClass}"
+                    type="#{cc.attrs.buttonType}"
+                    data-bs-toggle="#{cc.attrs.dataBsToggle}"
+                    data-bs-target="#{cc.attrs.dataBsTarget}"
+                    data-bs-dismiss="#{cc.attrs.dataBsDismiss}">#{cc.attrs.buttonLabel}
+            </button>
+        </ui:fragment>
     </cc:implementation>
 </ui:component>

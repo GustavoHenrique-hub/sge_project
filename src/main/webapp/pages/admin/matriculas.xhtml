@@ -14,7 +14,7 @@
             <div class="cardx-header">
                 <div>
                     <div class="cardx-title">Nova matricula</div>
-                    <div class="cardx-subtitle">Submódulo de cadastro</div>
+                    <div class="cardx-subtitle">Submodulo de cadastro</div>
                 </div>
             </div>
 
@@ -58,11 +58,10 @@
                             childrenDivStyle="filters-body-column-row"
                             showMessage="false"
                             required="false"/>
-                    <div class="filters-body-button-column">
-                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{alunoTurmaBean.filtrar}">
-                            <f:ajax execute="@form" render=":growl :formMatricula:listaMatriculas"/>
-                        </h:commandButton>
-                    </div>
+
+                    <cmp:baseCommandButton value="Filtrar"
+                                           action="#{alunoTurmaBean.filtrar}"
+                                           render=":growl :formMatricula:listaMatriculas"/>
                 </div>
             </h:form>
         </div>
@@ -71,14 +70,13 @@
             <div class="cardx-header">
                 <div>
                     <div class="cardx-title">Matriculas registradas</div>
-                    <div class="cardx-subtitle">Consulta rápida</div>
+                    <div class="cardx-subtitle">Consulta rapida</div>
                 </div>
-                <div>
-                    <button class="btn-primaryx"
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalMatricula">Vincular Turma
-                    </button>
+                <div class="d-flex gap-2">
+                    <cmp:baseButton dataBsToggle="modal"
+                                    dataBsTarget="#modalMatricula"
+                                    buttonLabel="Vincular Turma"
+                                    parentDivStyle=""/>
                 </div>
             </div>
             <div class="cardx-body">
@@ -88,13 +86,14 @@
                                      value="#{alunoTurmaBean.alunoTurmas}"
                                      rowKey="#{matricula.id}">
                             <h:column class="d-flex gap-2">
-                                <f:facet name="header">Ações</f:facet>
-                                <h:commandButton action="#{alunoTurmaBean.detalhar(matricula)}"
-                                                 title="Detalhar"
-                                                 styleClass="icon-action-btn"
-                                                 value="&#xe908;">
-                                    <f:ajax execute="@this" render=":formDetalheMatricula"/>
-                                </h:commandButton>
+                                <f:facet name="header">Acoes</f:facet>
+                                <cmp:baseIconButton id="detalharMatricula"
+                                                    action="#{alunoTurmaBean.detalhar(matricula)}"
+                                                    title="Detalhar"
+                                                    styleClass="icon-action-btn"
+                                                    ajax="true"
+                                                    render=":formDetalheMatricula"
+                                                    value="&#xe908;"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Nome</f:facet>
@@ -132,29 +131,11 @@
             </h:panelGroup>
         </h:form>
 
-        <!-- Modal vínculo aluno x turma -->
-        <div class="modal fade modal-modern"
-             id="modalMatricula"
-             tabindex="-1"
-             aria-labelledby="modalMatriculaLabel"
-             aria-hidden="true">
-
-            <div class="modal-dialog modal-dialog-centered modal-reference-size modal-lg">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalMatriculaLabel">
-                            Vincular aluno à turma
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"/>
-                    </div>
-
-                    <div class="modal-body">
-                        <ui:include src="/components/modal/newmatricula.xhtml"/>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <cmp:baseModal
+                modalId="modalMatricula"
+                labelledby="modalMatriculaLabel"
+                modalTitle="Vincular aluno a turma"
+                modalTitleId="modalMatriculaLabel"
+                modalImport="newmatricula.xhtml"/>
     </ui:define>
 </ui:composition>

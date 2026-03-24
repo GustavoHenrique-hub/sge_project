@@ -7,46 +7,36 @@
 
     <cc:interface>
         <cc:attribute name="id" required="true" />
-        <cc:attribute name="label" required="true" />
         <cc:attribute name="value" required="true" />
-        <cc:attribute name="badgeValue" required="false" />
-        <cc:attribute name="completeMethod" required="true"
-                      method-signature="java.util.List complete(java.lang.String)" />
-        <cc:attribute name="converter" required="true" />
-        <cc:attribute name="itemLabelProperty" required="true" />
+        <cc:attribute name="title" required="true" />
+        <cc:attribute name="styleClass" required="false" />
+        <cc:attribute name="styleclass" required="false" />
+        <cc:attribute name="action" required="true" method-signature="java.lang.Object action()" />
+        <cc:attribute name="rendered" required="false" default="true" />
+        <cc:attribute name="ajax" required="false" default="false" />
+        <cc:attribute name="execute" required="false" default="@this" />
+        <cc:attribute name="render" required="false" default="" />
         <cc:attribute name="update" required="false" />
-        <cc:attribute name="scrollHeight" required="false" default="250" />
-        <cc:attribute name="dropdown" required="false" default="true" />
-        <cc:attribute name="forceSelection" required="false" default="true" />
     </cc:interface>
 
     <cc:implementation>
-        <div class="filters-body-column">
-            <label class="form-label cardx-title">#{cc.attrs.label}</label>
+        <ui:fragment rendered="#{cc.attrs.rendered and cc.attrs.ajax}">
+            <h:commandButton
+                             action="#{cc.attrs.action}"
+                             title="#{cc.attrs.title}"
+                             value="#{cc.attrs.value}"
+                             styleClass="#{empty cc.attrs.styleClass ? cc.attrs.styleclass : cc.attrs.styleClass}">
+                <f:ajax execute="#{cc.attrs.execute}"
+                        render="#{empty cc.attrs.render ? (empty cc.attrs.update ? '@none' : cc.attrs.update) : cc.attrs.render}" />
+            </h:commandButton>
+        </ui:fragment>
 
-            <div class="filters-body-column-row">
-                <h:outputText id="#{cc.attrs.id}IdLabel"
-                              styleClass="form-label badge-pill-id badge-muted"
-                              value="#{cc.attrs.badgeValue}" />
-
-                <p:autoComplete id="#{cc.attrs.id}"
-                                dropdown="#{cc.attrs.dropdown}"
-                                value="#{cc.attrs.value}"
-                                styleClass="autocomplete-modern"
-                                inputStyleClass="autocomplete-input"
-                                var="item"
-                                itemLabel="#{item[cc.attrs.itemLabelProperty]}"
-                                itemValue="#{item}"
-                                converter="#{cc.attrs.converter}"
-                                completeMethod="#{cc.attrs.completeMethod}"
-                                scrollHeight="#{cc.attrs.scrollHeight}"
-                                forceSelection="#{cc.attrs.forceSelection}">
-                    <p:ajax event="itemSelect"
-                            update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}" />
-                    <p:ajax event="clear"
-                            update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}" />
-                </p:autoComplete>
-            </div>
-        </div>
+        <ui:fragment rendered="#{cc.attrs.rendered and not cc.attrs.ajax}">
+            <h:commandButton
+                             action="#{cc.attrs.action}"
+                             title="#{cc.attrs.title}"
+                             value="#{cc.attrs.value}"
+                             styleClass="#{empty cc.attrs.styleClass ? cc.attrs.styleclass : cc.attrs.styleClass}" />
+        </ui:fragment>
     </cc:implementation>
 </ui:component>

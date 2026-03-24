@@ -32,18 +32,13 @@
                             childrenDivStyle="filters-body-column-row"
                             showMessage="false"
                             required="false"/>
-                    <div class="filters-body-button-column">
-                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{turmaBean.filtrar}">
-                            <f:ajax execute="@form" render=":growl :formListaTurma:listaTurmas"/>
-                        </h:commandButton>
-                    </div>
-                    <div class="filters-body-button-column">
-                        <button class="btn-primaryx"
-                                type="button"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalNovaTurma">Cadastrar Turma
-                        </button>
-                    </div>
+                    <cmp:baseCommandButton value="Filtrar"
+                                           action="#{turmaBean.filtrar}"
+                                           render=":growl :formListaTurma:listaTurmas"/>
+                    <cmp:baseButton dataBsToggle="modal"
+                                    dataBsTarget="#modalNovaTurma"
+                                    buttonLabel="Cadastrar Turma"
+                                    parentDivStyle="filters-body-button-column"/>
                 </div>
             </h:form>
         </div>
@@ -62,12 +57,13 @@
                                      value="#{turmaBean.turmas}" rowKey="#{turma.id}">
                             <h:column class="d-flex gap-2">
                                 <f:facet name="header">Acoes</f:facet>
-                                <h:commandButton action="#{turmaBean.detalhar(turma)}"
-                                                 title="Detalhar"
-                                                 styleClass="icon-action-btn"
-                                                 value="&#xe908;">
-                                    <f:ajax execute="@this" render=":formDetalheTurma"/>
-                                </h:commandButton>
+                                <cmp:baseIconButton id="detalharTurma"
+                                                    action="#{turmaBean.detalhar(turma)}"
+                                                    title="Detalhar"
+                                                    styleClass="icon-action-btn"
+                                                    ajax="true"
+                                                    render=":formDetalheTurma"
+                                                    value="&#xe908;"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Codigo</f:facet>

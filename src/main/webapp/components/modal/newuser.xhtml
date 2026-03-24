@@ -3,6 +3,7 @@
                 xmlns:h="jakarta.faces.html"
                 xmlns:f="jakarta.faces.core"
                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:cmp="jakarta.faces.composite/components"
                 xmlns:p="http://primefaces.org/ui">
 
     <h:form id="formNewUser">
@@ -43,9 +44,10 @@
         </div>
 
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
-            <button type="button" class="btn-ghostx" data-bs-dismiss="modal">
-                Cancelar
-            </button>
+            <cmp:baseButton styleClass="btn-ghostx"
+                            dataBsDismiss="modal"
+                            buttonLabel="Cancelar"
+                            parentDivStyle=""/>
 
             <p:commandButton value="Salvar"
                              styleClass="btn-primaryx ui-button-outlined"

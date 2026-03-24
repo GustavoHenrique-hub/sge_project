@@ -75,6 +75,23 @@ public class AlunoBean implements Serializable {
         detalheSelecionado = dto;
     }
 
+    public void detalhar(AlunoEntity entity) {
+        if (entity == null) {
+            detalheSelecionado = null;
+            return;
+        }
+        AlunoDTO dto = new AlunoDTO();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setRm(entity.getRm());
+        dto.setCpf(entity.getCpf());
+        dto.setRg(entity.getRg());
+        dto.setEmail(entity.getEmail());
+        dto.setTelefone(entity.getTelefone());
+        dto.setDtNasc(entity.getDtNasc());
+        detalheSelecionado = dto;
+    }
+
     public void filtrar() {
         try {
             Long alunoIdFiltro = filtroAluno == null ? null : filtroAluno.getId();

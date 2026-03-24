@@ -32,11 +32,9 @@
                             childrenDivStyle="filters-body-column-row"
                             showMessage="false"
                             required="false"/>
-                    <div class="filters-body-button-column">
-                        <h:commandButton styleClass="btn-ghostx" value="Filtrar" action="#{historicoBean.buscar}">
-                            <f:ajax execute="@form" render=":growl :formListaHistorico:listaHistorico"/>
-                        </h:commandButton>
-                    </div>
+                    <cmp:baseCommandButton value="Filtrar"
+                                           action="#{historicoBean.buscar}"
+                                           render=":growl :formListaHistorico:listaHistorico"/>
                 </div>
             </h:form>
         </div>
@@ -55,12 +53,13 @@
                                      value="#{historicoBean.historico}" rowKey="#{registro.id}">
                             <h:column class="d-flex gap-2">
                                 <f:facet name="header">Acoes</f:facet>
-                                <h:commandButton action="#{historicoBean.detalhar(registro)}"
-                                                 title="Detalhar"
-                                                 styleClass="icon-action-btn"
-                                                 value="&#xe908;">
-                                    <f:ajax execute="@this" render=":formDetalheHistorico"/>
-                                </h:commandButton>
+                                <cmp:baseIconButton id="detalharHistorico"
+                                                    action="#{historicoBean.detalhar(registro)}"
+                                                    title="Detalhar"
+                                                    styleClass="icon-action-btn"
+                                                    ajax="true"
+                                                    render=":formDetalheHistorico"
+                                                    value="&#xe908;"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Aluno</f:facet>

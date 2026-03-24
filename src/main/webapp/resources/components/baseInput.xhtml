@@ -1,0 +1,78 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="jakarta.faces.facelets"
+              xmlns:h="jakarta.faces.html"
+              xmlns:f="jakarta.faces.core"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+              xmlns:cc="jakarta.faces.composite">
+
+    <cc:interface>
+        <cc:attribute name="label" required="true"/>
+        <cc:attribute name="value" required="true"/>
+        <cc:attribute name="styleClass" required="false" default="form-control"/>
+        <cc:attribute name="style" required="false" default="text-transform: uppercase;"/>
+        <cc:attribute name="type" required="false" default="text"/>
+        <cc:attribute name="secret" required="false" default="false"/>
+        <cc:attribute name="maxLength" required="false"/>
+        <cc:attribute name="inputMode" required="false"/>
+        <cc:attribute name="onInput" required="false"/>
+        <cc:attribute name="required" required="false" default="false"/>
+        <cc:attribute name="requiredMessage" required="false"/>
+        <cc:attribute name="converterPattern" required="false"/>
+        <cc:attribute name="converterMessage" required="false"/>
+        <cc:attribute name="messageStyleClass" required="false" default="field-error field-error-inline"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <div class="field-group field-group-inline">
+            <label class="form-label">#{cc.attrs.label}</label>
+
+            <div class="field-input-wrap">
+                <ui:fragment rendered="#{cc.attrs.secret}">
+                    <h:inputSecret id="secretInput"
+                                   value="#{cc.attrs.value}"
+                                   styleClass="#{cc.attrs.styleClass}"
+                                   style="#{cc.attrs.style}"
+                                   pt:maxlength="#{cc.attrs.maxLength}"
+                                   pt:inputmode="#{cc.attrs.inputMode}"
+                                   pt:oninput="#{cc.attrs.onInput}"
+                                   required="#{cc.attrs.required}"
+                                   requiredMessage="#{cc.attrs.requiredMessage}"/>
+                    <p:message for="secretInput" styleClass="#{cc.attrs.messageStyleClass}"/>
+                </ui:fragment>
+
+                <ui:fragment rendered="#{not cc.attrs.secret and empty cc.attrs.converterPattern}">
+                    <h:inputText id="textInput"
+                                 value="#{cc.attrs.value}"
+                                 styleClass="#{cc.attrs.styleClass}"
+                                 style="#{cc.attrs.style}"
+                                 pt:type="#{cc.attrs.type}"
+                                 pt:maxlength="#{cc.attrs.maxLength}"
+                                 pt:inputmode="#{cc.attrs.inputMode}"
+                                 pt:oninput="#{cc.attrs.onInput}"
+                                 required="#{cc.attrs.required}"
+                                 requiredMessage="#{cc.attrs.requiredMessage}"
+                                 converterMessage="#{cc.attrs.converterMessage}"/>
+                    <p:message for="textInput" styleClass="#{cc.attrs.messageStyleClass}"/>
+                </ui:fragment>
+
+                <ui:fragment rendered="#{not cc.attrs.secret and not empty cc.attrs.converterPattern}">
+                    <h:inputText id="dateInput"
+                                 value="#{cc.attrs.value}"
+                                 styleClass="#{cc.attrs.styleClass}"
+                                 style="#{cc.attrs.style}"
+                                 pt:type="#{cc.attrs.type}"
+                                 pt:maxlength="#{cc.attrs.maxLength}"
+                                 pt:inputmode="#{cc.attrs.inputMode}"
+                                 pt:oninput="#{cc.attrs.onInput}"
+                                 required="#{cc.attrs.required}"
+                                 requiredMessage="#{cc.attrs.requiredMessage}"
+                                 converterMessage="#{cc.attrs.converterMessage}">
+                        <f:convertDateTime pattern="#{cc.attrs.converterPattern}"/>
+                    </h:inputText>
+                    <p:message for="dateInput" styleClass="#{cc.attrs.messageStyleClass}"/>
+                </ui:fragment>
+            </div>
+        </div>
+    </cc:implementation>
+</ui:component>

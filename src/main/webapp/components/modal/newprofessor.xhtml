@@ -9,80 +9,62 @@
     <h:form id="formNovoProfessor">
         <div class="field-group">
             <h:panelGrid id="grid" columns="3" cellpadding="7">
-                <div class="field-group">
-                    <label class="form-label">Nome Completo</label>
-                    <h:inputText value="#{professorBean.professorDTO.nome}"
-                                 styleClass="form-control"
-                                 style="text-transform: uppercase;"
-                                 required="true"
-                                 requiredMessage="Nome é obrigatorio."
-                    />
-                    <p:message for="@previous"/>
-                </div>
+                <cmp:baseInput id="inputNome"
+                               value="#{professorBean.professorDTO.nome}"
+                               required="true"
+                               requiredMessage="Nome Ã© obrigatorio."
+                               style="text-transform: uppercase;"
+                               styleClass="form-control"
+                               label="Nome Completo"/>
 
-                <div class="field-group">
-                    <label class="form-label">CPF</label>
-                    <h:inputText value="#{professorBean.professorDTO.cpf}"
-                                 styleClass="form-control"
-                                 style="text-transform: uppercase;"
-                                 pt:maxlength="14"
-                                 pt:inputmode="numeric"
-                                 pt:oninput="this.value = formatarCpf(this.value);"
-                                 required="true"
-                                 requiredMessage="CPF é obrigatorio."
-                    />
-                    <p:message for="@previous"/>
-                </div>
+                <cmp:baseInput id="inputCpf"
+                               value="#{professorBean.professorDTO.cpf}"
+                               required="true"
+                               requiredMessage="CPF Ã© obrigatorio."
+                               style="text-transform: uppercase;"
+                               styleClass="form-control"
+                               label="CPF"
+                               maxLength="14"
+                               inputMode="numeric"
+                               onInput="this.value = formatarCpf(this.value);"/>
 
-                <div class="field-group">
-                    <label class="form-label">RG</label>
-                    <h:inputText value="#{professorBean.professorDTO.rg}"
-                                 styleClass="form-control"
-                                 style="text-transform: uppercase;"
-                                 pt:maxlength="12"
-                                 pt:inputmode="numeric"
-                                 pt:oninput="this.value = formatarRg(this.value);"
-                                 required="true"
-                                 requiredMessage="RG é obrigatorio."
-                    />
-                    <p:message for="@previous"/>
-                </div>
+                <cmp:baseInput id="inputRg"
+                               value="#{professorBean.professorDTO.rg}"
+                               required="true"
+                               requiredMessage="RG Ã© obrigatorio."
+                               style="text-transform: uppercase;"
+                               styleClass="form-control"
+                               label="RG"
+                               maxLength="12"
+                               inputMode="numeric"
+                               onInput="this.value = formatarRg(this.value);"/>
 
-                <div class="field-group">
-                    <label class="form-label">Data de Nascimento</label>
-                    <h:inputText value="#{professorBean.professorDTO.dtNasc}"
-                                 styleClass="form-control"
-                                 type="date"
-                                 required="true"
-                                 requiredMessage="Data de nascimento é obrigatoria."
-                                 converterMessage="Data invalida. Use o formato yyyy-MM-dd.">
-                        <f:convertDateTime pattern="yyyy-MM-dd"/>
-                    </h:inputText>
-                    <p:message for="@previous"/>
-                </div>
+                <cmp:baseInput id="inputDataNascimento"
+                               value="#{professorBean.professorDTO.dtNasc}"
+                               type="date"
+                               required="true"
+                               requiredMessage="Data de nascimento Ã© obrigatoria."
+                               converterPattern="yyyy-MM-dd"
+                               converterMessage="Data invalida. Use o formato yyyy-MM-dd."
+                               styleClass="form-control"
+                               style=""
+                               label="Data de Nascimento"/>
 
-                <div class="field-group">
-                    <div class="field-group">
-                        <label class="form-label">Email</label>
-                        <h:inputText value="#{professorBean.professorDTO.email}"
-                                     styleClass="form-control"
-                                     type="email"
-                        />
-                        <p:message for="@previous" styleClass="field-error"/>
-                    </div>
-                </div>
+                <cmp:baseInput id="inputEmail"
+                               value="#{professorBean.professorDTO.email}"
+                               type="email"
+                               styleClass="form-control"
+                               style=""
+                               label="Email"/>
 
-                <div class="field-group">
-                    <label class="form-label">Telefone</label>
-                    <h:inputText value="#{professorBean.professorDTO.telefone}"
-                                 styleClass="form-control"
-                                 style="text-transform: uppercase;"
-                                 pt:maxlength="14"
-                                 pt:inputmode="numeric"
-                                 pt:oninput="this.value = formatarTelefone(this.value);"
-                    />
-                    <p:message for="@previous"/>
-                </div>
+                <cmp:baseInput id="inputTelefone"
+                               value="#{professorBean.professorDTO.telefone}"
+                               style="text-transform: uppercase;"
+                               styleClass="form-control"
+                               label="Telefone"
+                               maxLength="14"
+                               inputMode="numeric"
+                               onInput="this.value = formatarTelefone(this.value);"/>
             </h:panelGrid>
         </div>
 
@@ -92,7 +74,6 @@
                             buttonLabel="Cancelar"
                             parentDivStyle=""/>
 
-            <!-- Submit do JSF -->
             <p:commandButton value="Salvar"
                              styleClass="btn-primaryx ui-button-outlined"
                              style="border-radius: 10px"

@@ -23,8 +23,7 @@ ENV POSTGRES_DRIVER_VERSION=42.7.3
 RUN curl -L https://repo1.maven.org/maven2/org/postgresql/postgresql/${POSTGRES_DRIVER_VERSION}/postgresql-${POSTGRES_DRIVER_VERSION}.jar \
     -o /tmp/postgresql.jar
 
-# Durante o build: registra módulo + driver + datasource com valores fixos temporários.
-# Remove o welcome-content do WildFly para que o ROOT.war tome o lugar da raiz /.
+# Durante o build: configura módulo, driver, datasource e remove o welcome-content handler
 RUN /bin/sh -c ' \
     $JBOSS_HOME/bin/standalone.sh \
         -Ddb.host=localhost \
@@ -56,13 +55,14 @@ RUN /bin/sh -c ' \
         --enabled=true" && \
     $JBOSS_HOME/bin/jboss-cli.sh --connect --command=" \
         /subsystem=undertow/server=default-server/host=default-host/location=\/:remove" && \
+    $JBOSS_HOME/bin/jboss-cli.sh --connect --command=" \
+        /subsystem=undertow/configuration=handler/file=welcome-content:remove" && \
     $JBOSS_HOME/bin/jboss-cli.sh --connect --command=:shutdown \
 '
 
 RUN rm -rf $JBOSS_HOME/standalone/configuration/standalone_xml_history/ \
            $JBOSS_HOME/standalone/log/* \
-           /tmp/postgresql.jar \
-           $JBOSS_HOME/welcome-content
+           /tmp/postgresql.jar
 
 # WAR renomeado para ROOT.war → disponível na raiz /
 COPY --from=build /app/target/sge_project-1.0-SNAPSHOT.war \

@@ -59,6 +59,11 @@ public class ProfessorEntity {
         this.telefone = professor.getTelefone();
     }
 
+    @PreUpdate
+    public void preUpdate() {
+        this.nome = this.nome.toUpperCase();
+    }
+
     @PrePersist
     private void prePersist() {
         if (id == null) {

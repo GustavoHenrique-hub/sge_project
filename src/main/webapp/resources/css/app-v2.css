@@ -893,6 +893,14 @@ body {
     box-shadow: none;
 }
 
+.modal-modern .form-control:disabled {
+    background: var(--input-bg);
+    color: var(--text);
+    -webkit-text-fill-color: var(--text);
+    opacity: 1;
+    cursor: not-allowed;
+}
+
 .modal-modern .btn-close {
     filter: none;
 }
@@ -917,7 +925,7 @@ body {
 
 .detail-read-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: 12px;
 }
 
@@ -944,6 +952,19 @@ body {
     color: var(--text);
     font-size: 14px;
     font-weight: 600;
+    word-break: break-word;
+}
+
+.modal-static-value {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
     word-break: break-word;
 }
 

@@ -23,19 +23,25 @@ public class UsuarioEntity {
 
     private String senha;
 
-    public UsuarioEntity(UsuarioDTO user){
+    public UsuarioEntity(UsuarioDTO user) {
         this.id = user.getId();
         this.usuario = user.getUsuario();
         this.login = user.getLogin();
         this.senha = user.getSenha();
     }
 
+    @PreUpdate
+    public void preUpdate() {
+        this.usuario = this.usuario.toUpperCase();
+        this.login = this.login.toUpperCase();
+    }
+
     @PrePersist
-    public void prePersist(){
-        if(this.usuario != null){
+    public void prePersist() {
+        if (this.usuario != null) {
             this.usuario = this.usuario.toUpperCase();
         }
-        if(this.login != null){
+        if (this.login != null) {
             this.login = this.login.toUpperCase();
         }
     }

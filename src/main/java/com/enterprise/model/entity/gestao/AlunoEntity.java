@@ -2,14 +2,7 @@ package com.enterprise.model.entity.gestao;
 
 import com.enterprise.dto.gestao.AlunoDTO;
 import com.enterprise.model.entity.embed.AlunoID;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -63,6 +56,11 @@ public class AlunoEntity {
         this.dtNasc = aluno.getDtNasc();
         this.email = aluno.getEmail();
         this.telefone = aluno.getTelefone();
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        this.nome = this.nome.toUpperCase();
     }
 
     @PrePersist

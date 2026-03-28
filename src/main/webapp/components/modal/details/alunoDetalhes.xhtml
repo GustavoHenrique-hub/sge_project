@@ -34,15 +34,23 @@
     </div>
 
     <div class="detail-actions">
-        <p:commandButton value="Editar" rendered="#{not alunoBean.editandoDetalhe}"
-                         action="#{alunoBean.habilitarEdicaoDetalhe}" update="@form" styleClass="btn-ghostx"/>
-        <p:commandButton value="Cancelar" rendered="#{alunoBean.editandoDetalhe}"
-                         action="#{alunoBean.cancelarEdicaoDetalhe}" update="@form" styleClass="btn-ghostx"/>
+        <p:commandButton value="Editar"
+                         rendered="#{not alunoBean.editandoDetalhe}"
+                         action="#{alunoBean.habilitarEdicaoDetalhe}"
+                         update="@form"
+                         styleClass="btn-ghostx ui-button-outlined"
+                         style="border-radius: 10px"/>
+        <p:commandButton value="Cancelar"
+                         rendered="#{alunoBean.editandoDetalhe}"
+                         action="#{alunoBean.cancelarEdicaoDetalhe}"
+                         update="@form"
+                         styleClass="btn-ghostx ui-button-outlined"
+                         style="border-radius: 10px"/>
         <p:commandButton value="Salvar"
                          rendered="#{alunoBean.editandoDetalhe}"
                          action="#{alunoBean.salvarDetalhe}"
                          process="@form"
-                         update=":growl @form :formListaAluno:listaAlunos :modalDetalhesWrapper"
+                         update=":growl @form :formListaAluno:listaAlunos"
                          oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalDetalhes')).hide();}"
                          styleClass="btn-primaryx ui-button-outlined"
                          style="border-radius: 10px"/>

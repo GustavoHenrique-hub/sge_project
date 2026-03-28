@@ -2,12 +2,7 @@ package com.enterprise.model.entity.gestao;
 
 import com.enterprise.dto.gestao.TurmaDTO;
 import com.enterprise.model.entity.embed.TurmaID;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,6 +34,11 @@ public class TurmaEntity {
         this.id = dto.getId();
         this.codigo = dto.getCodigo();
         this.turma = dto.getTurma();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.turma = this.turma.toUpperCase();
     }
 
     @PrePersist

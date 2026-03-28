@@ -11,15 +11,36 @@
 
     <div class="field-group">
         <h:panelGrid columns="1" cellpadding="7">
-            <cmp:baseInput id="detalheProfessorNome" value="#{professorBean.detalheEdicao.nome}" label="Nome Completo"
-                           styleClass="form-control" style="text-transform: uppercase;" required="true"
-                           requiredMessage="Nome e obrigatorio." disabled="#{not professorBean.editandoDetalhe}"/>
-            <cmp:baseInput id="detalheProfessorCpf" value="#{professorBean.detalheEdicao.cpf}" label="CPF"
-                           styleClass="form-control" style="text-transform: uppercase;" required="true"
-                           requiredMessage="CPF e obrigatorio." disabled="#{not professorBean.editandoDetalhe}"/>
-            <cmp:baseInput id="detalheProfessorRg" value="#{professorBean.detalheEdicao.rg}" label="RG"
-                           styleClass="form-control" style="text-transform: uppercase;" required="true"
-                           requiredMessage="RG e obrigatorio." disabled="#{not professorBean.editandoDetalhe}"/>
+            <cmp:baseInput id="detalheProfessorNome"
+                           value="#{professorBean.detalheEdicao.nome}"
+                           label="Nome Completo"
+                           styleClass="form-control"
+                           style="text-transform: uppercase;"
+                           required="true"
+                           requiredMessage="Nome e obrigatorio."
+                           disabled="#{not professorBean.editandoDetalhe}"/>
+            <cmp:baseInput id="detalheProfessorCpf"
+                           value="#{professorBean.detalheEdicao.cpf}"
+                           label="CPF"
+                           styleClass="form-control"
+                           style="text-transform: uppercase;"
+                           required="true"
+                           requiredMessage="CPF e obrigatorio."
+                           disabled="#{not professorBean.editandoDetalhe}"
+                           maxLength="14"
+                           inputMode="numeric"
+                           onInput="this.value = formatarCpf(this.value);"/>
+            <cmp:baseInput id="detalheProfessorRg"
+                           value="#{professorBean.detalheEdicao.rg}"
+                           label="RG"
+                           styleClass="form-control"
+                           style="text-transform: uppercase;"
+                           required="true"
+                           requiredMessage="RG e obrigatorio."
+                           disabled="#{not professorBean.editandoDetalhe}"
+                           maxLength="12"
+                           inputMode="numeric"
+                           onInput="this.value = formatarRg(this.value);"/>
             <cmp:baseInput id="detalheProfessorDtNasc" value="#{professorBean.detalheEdicao.dtNasc}"
                            label="Data de Nascimento" type="date" converterPattern="yyyy-MM-dd"
                            converterMessage="Data invalida." styleClass="form-control" style="" required="true"
@@ -28,9 +49,15 @@
             <cmp:baseInput id="detalheProfessorEmail" value="#{professorBean.detalheEdicao.email}" label="Email"
                            type="email" styleClass="form-control" style=""
                            disabled="#{not professorBean.editandoDetalhe}"/>
-            <cmp:baseInput id="detalheProfessorTelefone" value="#{professorBean.detalheEdicao.telefone}"
-                           label="Telefone" styleClass="form-control" style="text-transform: uppercase;"
-                           disabled="#{not professorBean.editandoDetalhe}"/>
+            <cmp:baseInput id="detalheProfessorTelefone"
+                           value="#{professorBean.detalheEdicao.telefone}"
+                           label="Telefone"
+                           styleClass="form-control"
+                           style="text-transform: uppercase;"
+                           disabled="#{not professorBean.editandoDetalhe}"
+                           maxLength="14"
+                           inputMode="numeric"
+                           onInput="this.value = formatarTelefone(this.value);"/>
         </h:panelGrid>
     </div>
 

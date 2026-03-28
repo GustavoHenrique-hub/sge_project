@@ -11,25 +11,62 @@
 
     <div class="field-group">
         <h:panelGrid columns="1" cellpadding="7">
-            <cmp:baseInput id="detalheAlunoNome" value="#{alunoBean.detalheEdicao.nome}" label="Nome Completo"
-                           styleClass="form-control" style="text-transform: uppercase;" required="true"
-                           requiredMessage="Nome e obrigatorio." disabled="#{not alunoBean.editandoDetalhe}"/>
-            <cmp:baseInput id="detalheAlunoCpf" value="#{alunoBean.detalheEdicao.cpf}" label="CPF"
-                           styleClass="form-control" style="text-transform: uppercase;" required="true"
-                           requiredMessage="CPF e obrigatorio." disabled="#{not alunoBean.editandoDetalhe}"/>
-            <cmp:baseInput id="detalheAlunoRg" value="#{alunoBean.detalheEdicao.rg}" label="RG"
-                           styleClass="form-control" style="text-transform: uppercase;" required="true"
-                           requiredMessage="RG e obrigatorio." disabled="#{not alunoBean.editandoDetalhe}"/>
-            <cmp:baseInput id="detalheAlunoDtNasc" value="#{alunoBean.detalheEdicao.dtNasc}" label="Data de Nascimento"
-                           type="date" converterPattern="yyyy-MM-dd" converterMessage="Data invalida."
-                           styleClass="form-control" style="" required="true"
+            <cmp:baseInput id="detalheAlunoNome"
+                           value="#{alunoBean.detalheEdicao.nome}"
+                           label="Nome Completo"
+                           styleClass="form-control"
+                           style="text-transform: uppercase;"
+                           required="true"
+                           requiredMessage="Nome e obrigatorio."
+                           disabled="#{not alunoBean.editandoDetalhe}"/>
+            <cmp:baseInput id="detalheAlunoCpf"
+                           value="#{alunoBean.detalheEdicao.cpf}"
+                           label="CPF"
+                           styleClass="form-control"
+                           style="text-transform: uppercase;"
+                           required="true"
+                           requiredMessage="CPF e obrigatorio."
+                           disabled="#{not alunoBean.editandoDetalhe}"
+                           maxLength="14"
+                           inputMode="numeric"
+                           onInput="this.value = formatarCpf(this.value);"/>
+            <cmp:baseInput id="detalheAlunoRg"
+                           value="#{alunoBean.detalheEdicao.rg}"
+                           label="RG"
+                           styleClass="form-control"
+                           style="text-transform: uppercase;"
+                           required="true"
+                           requiredMessage="RG e obrigatorio."
+                           disabled="#{not alunoBean.editandoDetalhe}"
+                           maxLength="12"
+                           inputMode="numeric"
+                           onInput="this.value = formatarRg(this.value);"/>
+            <cmp:baseInput id="detalheAlunoDtNasc"
+                           value="#{alunoBean.detalheEdicao.dtNasc}"
+                           label="Data de Nascimento"
+                           type="date"
+                           converterPattern="yyyy-MM-dd"
+                           converterMessage="Data invalida."
+                           styleClass="form-control"
+                           style="" required="true"
                            requiredMessage="Data de nascimento e obrigatoria."
                            disabled="#{not alunoBean.editandoDetalhe}"/>
-            <cmp:baseInput id="detalheAlunoEmail" value="#{alunoBean.detalheEdicao.email}" label="Email" type="email"
-                           styleClass="form-control" style="" disabled="#{not alunoBean.editandoDetalhe}"/>
-            <cmp:baseInput id="detalheAlunoTelefone" value="#{alunoBean.detalheEdicao.telefone}" label="Telefone"
-                           styleClass="form-control" style="text-transform: uppercase;"
+            <cmp:baseInput id="detalheAlunoEmail"
+                           value="#{alunoBean.detalheEdicao.email}"
+                           label="Email"
+                           type="email"
+                           styleClass="form-control"
+                           style=""
                            disabled="#{not alunoBean.editandoDetalhe}"/>
+            <cmp:baseInput id="detalheAlunoTelefone"
+                           value="#{alunoBean.detalheEdicao.telefone}"
+                           label="Telefone"
+                           styleClass="form-control"
+                           style="text-transform: uppercase;"
+                           disabled="#{not alunoBean.editandoDetalhe}"
+                           maxLength="14"
+                           inputMode="numeric"
+                           onInput="this.value = formatarTelefone(this.value);"/>
         </h:panelGrid>
     </div>
 

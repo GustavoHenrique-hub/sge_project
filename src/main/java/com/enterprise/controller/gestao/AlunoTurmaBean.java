@@ -1,7 +1,10 @@
 package com.enterprise.controller.gestao;
 
+import com.enterprise.controller.common.DetalheModalBean;
+import com.enterprise.dto.admin.SituacaoDTO;
 import com.enterprise.dto.gestao.AlunoDTO;
 import com.enterprise.dto.gestao.AlunoTurmaDTO;
+import com.enterprise.dto.gestao.TurmaDTO;
 import com.enterprise.model.entity.admin.SituacaoEntity;
 import com.enterprise.model.entity.gestao.AlunoEntity;
 import com.enterprise.model.entity.gestao.TurmaEntity;
@@ -17,8 +20,6 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
-import org.primefaces.PrimeFaces;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,8 @@ public class AlunoTurmaBean implements Serializable {
     private TurmaService turmaService;
     @Inject
     private SituacaoService situacaoService;
+    @Inject
+    private DetalheModalBean detalheModalBean;
 
     private Long alunoId;
     private Long turmaId;
@@ -48,6 +51,11 @@ public class AlunoTurmaBean implements Serializable {
     private TurmaEntity filtroTurma;
     private SituacaoEntity filtroSituacao;
     private AlunoTurmaDTO detalheSelecionado;
+    private AlunoTurmaDTO detalheEdicao = new AlunoTurmaDTO();
+    private AlunoEntity detalheAlunoSelecionado;
+    private TurmaEntity detalheTurmaSelecionada;
+    private SituacaoEntity detalheSituacaoSelecionada;
+    private boolean editandoDetalhe;
     private List<AlunoTurmaDTO> alunoTurmas = new ArrayList<>();
 
     @PostConstruct
@@ -59,10 +67,6 @@ public class AlunoTurmaBean implements Serializable {
 
     private void recarregarLista() {
         alunoTurmas = service.listarDTO();
-        PrimeFaces current = PrimeFaces.current();
-        if (current != null) {
-            current.ajax().update("formListaAluno:listaAlunos", "growl");
-        }
     }
 
     public void limparFormulario() {
@@ -86,7 +90,20 @@ public class AlunoTurmaBean implements Serializable {
     }
 
     public void detalhar(AlunoTurmaDTO dto) {
-        detalheSelecionado = dto;
+        if (dto == null) {
+            detalheSelecionado = null;
+            detalheEdicao = new AlunoTurmaDTO();
+            detalheAlunoSelecionado = null;
+            detalheTurmaSelecionada = null;
+            detalheSituacaoSelecionada = null;
+            editandoDetalhe = false;
+            return;
+        }
+        detalheSelecionado = copiar(dto);
+        detalheEdicao = copiar(dto);
+        sincronizarSeletoresDetalhe();
+        editandoDetalhe = false;
+        detalheModalBean.abrir("Detalhes da matricula", "/components/modal/details/matriculaDetalhes.xhtml");
     }
 
     public void confirmar() {
@@ -96,6 +113,7 @@ public class AlunoTurmaBean implements Serializable {
             alunoId = null;
             turmaId = null;
             recarregarLista();
+            limparFormulario();
         } catch (Exception e) {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
@@ -126,34 +144,88 @@ public class AlunoTurmaBean implements Serializable {
         }
     }
 
-    public List<AlunoEntity> completeAluno(String query) {
-        String formatAluno = query == null ? "" : query.toLowerCase();
-        return alunoService.findAll()
-                .stream()
-                .filter(aluno -> aluno.getNome() != null
-                        && aluno.getNome().toLowerCase().startsWith(formatAluno))
-                .collect(Collectors.toList());
-    }
-
-    public List<TurmaEntity> completeTurma(String query) {
-        String formatTurma = query == null ? "" : query.toLowerCase();
-        return turmaService.findAll()
-                .stream()
-                .filter(turma -> turma.getTurma() != null
-                        && turma.getTurma().toLowerCase().startsWith(formatTurma))
-                .collect(Collectors.toList());
-    }
-
-    public List<SituacaoEntity> completeSituacao(String query) {
-        String formatSituacao = query == null ? "" : query.toLowerCase();
-        return situacaoService.findAll()
-                .stream()
-                .filter(situacao -> situacao.getSituacao() != null
-                        && situacao.getSituacao().toLowerCase().startsWith(formatSituacao))
-                .collect(Collectors.toList());
-    }
-
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));
+    }
+
+    public void habilitarEdicaoDetalhe() {
+        if (detalheSelecionado == null) {
+            return;
+        }
+        detalheEdicao = copiar(detalheSelecionado);
+        sincronizarSeletoresDetalhe();
+        editandoDetalhe = true;
+    }
+
+    public void cancelarEdicaoDetalhe() {
+        detalheEdicao = copiar(detalheSelecionado);
+        sincronizarSeletoresDetalhe();
+        editandoDetalhe = false;
+    }
+
+    public void salvarDetalhe() {
+        try {
+            preencherDtoDetalhe();
+            detalheSelecionado = service.atualizar(detalheEdicao);
+            detalheEdicao = copiar(detalheSelecionado);
+            sincronizarSeletoresDetalhe();
+            editandoDetalhe = false;
+            recarregarLista();
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Matricula atualizada.");
+        } catch (Exception e) {
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
+        }
+    }
+
+    private void preencherDtoDetalhe() {
+        if (detalheAlunoSelecionado == null || detalheTurmaSelecionada == null || detalheSituacaoSelecionada == null) {
+            throw new IllegalArgumentException("Aluno, turma e situacao sao obrigatorios.");
+        }
+        AlunoDTO alunoDTO = new AlunoDTO(detalheAlunoSelecionado);
+        TurmaDTO turmaDTO = new TurmaDTO(detalheTurmaSelecionada);
+        SituacaoDTO situacaoDTO = new SituacaoDTO(detalheSituacaoSelecionada);
+        detalheEdicao.setAluno(alunoDTO);
+        detalheEdicao.setTurma(turmaDTO);
+        detalheEdicao.setSituacao(situacaoDTO);
+    }
+
+    private void sincronizarSeletoresDetalhe() {
+        detalheAlunoSelecionado = detalheEdicao != null && detalheEdicao.getAluno() != null && detalheEdicao.getAluno().getId() != null
+                ? alunoService.findById(detalheEdicao.getAluno().getId()).orElse(null)
+                : null;
+        detalheTurmaSelecionada = detalheEdicao != null && detalheEdicao.getTurma() != null && detalheEdicao.getTurma().getId() != null
+                ? turmaService.findById(detalheEdicao.getTurma().getId()).orElse(null)
+                : null;
+        detalheSituacaoSelecionada = detalheEdicao != null && detalheEdicao.getSituacao() != null && detalheEdicao.getSituacao().getId() != null
+                ? situacaoService.findById(detalheEdicao.getSituacao().getId()).orElse(null)
+                : null;
+    }
+
+    private AlunoTurmaDTO copiar(AlunoTurmaDTO origem) {
+        AlunoTurmaDTO copia = new AlunoTurmaDTO();
+        copia.setId(origem.getId());
+        if (origem.getAluno() != null) {
+            AlunoDTO alunoDTO = new AlunoDTO();
+            alunoDTO.setId(origem.getAluno().getId());
+            alunoDTO.setRm(origem.getAluno().getRm());
+            alunoDTO.setNome(origem.getAluno().getNome());
+            alunoDTO.setCpf(origem.getAluno().getCpf());
+            copia.setAluno(alunoDTO);
+        }
+        if (origem.getTurma() != null) {
+            TurmaDTO turmaDTO = new TurmaDTO();
+            turmaDTO.setId(origem.getTurma().getId());
+            turmaDTO.setCodigo(origem.getTurma().getCodigo());
+            turmaDTO.setTurma(origem.getTurma().getTurma());
+            copia.setTurma(turmaDTO);
+        }
+        if (origem.getSituacao() != null) {
+            SituacaoDTO situacaoDTO = new SituacaoDTO();
+            situacaoDTO.setId(origem.getSituacao().getId());
+            situacaoDTO.setSituacao(origem.getSituacao().getSituacao());
+            situacaoDTO.setDescricao(origem.getSituacao().getDescricao());
+            copia.setSituacao(situacaoDTO);
+        }
+        return copia;
     }
 }

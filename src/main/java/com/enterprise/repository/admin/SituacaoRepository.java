@@ -1,9 +1,11 @@
 package com.enterprise.repository.admin;
 
 import com.enterprise.model.entity.admin.SituacaoEntity;
+import com.enterprise.model.entity.gestao.AlunoEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +28,20 @@ public class SituacaoRepository {
     public List<SituacaoEntity> findAll() {
         return em.createQuery("select s from SituacaoEntity s order by s.id", SituacaoEntity.class)
                 .getResultList();
+    }
+
+    public List<SituacaoEntity> findByFilters(String situacao) {
+        StringBuilder jpql = new StringBuilder("select s from SituacaoEntity s where 1=1");
+        if (situacao != null && !situacao.isBlank()) {
+            jpql.append(" and lower(s.situacao) like :situacao");
+        }
+        jpql.append(" order by s.situacao");
+
+        TypedQuery<SituacaoEntity> query = em.createQuery(jpql.toString(), SituacaoEntity.class);
+        if (situacao != null && !situacao.isBlank()) {
+            query.setParameter("situacao", "%" + situacao.trim().toLowerCase() + "%");
+        }
+        return query.getResultList();
     }
 
     public Optional<SituacaoEntity> findBySituacao(String situacao) {

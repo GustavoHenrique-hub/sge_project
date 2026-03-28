@@ -1,0 +1,155 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core"
+                xmlns:cmp="jakarta.faces.composite/components"
+                template="/template.xhtml">
+
+    <ui:define name="title">Professores</ui:define>
+    <ui:define name="subtitle">Professores / Cadastro</ui:define>
+
+    <ui:define name="content">
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Cadastro de professores</div>
+                    <div class="cardx-subtitle">Filtros e consulta por docente</div>
+                </div>
+            </div>
+
+            <h:form id="formFiltrosProfessor">
+                <div class="filters-body">
+                    <cmp:baseAutocomplete
+                            id="dropDownNomeProfessor"
+                            label="Nome"
+                            value="#{professorBean.filtroProfessor}"
+                            badgeValue="#{professorBean.filtroProfessor != null ? professorBean.filtroProfessor.rm : null}"
+                            completeMethod="#{professorBean.completeNomeProfessor}"
+                            converter="#{professorEntityConverter}"
+                            itemLabelProperty="nome"
+                            parentDivStyle="filters-body-column"
+                            childrenDivStyle="filters-body-column-row"
+                            showMessage="false"
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
+
+                    <cmp:baseAutocomplete
+                            id="dropCPFProfessor"
+                            label="CPF"
+                            value="#{professorBean.filtroProfessor}"
+                            badgeValue="#{professorBean.filtroProfessor != null ? professorBean.filtroProfessor.rm : null}"
+                            completeMethod="#{professorBean.completeCPFProfessor}"
+                            converter="#{professorEntityConverter}"
+                            itemLabelProperty="cpf"
+                            parentDivStyle="filters-body-column"
+                            childrenDivStyle="filters-body-column-row"
+                            showMessage="false"
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
+                    <cmp:baseCommandButton value="Filtrar"
+                                           action="#{professorBean.filtrar}"
+                                           render=":growl :formListaProfessor:listaProfessores"/>
+                    <cmp:baseButton dataBsToggle="modal" styleClass="btn-primaryx" dataBsTarget="#modalNovoProfessor"
+                                    buttonLabel="Cadastrar Professor" parentDivStyle="filters-body-button-column"/>
+                </div>
+            </h:form>
+        </div>
+
+        <div class="cardx-datatable">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Lista de professores</div>
+                    <div class="cardx-subtitle">Submódulo de consulta</div>
+                </div>
+            </div>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <h:form id="formListaProfessor">
+                        <h:dataTable styleClass="table-modern" id="listaProfessores" var="professores"
+                                     value="#{professorBean.professores}" rowKey="#{professores.id}">
+                            <h:column class="d-flex gap-2">
+                                <f:facet name="header">Acoes</f:facet>
+                                <cmp:baseIconButton id="detalharProfessor"
+                                                    action="#{professorBean.detalhar(professores)}"
+                                                    title="Detalhar"
+                                                    styleClass="icon-action-btn"
+                                                    ajax="true"
+                                                    render=":modalDetalhesWrapper"
+                                                    value="&#xe908;"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Nome</f:facet>
+                                <h:outputText value="#{professores.nome}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">RM</f:facet>
+                                <h:outputText value="#{professores.rm}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">CPF</f:facet>
+                                <h:outputText value="#{professores.cpf}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">RG</f:facet>
+                                <h:outputText value="#{professores.rg}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Email</f:facet>
+                                <h:outputText value="#{professores.email}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Telefone</f:facet>
+                                <h:outputText value="#{professores.telefone}"/>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <h:form id="formDetalheProfessor">
+            <h:panelGroup rendered="#{not empty professorDisciplinaBean.detalheSelecionado}">
+                <div class="cardx">
+                    <div class="cardx-header">
+                        <div>
+                            <div class="cardx-title">Detalhes do professor</div>
+                            <div class="cardx-subtitle">Registro selecionado</div>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-3"><span
+                                class="badge-pill badge-muted">ID: #{professorDisciplinaBean.detalheSelecionado.id}</span>
+                        </div>
+                        <div class="col-md-3"><span
+                                class="badge-pill badge-muted">Nome: #{professorDisciplinaBean.detalheSelecionado.professor.nome}</span>
+                        </div>
+                        <div class="col-md-3"><span
+                                class="badge-pill badge-muted">Disciplina: #{professorDisciplinaBean.detalheSelecionado.disciplina.descricao}</span>
+                        </div>
+                        <div class="col-md-3"><span
+                                class="badge-pill badge-muted">RM: #{professorDisciplinaBean.detalheSelecionado.professor.rm}</span>
+                        </div>
+                    </div>
+                </div>
+            </h:panelGroup>
+        </h:form>
+
+        <cmp:baseModal
+                modalId="modalNovoProfessor"
+                labelledby="modalNovoProfessorLabel"
+                modalTitle="Cadastrar Professor"
+                modalTitleId="modalNovoProfessorLabel"
+                modalImport="modalNewProfessor.xhtml"
+        />
+        <h:panelGroup id="modalDetalhesWrapper" layout="block">
+            <cmp:baseModal
+                    modalId="modalDetalhes"
+                    labelledby="modalDetalhesLabel"
+                    modalTitle="#{detalheModalBean.titulo}"
+                    modalTitleId="modalDetalhesLabel"
+                    modalImport="modalDetalhes.xhtml"/>
+        </h:panelGroup>
+
+    </ui:define>
+</ui:composition>

@@ -12,13 +12,14 @@
                                   label="Aluno"
                                   value="#{alunoTurmaBean.filtroAluno}"
                                   badgeValue="#{alunoTurmaBean.filtroAluno != null ? alunoTurmaBean.filtroAluno.rm : null}"
-                                  completeMethod="#{alunoBean.completeAluno}"
+                                  completeMethod="#{alunoBean.completeNomeAluno}"
                                   converter="#{alunoEntityConverter}"
                                   itemLabelProperty="nome"
                                   parentDivStyle="modal-link-item"
                                   childrenDivStyle="modal-id-inline"
-                                  required="false"
-                                  requiredMessage="Aluno é obrigatório!"/>
+                                  required="true"
+                                  requiredMessage="Aluno é obrigatório!"
+                                  fieldStyle="field-modal-autocomplete-wrap"/>
 
             <cmp:baseAutocomplete id="dropDownTurmaModal"
                                   label="Turma"
@@ -29,8 +30,9 @@
                                   itemLabelProperty="turma"
                                   parentDivStyle="modal-link-item"
                                   childrenDivStyle="modal-id-inline"
-                                  required="false"
-                                  requiredMessage="Turma é obrigatório!"/>
+                                  required="true"
+                                  requiredMessage="Turma é obrigatória!"
+                                  fieldStyle="field-modal-autocomplete-wrap"/>
         </div>
 
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">

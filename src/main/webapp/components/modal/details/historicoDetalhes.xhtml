@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:cmp="jakarta.faces.composite/components"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="detail-badge-row">
+        <span class="badge-pill badge-muted">ID: #{historicoBean.detalheSelecionado.id}</span>
+    </div>
+
+    <ui:fragment rendered="#{not historicoBean.editandoDetalhe}">
+        <div class="detail-read-grid">
+            <div class="detail-read-item"><span class="detail-read-label">Aluno</span><span class="detail-read-value">#{historicoBean.detalheSelecionado.aluno.nome}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">CPF</span><span class="detail-read-value">#{historicoBean.detalheSelecionado.aluno.cpf}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">Turma</span><span class="detail-read-value">#{historicoBean.detalheSelecionado.turma.turma}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">Situacao</span><span class="detail-read-value">#{historicoBean.detalheSelecionado.situacao.situacao}</span></div>
+        </div>
+    </ui:fragment>
+
+    <ui:fragment rendered="#{historicoBean.editandoDetalhe}">
+        <div class="modal-link-grid">
+            <cmp:baseAutocomplete id="detalheHistoricoAluno" label="Aluno" value="#{historicoBean.detalheAlunoSelecionado}" badgeValue="#{historicoBean.detalheAlunoSelecionado != null ? historicoBean.detalheAlunoSelecionado.rm : null}" completeMethod="#{alunoBean.completeNomeAluno}" converter="#{alunoEntityConverter}" itemLabelProperty="nome" parentDivStyle="modal-link-item" childrenDivStyle="modal-id-inline" required="true" requiredMessage="Aluno e obrigatorio."/>
+            <cmp:baseAutocomplete id="detalheHistoricoTurma" label="Turma" value="#{historicoBean.detalheTurmaSelecionada}" badgeValue="#{historicoBean.detalheTurmaSelecionada != null ? historicoBean.detalheTurmaSelecionada.codigo : null}" completeMethod="#{turmaBean.completeTurma}" converter="#{turmaEntityConverter}" itemLabelProperty="turma" parentDivStyle="modal-link-item" childrenDivStyle="modal-id-inline" required="true" requiredMessage="Turma e obrigatoria."/>
+            <cmp:baseAutocomplete id="detalheHistoricoSituacao" label="Situacao" value="#{historicoBean.detalheSituacaoSelecionada}" badgeValue="#{historicoBean.detalheSituacaoSelecionada != null ? historicoBean.detalheSituacaoSelecionada.id : null}" completeMethod="#{situacaoBean.completeSituacao}" converter="#{situacaoEntityConverter}" itemLabelProperty="situacao" parentDivStyle="modal-link-item" childrenDivStyle="modal-id-inline" required="true" requiredMessage="Situacao e obrigatoria."/>
+        </div>
+    </ui:fragment>
+
+    <div class="detail-actions">
+        <p:commandButton value="Editar" rendered="#{not historicoBean.editandoDetalhe}" action="#{historicoBean.habilitarEdicaoDetalhe}" update="@form" styleClass="btn-ghostx"/>
+        <p:commandButton value="Cancelar" rendered="#{historicoBean.editandoDetalhe}" action="#{historicoBean.cancelarEdicaoDetalhe}" update="@form" styleClass="btn-ghostx"/>
+        <p:commandButton value="Salvar" rendered="#{historicoBean.editandoDetalhe}" action="#{historicoBean.salvarDetalhe}" process="@form" update=":growl @form :formListaHistorico:listaHistorico :modalDetalhesWrapper" oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalDetalhes')).hide();}" styleClass="btn-primaryx ui-button-outlined"/>
+    </div>
+
+</ui:composition>

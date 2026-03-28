@@ -39,12 +39,12 @@
             </div>
 
             <nav class="nav">
-                <h:link outcome="/pages/alunos/dashboard.xhtml"
-                        styleClass="#{request.servletPath eq '/pages/alunos/dashboard.xhtml' ? 'active' : ''}">
+                <h:link outcome="/pages/alunos/pageDashboard.xhtml"
+                        styleClass="#{request.servletPath eq '/pages/alunos/pageDashboard.xhtml' ? 'active' : ''}">
                     Painel / Visao geral
                 </h:link>
 
-                <div class="nav-module #{request.servletPath eq '/pages/alunos/alunos.xhtml' or request.servletPath eq '/pages/admin/matriculas.xhtml' or request.servletPath eq '/pages/alunos/historico.xhtml' or request.servletPath eq '/pages/alunos/turmas.xhtml' ? 'is-expanded' : ''}">
+                <div class="nav-module #{request.servletPath eq '/pages/alunos/pageAlunos.xhtml' or request.servletPath eq '/pages/admin/pageMatriculas.xhtml' or request.servletPath eq '/pages/alunos/pageHistorico.xhtml' or request.servletPath eq '/pages/alunos/pageTurmas.xhtml' ? 'is-expanded' : ''}">
                     <button type="button"
                             class="nav-module-toggle"
                             aria-expanded="false">
@@ -52,7 +52,7 @@
                         <i class="pi pi-chevron-down"></i>
                     </button>
                     <div class="nav-module-links">
-                        <div class="nav-module #{request.servletPath eq '/pages/alunos/alunos.xhtml' or request.servletPath eq '/pages/admin/matriculas.xhtml' or request.servletPath eq '/pages/alunos/historico.xhtml' ? 'is-expanded' : ''}">
+                        <div class="nav-module #{request.servletPath eq '/pages/alunos/pageAlunos.xhtml' or request.servletPath eq '/pages/admin/pageMatriculas.xhtml' or request.servletPath eq '/pages/alunos/pageHistorico.xhtml' ? 'is-expanded' : ''}">
                             <button type="button"
                                     class="nav-module-toggle"
                                     aria-expanded="false">
@@ -60,16 +60,16 @@
                                 <i class="pi pi-chevron-down"></i>
                             </button>
                             <div class="nav-module-links">
-                                <h:link outcome="/pages/alunos/alunos.xhtml"
-                                        styleClass="#{request.servletPath eq '/pages/alunos/alunos.xhtml' ? 'active' : ''}">Cadastro</h:link>
-                                <h:link outcome="/pages/admin/matriculas.xhtml"
-                                        styleClass="#{request.servletPath eq '/pages/admin/matriculas.xhtml' ? 'active' : ''}">Matriculas</h:link>
-                                <h:link outcome="/pages/alunos/historico.xhtml"
-                                        styleClass="#{request.servletPath eq '/pages/alunos/historico.xhtml' ? 'active' : ''}">Historico</h:link>
+                                <h:link outcome="/pages/alunos/pageAlunos.xhtml"
+                                        styleClass="#{request.servletPath eq '/pages/alunos/pageAlunos.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                                <h:link outcome="/pages/admin/pageMatriculas.xhtml"
+                                        styleClass="#{request.servletPath eq '/pages/admin/pageMatriculas.xhtml' ? 'active' : ''}">Matriculas</h:link>
+                                <h:link outcome="/pages/alunos/pageHistorico.xhtml"
+                                        styleClass="#{request.servletPath eq '/pages/alunos/pageHistorico.xhtml' ? 'active' : ''}">Historico</h:link>
                             </div>
                         </div>
 
-                        <div class="nav-module #{request.servletPath eq '/pages/alunos/turmas.xhtml' ? 'is-expanded' : ''}">
+                        <div class="nav-module #{request.servletPath eq '/pages/alunos/pageTurmas.xhtml' ? 'is-expanded' : ''}">
                             <button type="button"
                                     class="nav-module-toggle"
                                     aria-expanded="false">
@@ -77,27 +77,14 @@
                                 <i class="pi pi-chevron-down"></i>
                             </button>
                             <div class="nav-module-links">
-                                <h:link outcome="/pages/alunos/turmas.xhtml"
-                                        styleClass="#{request.servletPath eq '/pages/alunos/turmas.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                                <h:link outcome="/pages/alunos/pageTurmas.xhtml"
+                                        styleClass="#{request.servletPath eq '/pages/alunos/pageTurmas.xhtml' ? 'active' : ''}">Cadastro</h:link>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="nav-module #{request.servletPath eq '/pages/alunos/nota-frequencia.xhtml' ? 'is-expanded' : ''}">
-                    <button type="button"
-                            class="nav-module-toggle"
-                            aria-expanded="false">
-                        <span>Notas</span>
-                        <i class="pi pi-chevron-down"></i>
-                    </button>
-                    <div class="nav-module-links">
-                        <h:link outcome="/pages/alunos/nota-frequencia.xhtml"
-                                styleClass="#{request.servletPath eq '/pages/alunos/nota-frequencia.xhtml' ? 'active' : ''}">Lancamentos</h:link>
-                    </div>
-                </div>
-
-                <div class="nav-module #{request.servletPath eq '/pages/professores/professores.xhtml' ? 'is-expanded' : ''}">
+                <div class="nav-module #{request.servletPath eq '/pages/professores/pageProfessores.xhtml' or request.servletPath eq '/pages/professores/pageDisciplina.xhtml' ? 'is-expanded' : ''}">
                     <button type="button"
                             class="nav-module-toggle"
                             aria-expanded="false">
@@ -105,12 +92,27 @@
                         <i class="pi pi-chevron-down"></i>
                     </button>
                     <div class="nav-module-links">
-                        <h:link outcome="/pages/professores/professores.xhtml"
-                                styleClass="#{request.servletPath eq '/pages/professores/professores.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                        <h:link outcome="/pages/professores/pageProfessores.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/professores/pageProfessores.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                        <h:link outcome="/pages/professores/pageDisciplina.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/professores/pageDisciplina.xhtml' ? 'active' : ''}">Disciplina</h:link>
                     </div>
                 </div>
 
-                <div class="nav-module #{request.servletPath eq '/pages/admin/admin.xhtml' ? 'is-expanded' : ''}">
+                <div class="nav-module #{request.servletPath eq '/pages/alunos/pageNotaFrequencia.xhtml' ? 'is-expanded' : ''}">
+                    <button type="button"
+                            class="nav-module-toggle"
+                            aria-expanded="false">
+                        <span>Notas</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </button>
+                    <div class="nav-module-links">
+                        <h:link outcome="/pages/alunos/pageNotaFrequencia.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/alunos/pageNotaFrequencia.xhtml' ? 'active' : ''}">Lancamentos</h:link>
+                    </div>
+                </div>
+
+                <div class="nav-module #{request.servletPath eq '/pages/admin/pageAdmin.xhtml' ? 'is-expanded' : ''}">
                     <button type="button"
                             class="nav-module-toggle"
                             aria-expanded="false">
@@ -118,8 +120,8 @@
                         <i class="pi pi-chevron-down"></i>
                     </button>
                     <div class="nav-module-links">
-                        <h:link outcome="/pages/admin/admin.xhtml"
-                                styleClass="#{request.servletPath eq '/pages/admin/admin.xhtml' ? 'active' : ''}">Usuarios e Perfis</h:link>
+                        <h:link outcome="/pages/admin/pageAdmin.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/admin/pageAdmin.xhtml' ? 'active' : ''}">Usuarios e Perfis</h:link>
                     </div>
                 </div>
             </nav>

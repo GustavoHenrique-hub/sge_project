@@ -8,13 +8,13 @@
 
     <h:form id="formNewUser">
         <div class="field-group">
-            <h:panelGrid id="grid" columns="3" cellpadding="7">
+            <h:panelGrid id="grid" columns="1" cellpadding="7">
                 <cmp:baseInput id="inputLogin"
                                value="#{usuarioBean.form.login}"
                                styleClass="form-control"
                                style="text-transform: uppercase;"
                                required="true"
-                               requiredMessage="Login e obrigatorio."
+                               requiredMessage="Login é obrigatório!"
                                label="Login"/>
 
                 <cmp:baseInput id="inputUsuario"
@@ -22,8 +22,8 @@
                                styleClass="form-control"
                                style="text-transform: uppercase;"
                                required="true"
-                               requiredMessage="Usuario e obrigatorio."
-                               label="UsuÃ¡rio"/>
+                               requiredMessage="Usuario é obrigatório!"
+                               label="Usuario"/>
 
                 <cmp:baseInput id="inputSenha"
                                value="#{usuarioBean.form.senha}"
@@ -31,7 +31,7 @@
                                style=""
                                secret="true"
                                required="true"
-                               requiredMessage="Senha e obrigatoria."
+                               requiredMessage="Senha é obrigatória!"
                                label="Senha"/>
             </h:panelGrid>
         </div>

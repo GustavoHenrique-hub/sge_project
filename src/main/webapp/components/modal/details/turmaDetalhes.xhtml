@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:cmp="jakarta.faces.composite/components"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="detail-badge-row">
+        <span class="badge-pill badge-muted">ID: #{turmaBean.detalheSelecionado.id}</span>
+        <span class="badge-pill badge-muted">Codigo: #{turmaBean.detalheSelecionado.codigo}</span>
+    </div>
+
+    <div class="field-group">
+        <h:panelGrid columns="1" cellpadding="7">
+            <cmp:baseInput id="detalheTurmaNome" value="#{turmaBean.detalheEdicao.turma}" label="Nome da Turma" styleClass="form-control" style="text-transform: uppercase;" required="true" requiredMessage="Turma e obrigatoria." disabled="#{not turmaBean.editandoDetalhe}"/>
+        </h:panelGrid>
+    </div>
+
+    <div class="detail-actions">
+        <p:commandButton value="Editar" rendered="#{not turmaBean.editandoDetalhe}" action="#{turmaBean.habilitarEdicaoDetalhe}" update="@form" styleClass="btn-ghostx"/>
+        <p:commandButton value="Cancelar" rendered="#{turmaBean.editandoDetalhe}" action="#{turmaBean.cancelarEdicaoDetalhe}" update="@form" styleClass="btn-ghostx"/>
+        <p:commandButton value="Salvar" rendered="#{turmaBean.editandoDetalhe}" action="#{turmaBean.salvarDetalhe}" process="@form" update=":growl @form :formListaTurma:listaTurmas :modalDetalhesWrapper" oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalDetalhes')).hide();}" styleClass="btn-primaryx ui-button-outlined"/>
+    </div>
+
+</ui:composition>

@@ -20,22 +20,22 @@ public class ProfessorRepository {
         return entity;
     }
 
+    public ProfessorEntity update(ProfessorEntity entity) {
+        return em.merge(entity);
+    }
+
     public List<ProfessorEntity> findAll(){
         return em.createQuery("select p from ProfessorEntity p order by p.nome", ProfessorEntity.class)
                 .getResultList();
     }
 
-    public List<ProfessorEntity> findByFilters(String nome, String cpf, String rm) {
+    public List<ProfessorEntity> findByFilters(String nome, String cpf) {
         StringBuilder jpql = new StringBuilder("select p from ProfessorEntity p where 1=1");
         if (nome != null && !nome.isBlank()) {
             jpql.append(" and lower(p.nome) like :nome");
         }
         if (cpf != null && !cpf.isBlank()) {
             jpql.append(" and p.cpf like :cpf");
-        }
-
-        if (rm != null && !rm.isBlank()) {
-            jpql.append(" and p.rm like :rm");
         }
         jpql.append(" order by p.nome");
 
@@ -45,9 +45,6 @@ public class ProfessorRepository {
         }
         if (cpf != null && !cpf.isBlank()) {
             query.setParameter("cpf", "%" + cpf.trim() + "%");
-        }
-        if (rm != null && !rm.isBlank()) {
-            query.setParameter("rm", "%" + rm.trim() + "%");
         }
         return query.getResultList();
     }

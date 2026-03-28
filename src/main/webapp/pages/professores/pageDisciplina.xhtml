@@ -21,22 +21,50 @@
             <h:form id="formFiltrosProfessor">
                 <div class="filters-body">
                     <cmp:baseAutocomplete
-                            id="dropDownProfessor"
+                            id="dropDownNomeProfessor"
                             label="Professor"
                             value="#{professorDisciplinaBean.filtroProfessor}"
                             badgeValue="#{professorDisciplinaBean.filtroProfessor != null ? professorDisciplinaBean.filtroProfessor.rm : null}"
-                            completeMethod="#{professorBean.completeProfessor}"
+                            completeMethod="#{professorBean.completeNomeProfessor}"
                             converter="#{professorEntityConverter}"
                             itemLabelProperty="nome"
                             parentDivStyle="filters-body-column"
                             childrenDivStyle="filters-body-column-row"
                             showMessage="false"
-                            required="false"/>
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
+
+                    <cmp:baseAutocomplete
+                            id="dropCPFProfessor"
+                            label="Disciplina"
+                            value="#{professorDisciplinaBean.filtroDisciplina}"
+                            badgeValue="#{professorDisciplinaBean.filtroDisciplina != null ? professorDisciplinaBean.filtroDisciplina.codigo : null}"
+                            completeMethod="#{disciplinaBean.completeDisciplina}"
+                            converter="#{disciplinaEntityConverter}"
+                            itemLabelProperty="descricao"
+                            parentDivStyle="filters-body-column"
+                            childrenDivStyle="filters-body-column-row"
+                            showMessage="false"
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
+
+                    <cmp:baseAutocomplete
+                            id="dropDownSituacao"
+                            label="Situacao"
+                            value="#{professorDisciplinaBean.filtroSituacao}"
+                            badgeValue="#{professorDisciplinaBean.filtroSituacao != null ? professorDisciplinaBean.filtroSituacao.id : null}"
+                            completeMethod="#{situacaoBean.completeSituacao}"
+                            converter="#{situacaoEntityConverter}"
+                            itemLabelProperty="situacao"
+                            parentDivStyle="filters-body-column"
+                            childrenDivStyle="filters-body-column-row"
+                            showMessage="false"
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
+
                     <cmp:baseCommandButton value="Filtrar"
                                            action="#{professorDisciplinaBean.filtrar}"
                                            render=":growl :formListaProfessor:listaProfessores"/>
-                    <cmp:baseButton dataBsToggle="modal" styleClass="btn-primaryx" dataBsTarget="#modalNovoProfessor"
-                                    buttonLabel="Cadastrar Professor" parentDivStyle="filters-body-button-column"/>
 
                     <cmp:baseButton dataBsToggle="modal" styleClass="btn-primaryx" dataBsTarget="#modalNovaMateria"
                                     buttonLabel="Cadastrar Matéria" parentDivStyle="filters-body-button-column"/>
@@ -63,7 +91,7 @@
                                                     title="Detalhar"
                                                     styleClass="icon-action-btn"
                                                     ajax="true"
-                                                    render=":formDetalheProfessor"
+                                                    render=":modalDetalhesWrapper"
                                                     value="&#xe908;"/>
                             </h:column>
                             <h:column>
@@ -118,19 +146,19 @@
         </h:form>
 
         <cmp:baseModal
-                modalId="modalNovoProfessor"
-                labelledby="modalNovoProfessorLabel"
-                modalTitle="Cadastrar Professor"
-                modalTitleId="modalNovoProfessorLabel"
-                modalImport="newprofessor.xhtml"
-        />
-
-        <cmp:baseModal
                 modalId="modalNovaMateria"
                 labelledby="modalNovaMateriaLabel"
                 modalTitle="Cadastrar Matéria"
                 modalTitleId="modalNovaMateriaLabel"
-                modalImport="newmateria.xhtml"
+                modalImport="modalNewMateria.xhtml"
         />
+        <h:panelGroup id="modalDetalhesWrapper" layout="block">
+            <cmp:baseModal
+                    modalId="modalDetalhes"
+                    labelledby="modalDetalhesLabel"
+                    modalTitle="#{detalheModalBean.titulo}"
+                    modalTitleId="modalDetalhesLabel"
+                    modalImport="modalDetalhes.xhtml"/>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>

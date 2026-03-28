@@ -31,7 +31,8 @@
                             parentDivStyle="filters-body-column"
                             childrenDivStyle="filters-body-column-row"
                             showMessage="false"
-                            required="false"/>
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
                     <cmp:baseCommandButton value="Filtrar"
                                            action="#{turmaBean.filtrar}"
                                            render=":growl :formListaTurma:listaTurmas"/>
@@ -62,7 +63,7 @@
                                                     title="Detalhar"
                                                     styleClass="icon-action-btn"
                                                     ajax="true"
-                                                    render=":formDetalheTurma"
+                                                    render=":modalDetalhesWrapper"
                                                     value="&#xe908;"/>
                             </h:column>
                             <h:column>
@@ -102,6 +103,14 @@
                 labelledby="modalNovaTurmaLabel"
                 modalTitle="Cadastrar Turma"
                 modalTitleId="modalNovaTurmaLabel"
-                modalImport="newturma.xhtml" />
+                modalImport="modalNewTurma.xhtml" />
+        <h:panelGroup id="modalDetalhesWrapper" layout="block">
+            <cmp:baseModal
+                    modalId="modalDetalhes"
+                    labelledby="modalDetalhesLabel"
+                    modalTitle="#{detalheModalBean.titulo}"
+                    modalTitleId="modalDetalhesLabel"
+                    modalImport="modalDetalhes.xhtml"/>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>

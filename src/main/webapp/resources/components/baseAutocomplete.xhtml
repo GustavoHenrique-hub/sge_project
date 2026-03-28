@@ -23,38 +23,43 @@
         <cc:attribute name="dropdown" required="false" default="true"/>
         <cc:attribute name="forceSelection" required="false" default="true"/>
         <cc:attribute name="showMessage" required="false" default="true"/>
+        <cc:attribute name="fieldStyle" required="false" />
     </cc:interface>
 
     <cc:implementation>
         <div class="#{cc.attrs.parentDivStyle}">
             <label class="form-label cardx-title">#{cc.attrs.label}</label>
 
-            <div class="#{cc.attrs.childrenDivStyle}">
-                <h:outputText id="#{cc.attrs.id}IdLabel"
-                              styleClass="form-label badge-pill-id badge-muted"
-                              value="#{cc.attrs.badgeValue}"/>
+            <div class="#{cc.attrs.fieldStyle}">
+                <div class="#{cc.attrs.childrenDivStyle}">
+                    <h:outputText id="#{cc.attrs.id}IdLabel"
+                                  styleClass="form-label badge-pill-id badge-muted"
+                                  value="#{cc.attrs.badgeValue}"/>
 
-                <p:autoComplete id="#{cc.attrs.id}"
-                                dropdown="#{cc.attrs.dropdown}"
-                                value="#{cc.attrs.value}"
-                                styleClass="autocomplete-modern"
-                                inputStyleClass="autocomplete-input"
-                                var="item"
-                                itemLabel="#{item[cc.attrs.itemLabelProperty]}"
-                                itemValue="#{item}"
-                                converter="#{cc.attrs.converter}"
-                                completeMethod="#{cc.attrs.completeMethod}"
-                                scrollHeight="#{cc.attrs.scrollHeight}"
-                                forceSelection="#{cc.attrs.forceSelection}"
-                                required="#{cc.attrs.required}"
-                                requiredMessage="#{cc.attrs.requiredMessage}">
-                    <p:ajax event="itemSelect"
-                            update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}"/>
-                    <p:ajax event="clear"
-                            update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}"/>
-                </p:autoComplete>
+                    <p:autoComplete id="#{cc.attrs.id}"
+                                    dropdown="#{cc.attrs.dropdown}"
+                                    value="#{cc.attrs.value}"
+                                    styleClass="autocomplete-modern"
+                                    inputStyleClass="autocomplete-input"
+                                    var="item"
+                                    itemLabel="#{item[cc.attrs.itemLabelProperty]}"
+                                    itemValue="#{item}"
+                                    converter="#{cc.attrs.converter}"
+                                    completeMethod="#{cc.attrs.completeMethod}"
+                                    scrollHeight="#{cc.attrs.scrollHeight}"
+                                    forceSelection="#{cc.attrs.forceSelection}"
+                                    required="#{cc.attrs.required}"
+                                    requiredMessage="#{cc.attrs.requiredMessage}">
+                        <p:ajax event="itemSelect"
+                                update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}"/>
+                        <p:ajax event="clear"
+                                update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}"/>
+                    </p:autoComplete>
+                </div>
+                <p:message for="@previous"
+                           styleClass="field-error field-error-inline"
+                           rendered="#{cc.attrs.showMessage}"/>
             </div>
-            <p:message for="@previous" styleClass="field-error" rendered="#{cc.attrs.showMessage}"/>
         </div>
     </cc:implementation>
 </ui:component>

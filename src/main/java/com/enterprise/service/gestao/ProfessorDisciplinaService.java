@@ -50,6 +50,36 @@ public class ProfessorDisciplinaService {
         return new ProfessorDisciplinaDTO(entity);
     }
 
+    @Transactional
+    public ProfessorDisciplinaDTO atualizar(ProfessorDisciplinaDTO dto) {
+        if (dto == null || dto.getId() == null || dto.getProfessor() == null || dto.getDisciplina() == null || dto.getSituacao() == null) {
+            throw new IllegalArgumentException("Vinculo invalido para atualizacao.");
+        }
+
+        Long professorId = dto.getProfessor().getId();
+        Long disciplinaId = dto.getDisciplina().getId();
+        Long situacaoId = dto.getSituacao().getId();
+
+        if (professorId == null || disciplinaId == null || situacaoId == null) {
+            throw new IllegalArgumentException("Professor, disciplina e situacao sao obrigatorios.");
+        }
+        if (repository.existsByProfessorAndDisciplinaExcludingId(professorId, disciplinaId, dto.getId())) {
+            throw new IllegalArgumentException("Professor ja matriculado nesta disciplina.");
+        }
+
+        ProfessorEntity professor = professorService.findById(professorId).orElseThrow(() -> new IllegalArgumentException("Professor nao encontrado."));
+        DisciplinaEntity disciplina = disciplinaService.findById(disciplinaId).orElseThrow(() -> new IllegalArgumentException("Disciplina nao encontrada."));
+        SituacaoEntity situacao = situacaoService.findById(situacaoId).orElseThrow(() -> new IllegalArgumentException("Situacao nao encontrada."));
+
+        ProfessorDisciplinaEntity entity = repository.findById(dto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Vinculo nao encontrado."));
+        entity.setProfessor(professor);
+        entity.setDisciplina(disciplina);
+        entity.setSituacao(situacao);
+
+        return new ProfessorDisciplinaDTO(repository.update(entity));
+    }
+
     private void validar(Long professorId, Long disciplinaId) {
         if (professorId == null || disciplinaId == null) {
             throw new IllegalArgumentException("Professor e disciplina são obrigatorios.");

@@ -20,6 +20,10 @@ public class ProfessorDisciplinaRepository {
         return entity;
     }
 
+    public ProfessorDisciplinaEntity update(ProfessorDisciplinaEntity entity) {
+        return em.merge(entity);
+    }
+
     public Optional<ProfessorDisciplinaEntity> findById(Long id) {
         return Optional.ofNullable(em.find(ProfessorDisciplinaEntity.class, id));
     }
@@ -88,6 +92,19 @@ public class ProfessorDisciplinaRepository {
                 )
                 .setParameter("professorId", professorId)
                 .setParameter("disciplinaId", disciplinaId)
+                .getSingleResult();
+        return total != null && total > 0;
+    }
+
+    public boolean existsByProfessorAndDisciplinaExcludingId(Long professorId, Long disciplinaId, Long id) {
+        Long total = em.createQuery(
+                        "select count(at) from ProfessorDisciplinaEntity at " +
+                                "where at.professor.id = :professorId and at.disciplina.id = :disciplinaId and at.id <> :id",
+                        Long.class
+                )
+                .setParameter("professorId", professorId)
+                .setParameter("disciplinaId", disciplinaId)
+                .setParameter("id", id == null ? -1L : id)
                 .getSingleResult();
         return total != null && total > 0;
     }

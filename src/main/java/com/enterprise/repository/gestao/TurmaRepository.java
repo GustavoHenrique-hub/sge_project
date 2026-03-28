@@ -19,6 +19,10 @@ public class TurmaRepository {
         return entity;
     }
 
+    public TurmaEntity update(TurmaEntity entity) {
+        return em.merge(entity);
+    }
+
     public Optional<TurmaEntity> findById(Long id) {
         if (id == null) {
             return Optional.empty();

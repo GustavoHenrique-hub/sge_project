@@ -29,7 +29,8 @@
                             converter="#{turmaEntityConverter}"
                             itemLabelProperty="turma"
                             showMessage="false"
-                            required="false"/>
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
                     <div class="filters-body-column">
                         <label class="form-label cardx-title">Bimestre</label>
                         <h:selectOneMenu value="#{lancamentoBean.bimestre}" styleClass="form-select">
@@ -73,7 +74,7 @@
                                                     title="Detalhar"
                                                     styleClass="icon-action-btn"
                                                     ajax="true"
-                                                    render=":formDetalheLancamento"
+                                                    render=":modalDetalhesWrapper"
                                                     value="&#xe908;"/>
                             </h:column>
                             <h:column>
@@ -115,5 +116,13 @@
                 </div>
             </h:panelGroup>
         </h:form>
+        <h:panelGroup id="modalDetalhesWrapper" layout="block">
+            <cmp:baseModal
+                    modalId="modalDetalhes"
+                    labelledby="modalDetalhesLabel"
+                    modalTitle="#{detalheModalBean.titulo}"
+                    modalTitleId="modalDetalhesLabel"
+                    modalImport="modalDetalhes.xhtml"/>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>

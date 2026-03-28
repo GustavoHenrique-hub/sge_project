@@ -25,13 +25,14 @@
                             label="Aluno"
                             value="#{historicoBean.filtroAluno}"
                             badgeValue="#{historicoBean.filtroAluno != null ? historicoBean.filtroAluno.rm : null}"
-                            completeMethod="#{alunoBean.completeAluno}"
+                            completeMethod="#{alunoBean.completeNomeAluno}"
                             converter="#{alunoEntityConverter}"
                             itemLabelProperty="nome"
                             parentDivStyle="filters-body-column"
                             childrenDivStyle="filters-body-column-row"
                             showMessage="false"
-                            required="false"/>
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
                     <cmp:baseCommandButton value="Filtrar"
                                            action="#{historicoBean.buscar}"
                                            render=":growl :formListaHistorico:listaHistorico"/>
@@ -58,7 +59,7 @@
                                                     title="Detalhar"
                                                     styleClass="icon-action-btn"
                                                     ajax="true"
-                                                    render=":formDetalheHistorico"
+                                                    render=":modalDetalhesWrapper"
                                                     value="&#xe908;"/>
                             </h:column>
                             <h:column>
@@ -96,5 +97,13 @@
                 </div>
             </h:panelGroup>
         </h:form>
+        <h:panelGroup id="modalDetalhesWrapper" layout="block">
+            <cmp:baseModal
+                    modalId="modalDetalhes"
+                    labelledby="modalDetalhesLabel"
+                    modalTitle="#{detalheModalBean.titulo}"
+                    modalTitleId="modalDetalhesLabel"
+                    modalImport="modalDetalhes.xhtml"/>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>

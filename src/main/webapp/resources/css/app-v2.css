@@ -445,7 +445,7 @@ body {
 
 /* ==========================================================================
    Filters and PrimeFaces AutoComplete
-   Used by: pages/admin/admin.xhtml + components/modal/perfiluser.xhtml
+   Used by: pages/admin/pageAdmin.xhtml + components/modal/modalPerfilUser.xhtml
    ========================================================================== */
 .filters-body {
     width: 100%;
@@ -722,7 +722,7 @@ body {
 
 /* ==========================================================================
    PrimeFaces / Bootstrap Modal Styling
-   Used by: pages/admin/admin.xhtml modals and modal components
+   Used by: pages/admin/pageAdmin.xhtml modals and modal components
    ========================================================================== */
 .modal-modern .modal-content {
     background: var(--surface);
@@ -752,7 +752,7 @@ body {
 .modal-link-grid {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: 12px;
 }
 
@@ -761,33 +761,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 6px;
-}
-
-.modal-link-item .field-error {
-    display: block;
-    min-height: 18px;
-    margin-top: 2px;
-    font-size: 12px;
-    line-height: 1.35;
-    color: #dc3545;
-}
-
-.modal-link-item .field-error .ui-message-error,
-.modal-link-item .field-error .ui-message-error-detail,
-.modal-link-item .field-error .ui-message-error-summary,
-.modal-link-item .field-error .ui-message-error-icon {
-    color: #dc3545;
-}
-
-.modal-link-item .field-error .ui-message-error {
-    display: inline-flex;
-    align-items: flex-start;
-    gap: 6px;
-    margin: 0;
-    padding: 0;
-    background: transparent;
-    border: 0;
-    box-shadow: none;
 }
 
 .modal-id-inline {
@@ -844,6 +817,20 @@ body {
 
 .field-input-wrap {
     position: relative;
+    width: 60%;
+    min-width: 0;
+    overflow: visible;
+}
+
+.field-modal-autocomplete-wrap {
+    position: relative;
+    width: 60%;
+    min-width: 0;
+    overflow: visible;
+}
+
+.field-filters-autocomplete-wrap {
+    position: relative;
     width: 100%;
     min-width: 0;
     overflow: visible;
@@ -862,7 +849,7 @@ body {
     top: 50%;
     left: calc(100% + 10px);
     transform: translateY(-50%);
-    width: 170px;
+    width: 30%;
     min-height: 0;
     margin-top: 0;
     line-height: 1.2;
@@ -912,6 +899,66 @@ body {
 
 .theme-dark .modal-modern .btn-close {
     filter: invert(1);
+}
+
+.detail-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.detail-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.detail-read-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.detail-read-item {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+}
+
+.detail-read-label {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.detail-read-value {
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+.detail-empty-state {
+    padding: 18px;
+    border: 1px dashed var(--card-border);
+    border-radius: 14px;
+    color: var(--muted);
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .detail-read-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }
 
 /* ==========================================================================

@@ -20,6 +20,10 @@ public class DisciplinaRepository {
         return entity;
     }
 
+    public DisciplinaEntity update(DisciplinaEntity entity) {
+        return em.merge(entity);
+    }
+
     public Optional<DisciplinaEntity> findById(Long id) {
         if (id == null) {
             return Optional.empty();

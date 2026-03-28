@@ -26,6 +26,16 @@ public class TurmaService {
         return new TurmaDTO(entity);
     }
 
+    @Transactional
+    public TurmaDTO atualizar(TurmaDTO dto) {
+        validar(dto);
+        if (dto.getId() == null || dto.getCodigo() == null || dto.getCodigo().isBlank()) {
+            throw new IllegalArgumentException("Turma invalida para atualizacao.");
+        }
+        TurmaEntity merged = repository.update(new TurmaEntity(dto));
+        return new TurmaDTO(merged);
+    }
+
     public void validar(TurmaDTO dto){
         if (dto == null) {
             throw new IllegalArgumentException("Turma invalida.");

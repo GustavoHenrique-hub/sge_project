@@ -28,6 +28,10 @@ public class SituacaoService {
         return repository.findBySituacao(situacao);
     }
 
+    public List<SituacaoEntity> findByFilters(String situacao) {
+        return repository.findByFilters(situacao);
+    }
+
     public List<SituacaoEntity> findAll() {
         return repository.findAll();
     }

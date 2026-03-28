@@ -50,6 +50,36 @@ public class AlunoTurmaService {
         return new AlunoTurmaDTO(entity);
     }
 
+    @Transactional
+    public AlunoTurmaDTO atualizar(AlunoTurmaDTO dto) {
+        if (dto == null || dto.getId() == null || dto.getAluno() == null || dto.getTurma() == null || dto.getSituacao() == null) {
+            throw new IllegalArgumentException("Matricula invalida para atualizacao.");
+        }
+
+        Long alunoId = dto.getAluno().getId();
+        Long turmaId = dto.getTurma().getId();
+        Long situacaoId = dto.getSituacao().getId();
+
+        if (alunoId == null || turmaId == null || situacaoId == null) {
+            throw new IllegalArgumentException("Aluno, turma e situacao sao obrigatorios.");
+        }
+        if (repository.existsByAlunoAndTurmaExcludingId(alunoId, turmaId, dto.getId())) {
+            throw new IllegalArgumentException("Aluno ja matriculado nesta turma.");
+        }
+
+        AlunoEntity aluno = alunoService.findById(alunoId).orElseThrow(() -> new IllegalArgumentException("Aluno nao encontrado."));
+        TurmaEntity turma = turmaService.findById(turmaId).orElseThrow(() -> new IllegalArgumentException("Turma nao encontrada."));
+        SituacaoEntity situacao = situacaoService.findById(situacaoId).orElseThrow(() -> new IllegalArgumentException("Situacao nao encontrada."));
+
+        AlunoTurmaEntity entity = repository.findById(dto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Matricula nao encontrada."));
+        entity.setAluno(aluno);
+        entity.setTurma(turma);
+        entity.setSituacao(situacao);
+
+        return new AlunoTurmaDTO(repository.update(entity));
+    }
+
     private void validar(Long alunoId, Long turmaId) {
         if (alunoId == null || turmaId == null) {
             throw new IllegalArgumentException("Aluno e turma sao obrigatorios.");

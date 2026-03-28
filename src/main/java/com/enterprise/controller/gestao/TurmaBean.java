@@ -1,5 +1,6 @@
 package com.enterprise.controller.gestao;
 
+import com.enterprise.controller.common.DetalheModalBean;
 import com.enterprise.dto.gestao.TurmaDTO;
 import com.enterprise.model.entity.gestao.TurmaEntity;
 import com.enterprise.service.gestao.TurmaService;
@@ -25,11 +26,15 @@ public class TurmaBean implements Serializable {
 
     @Inject
     private TurmaService service;
+    @Inject
+    private DetalheModalBean detalheModalBean;
 
     private TurmaEntity filtroTurma;
     private List<TurmaEntity> turmas = new ArrayList<>();
     private TurmaEntity detalheSelecionado;
     private TurmaDTO turmaDTO = new TurmaDTO();
+    private TurmaDTO detalheEdicao = new TurmaDTO();
+    private boolean editandoDetalhe;
 
     @PostConstruct
     public void init() {
@@ -75,6 +80,11 @@ public class TurmaBean implements Serializable {
 
     public void detalhar(TurmaEntity turma) {
         detalheSelecionado = turma;
+        detalheEdicao = turma == null ? new TurmaDTO() : new TurmaDTO(turma);
+        editandoDetalhe = false;
+        if (turma != null) {
+            detalheModalBean.abrir("Detalhes da turma", "/components/modal/details/turmaDetalhes.xhtml");
+        }
     }
 
     public List<TurmaEntity> completeTurma(String query) {
@@ -88,5 +98,31 @@ public class TurmaBean implements Serializable {
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));
+    }
+
+    public void habilitarEdicaoDetalhe() {
+        if (detalheSelecionado == null) {
+            return;
+        }
+        detalheEdicao = new TurmaDTO(detalheSelecionado);
+        editandoDetalhe = true;
+    }
+
+    public void cancelarEdicaoDetalhe() {
+        detalheEdicao = detalheSelecionado == null ? new TurmaDTO() : new TurmaDTO(detalheSelecionado);
+        editandoDetalhe = false;
+    }
+
+    public void salvarDetalhe() {
+        try {
+            TurmaDTO atualizado = service.atualizar(detalheEdicao);
+            detalheSelecionado = service.findById(atualizado.getId()).orElse(null);
+            detalheEdicao = detalheSelecionado == null ? new TurmaDTO() : new TurmaDTO(detalheSelecionado);
+            editandoDetalhe = false;
+            recarregarLista();
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Turma atualizada.");
+        } catch (Exception e) {
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
+        }
     }
 }

@@ -20,6 +20,10 @@ public class AlunoTurmaRepository {
         return entity;
     }
 
+    public AlunoTurmaEntity update(AlunoTurmaEntity entity) {
+        return em.merge(entity);
+    }
+
     public Optional<AlunoTurmaEntity> findById(Long id) {
         return Optional.ofNullable(em.find(AlunoTurmaEntity.class, id));
     }
@@ -88,6 +92,19 @@ public class AlunoTurmaRepository {
                 )
                 .setParameter("alunoId", alunoId)
                 .setParameter("turmaId", turmaId)
+                .getSingleResult();
+        return total != null && total > 0;
+    }
+
+    public boolean existsByAlunoAndTurmaExcludingId(Long alunoId, Long turmaId, Long id) {
+        Long total = em.createQuery(
+                        "select count(at) from AlunoTurmaEntity at " +
+                                "where at.aluno.id = :alunoId and at.turma.id = :turmaId and at.id <> :id",
+                        Long.class
+                )
+                .setParameter("alunoId", alunoId)
+                .setParameter("turmaId", turmaId)
+                .setParameter("id", id == null ? -1L : id)
                 .getSingleResult();
         return total != null && total > 0;
     }

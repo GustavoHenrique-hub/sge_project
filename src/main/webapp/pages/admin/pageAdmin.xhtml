@@ -26,11 +26,12 @@
                             label="Usuário"
                             value="#{perfilUsuarioBean.filtroUsuario}"
                             badgeValue="#{perfilUsuarioBean.filtroUsuario != null ? perfilUsuarioBean.filtroUsuario.id : null}"
-                            completeMethod="#{perfilUsuarioBean.completeUsuario}"
+                            completeMethod="#{usuarioBean.completeUsuario}"
                             converter="#{usuarioEntityConverter}"
                             itemLabelProperty="login"
                             showMessage="false"
-                            required="false"/>
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
 
                     <cmp:baseAutocomplete
                             id="dropDownPerfil"
@@ -41,7 +42,8 @@
                             converter="#{perfilEntityConverter}"
                             itemLabelProperty="perfil"
                             showMessage="false"
-                            required="false"/>
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
 
                     <cmp:baseAutocomplete
                             id="dropDownSituacao"
@@ -52,7 +54,8 @@
                             converter="#{situacaoEntityConverter}"
                             itemLabelProperty="situacao"
                             showMessage="false"
-                            required="false"/>
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
                     <cmp:baseCommandButton value="Filtrar"
                                            action="#{perfilUsuarioBean.filtrar}"
                                            render=":growl :formLista:listaUsers"/>
@@ -142,14 +145,14 @@
                 labelledby="modalNewUserLabel"
                 modalTitle="Novo usuário"
                 modalTitleId="modalNewUserLabel"
-                modalImport="newuser.xhtml"/>
+                modalImport="modalNewUser.xhtml"/>
 
         <cmp:baseModal
                 modalId="modalPerfilUser"
                 labelledby="modalPerfilUserLabel"
                 modalTitle="Novo vínculo"
                 modalTitleId="modalPerfilUserLabel"
-                modalImport="perfiluser.xhtml"/>
+                modalImport="modalPerfilUser.xhtml"/>
     </ui:define>
 </ui:composition>
 

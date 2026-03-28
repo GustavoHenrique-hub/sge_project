@@ -28,6 +28,16 @@ public class AlunoService {
         return new AlunoDTO(entity);
     }
 
+    @Transactional
+    public AlunoDTO atualizar(AlunoDTO dto) {
+        validar(dto);
+        if (dto.getId() == null || dto.getRm() == null || dto.getRm().isBlank()) {
+            throw new IllegalArgumentException("Aluno invalido para atualizacao.");
+        }
+        AlunoEntity merged = repository.update(new AlunoEntity(dto));
+        return new AlunoDTO(merged);
+    }
+
     public List<AlunoEntity> findAll() {
         return repository.findAll();
     }

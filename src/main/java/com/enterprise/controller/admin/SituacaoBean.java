@@ -26,6 +26,7 @@ public class SituacaoBean implements Serializable {
     private SituacaoService service;
 
     private SituacaoEntity form = new SituacaoEntity();
+    private SituacaoEntity filtroSituacao;
     private List<SituacaoEntity> situacao = new ArrayList<>();
 
     @PostConstruct
@@ -39,10 +40,6 @@ public class SituacaoBean implements Serializable {
 
     private void recarregarLista() {
         situacao = service.findAll();
-    }
-
-    private void addMsg(FacesMessage.Severity severity, String title, String detail) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));
     }
 
     public List<SituacaoEntity> completeSituacao(String query) {

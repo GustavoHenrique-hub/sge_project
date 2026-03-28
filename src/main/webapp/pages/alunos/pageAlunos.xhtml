@@ -21,15 +21,28 @@
             <h:form id="formFiltrosAluno">
                 <div class="filters-body">
                     <cmp:baseAutocomplete
-                            id="aluno"
-                            label="Aluno"
+                            id="alunoNome"
+                            label="Nome"
                             value="#{alunoBean.filtroAluno}"
                             badgeValue="#{alunoBean.filtroAluno != null ? alunoBean.filtroAluno.rm : null}"
-                            completeMethod="#{alunoBean.completeAluno}"
+                            completeMethod="#{alunoBean.completeNomeAluno}"
                             converter="#{alunoEntityConverter}"
                             itemLabelProperty="nome"
                             required="false"
-                            showMessage="false"/>
+                            showMessage="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
+
+                    <cmp:baseAutocomplete
+                            id="alunoCPF"
+                            label="CPF"
+                            value="#{alunoBean.filtroAluno}"
+                            badgeValue="#{alunoBean.filtroAluno != null ? alunoBean.filtroAluno.rm : null}"
+                            completeMethod="#{alunoBean.completeCPFAluno}"
+                            converter="#{alunoEntityConverter}"
+                            itemLabelProperty="cpf"
+                            required="false"
+                            showMessage="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
 
                     <cmp:baseCommandButton value="Filtrar"
                                            action="#{alunoBean.filtrar}"
@@ -62,7 +75,7 @@
                                                     title="Detalhar"
                                                     styleClass="icon-action-btn"
                                                     ajax="true"
-                                                    render=":formDetalhe"
+                                                    render=":modalDetalhesWrapper"
                                                     value="&#xe908;"/>
                             </h:column>
                             <h:column>
@@ -118,7 +131,15 @@
                 labelledby="modalNovoAlunoLabel"
                 modalTitle="Cadastrar Aluno"
                 modalTitleId="modalNovoAlunoLabel"
-                modalImport="newaluno.xhtml"
+                modalImport="modalNewAluno.xhtml"
         />
+        <h:panelGroup id="modalDetalhesWrapper" layout="block">
+            <cmp:baseModal
+                    modalId="modalDetalhes"
+                    labelledby="modalDetalhesLabel"
+                    modalTitle="#{detalheModalBean.titulo}"
+                    modalTitleId="modalDetalhesLabel"
+                    modalImport="modalDetalhes.xhtml"/>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>

@@ -30,6 +30,16 @@ public class DisciplinaService {
         return new DisciplinaDTO(entity);
     }
 
+    @Transactional
+    public DisciplinaDTO atualizar(DisciplinaDTO dto) {
+        validar(dto);
+        if (dto.getId() == null || dto.getCodigo() == null || dto.getCodigo().isBlank()) {
+            throw new IllegalArgumentException("Disciplina invalida para atualizacao.");
+        }
+        DisciplinaEntity merged = repository.update(new DisciplinaEntity(dto));
+        return new DisciplinaDTO(merged);
+    }
+
     public void validar(DisciplinaDTO dto){
         if (dto == null) {
             throw new IllegalArgumentException("Disciplina invalida.");

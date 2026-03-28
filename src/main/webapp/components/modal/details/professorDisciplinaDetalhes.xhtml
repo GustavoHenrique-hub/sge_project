@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:cmp="jakarta.faces.composite/components"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="detail-badge-row">
+        <span class="badge-pill badge-muted">ID: #{professorDisciplinaBean.detalheSelecionado.id}</span>
+    </div>
+
+    <ui:fragment rendered="#{not professorDisciplinaBean.editandoDetalhe}">
+        <div class="detail-read-grid">
+            <div class="detail-read-item"><span class="detail-read-label">Professor</span><span class="detail-read-value">#{professorDisciplinaBean.detalheSelecionado.professor.nome}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">RM</span><span class="detail-read-value">#{professorDisciplinaBean.detalheSelecionado.professor.rm}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">Disciplina</span><span class="detail-read-value">#{professorDisciplinaBean.detalheSelecionado.disciplina.descricao}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">Situacao</span><span class="detail-read-value">#{professorDisciplinaBean.detalheSelecionado.situacao.situacao}</span></div>
+        </div>
+    </ui:fragment>
+
+    <ui:fragment rendered="#{professorDisciplinaBean.editandoDetalhe}">
+        <div class="modal-link-grid">
+            <cmp:baseAutocomplete id="detalheVinculoProfessor" label="Professor" value="#{professorDisciplinaBean.detalheProfessorSelecionado}" badgeValue="#{professorDisciplinaBean.detalheProfessorSelecionado != null ? professorDisciplinaBean.detalheProfessorSelecionado.rm : null}" completeMethod="#{professorBean.completeNomeProfessor}" converter="#{professorEntityConverter}" itemLabelProperty="nome" parentDivStyle="modal-link-item" childrenDivStyle="modal-id-inline" required="true" requiredMessage="Professor e obrigatorio."/>
+            <cmp:baseAutocomplete id="detalheVinculoDisciplina" label="Disciplina" value="#{professorDisciplinaBean.detalheDisciplinaSelecionada}" badgeValue="#{professorDisciplinaBean.detalheDisciplinaSelecionada != null ? professorDisciplinaBean.detalheDisciplinaSelecionada.codigo : null}" completeMethod="#{disciplinaBean.completeDisciplina}" converter="#{disciplinaEntityConverter}" itemLabelProperty="descricao" parentDivStyle="modal-link-item" childrenDivStyle="modal-id-inline" required="true" requiredMessage="Disciplina e obrigatoria."/>
+            <cmp:baseAutocomplete id="detalheVinculoSituacao" label="Situacao" value="#{professorDisciplinaBean.detalheSituacaoSelecionada}" badgeValue="#{professorDisciplinaBean.detalheSituacaoSelecionada != null ? professorDisciplinaBean.detalheSituacaoSelecionada.id : null}" completeMethod="#{situacaoBean.completeSituacao}" converter="#{situacaoEntityConverter}" itemLabelProperty="situacao" parentDivStyle="modal-link-item" childrenDivStyle="modal-id-inline" required="true" requiredMessage="Situacao e obrigatoria."/>
+        </div>
+    </ui:fragment>
+
+    <div class="detail-actions">
+        <p:commandButton value="Editar" rendered="#{not professorDisciplinaBean.editandoDetalhe}" action="#{professorDisciplinaBean.habilitarEdicaoDetalhe}" update="@form" styleClass="btn-ghostx"/>
+        <p:commandButton value="Cancelar" rendered="#{professorDisciplinaBean.editandoDetalhe}" action="#{professorDisciplinaBean.cancelarEdicaoDetalhe}" update="@form" styleClass="btn-ghostx"/>
+        <p:commandButton value="Salvar" rendered="#{professorDisciplinaBean.editandoDetalhe}" action="#{professorDisciplinaBean.salvarDetalhe}" process="@form" update=":growl @form :formListaProfessor:listaProfessores :modalDetalhesWrapper" oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalDetalhes')).hide();}" styleClass="btn-primaryx ui-button-outlined"/>
+    </div>
+
+</ui:composition>

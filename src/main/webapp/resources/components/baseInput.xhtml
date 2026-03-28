@@ -21,6 +21,7 @@
         <cc:attribute name="converterPattern" required="false"/>
         <cc:attribute name="converterMessage" required="false"/>
         <cc:attribute name="messageStyleClass" required="false" default="field-error field-error-inline"/>
+        <cc:attribute name="disabled" required="false" default="false"/>
     </cc:interface>
 
     <cc:implementation>
@@ -33,6 +34,7 @@
                                    value="#{cc.attrs.value}"
                                    styleClass="#{cc.attrs.styleClass}"
                                    style="#{cc.attrs.style}"
+                                   disabled="#{cc.attrs.disabled}"
                                    pt:maxlength="#{cc.attrs.maxLength}"
                                    pt:inputmode="#{cc.attrs.inputMode}"
                                    pt:oninput="#{cc.attrs.onInput}"
@@ -46,6 +48,7 @@
                                  value="#{cc.attrs.value}"
                                  styleClass="#{cc.attrs.styleClass}"
                                  style="#{cc.attrs.style}"
+                                 disabled="#{cc.attrs.disabled}"
                                  pt:type="#{cc.attrs.type}"
                                  pt:maxlength="#{cc.attrs.maxLength}"
                                  pt:inputmode="#{cc.attrs.inputMode}"
@@ -61,6 +64,7 @@
                                  value="#{cc.attrs.value}"
                                  styleClass="#{cc.attrs.styleClass}"
                                  style="#{cc.attrs.style}"
+                                 disabled="#{cc.attrs.disabled}"
                                  pt:type="#{cc.attrs.type}"
                                  pt:maxlength="#{cc.attrs.maxLength}"
                                  pt:inputmode="#{cc.attrs.inputMode}"

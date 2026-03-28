@@ -6,21 +6,21 @@
                 xmlns:cmp="jakarta.faces.composite/components"
                 xmlns:p="http://primefaces.org/ui">
 
-    <h:form id="formNovoAluno">
+    <h:form id="formNovoProfessor">
         <div class="field-group">
-            <h:panelGrid id="grid" columns="3" cellpadding="7">
+            <h:panelGrid id="grid" columns="1" cellpadding="7">
                 <cmp:baseInput id="inputNome"
-                               value="#{alunoBean.alunoDTO.nome}"
+                               value="#{professorBean.professorDTO.nome}"
                                required="true"
-                               requiredMessage="Nome Ã© obrigatorio."
+                               requiredMessage="Nome é obrigatório!"
                                style="text-transform: uppercase;"
                                styleClass="form-control"
                                label="Nome Completo"/>
 
                 <cmp:baseInput id="inputCpf"
-                               value="#{alunoBean.alunoDTO.cpf}"
+                               value="#{professorBean.professorDTO.cpf}"
                                required="true"
-                               requiredMessage="CPF Ã© obrigatorio."
+                               requiredMessage="CPF é obrigatório!"
                                style="text-transform: uppercase;"
                                styleClass="form-control"
                                label="CPF"
@@ -29,9 +29,9 @@
                                onInput="this.value = formatarCpf(this.value);"/>
 
                 <cmp:baseInput id="inputRg"
-                               value="#{alunoBean.alunoDTO.rg}"
+                               value="#{professorBean.professorDTO.rg}"
                                required="true"
-                               requiredMessage="RG Ã© obrigatorio."
+                               requiredMessage="RG é obrigatório!"
                                style="text-transform: uppercase;"
                                styleClass="form-control"
                                label="RG"
@@ -40,10 +40,10 @@
                                onInput="this.value = formatarRg(this.value);"/>
 
                 <cmp:baseInput id="inputDataNascimento"
-                               value="#{alunoBean.alunoDTO.dtNasc}"
+                               value="#{professorBean.professorDTO.dtNasc}"
                                type="date"
                                required="true"
-                               requiredMessage="Data de nascimento Ã© obrigatoria."
+                               requiredMessage="Data de nascimento é obrigatória!"
                                converterPattern="yyyy-MM-dd"
                                converterMessage="Data invalida. Use o formato yyyy-MM-dd."
                                styleClass="form-control"
@@ -51,14 +51,14 @@
                                label="Data de Nascimento"/>
 
                 <cmp:baseInput id="inputEmail"
-                               value="#{alunoBean.alunoDTO.email}"
+                               value="#{professorBean.professorDTO.email}"
                                type="email"
                                styleClass="form-control"
                                style=""
                                label="Email"/>
 
                 <cmp:baseInput id="inputTelefone"
-                               value="#{alunoBean.alunoDTO.telefone}"
+                               value="#{professorBean.professorDTO.telefone}"
                                style="text-transform: uppercase;"
                                styleClass="form-control"
                                label="Telefone"
@@ -77,10 +77,10 @@
             <p:commandButton value="Salvar"
                              styleClass="btn-primaryx ui-button-outlined"
                              style="border-radius: 10px"
-                             action="#{alunoBean.salvar}"
+                             action="#{professorBean.salvar}"
                              process="@form"
                              update=":growl @form grid"
-                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovoAluno')).hide();}" />
+                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovoProfessor')).hide();}" />
         </div>
 
     </h:form>

@@ -17,6 +17,6 @@ public class AuthBean implements Serializable {
     private String password;
 
     public String login() {
-        return "/pages/alunos/dashboard.xhtml?faces-redirect=true";
+        return "/pages/alunos/pageDashboard.xhtml?faces-redirect=true";
     }
 }

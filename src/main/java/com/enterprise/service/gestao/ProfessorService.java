@@ -28,12 +28,22 @@ public class ProfessorService {
         return new ProfessorDTO(entity);
     }
 
+    @Transactional
+    public ProfessorDTO atualizar(ProfessorDTO dto) {
+        validar(dto);
+        if (dto.getId() == null || dto.getRm() == null || dto.getRm().isBlank()) {
+            throw new IllegalArgumentException("Professor invalido para atualizacao.");
+        }
+        ProfessorEntity merged = repository.update(new ProfessorEntity(dto));
+        return new ProfessorDTO(merged);
+    }
+
     public List<ProfessorEntity> findAll() {
         return repository.findAll();
     }
 
-    public List<ProfessorEntity> buscar(String nome, String cpf, String rm, String status) {
-        return repository.findByFilters(nome, cpf, rm);
+    public List<ProfessorEntity> findByFilters(String nome, String cpf) {
+        return repository.findByFilters(nome, cpf);
     }
 
     public Optional<ProfessorEntity> findById(Long id){

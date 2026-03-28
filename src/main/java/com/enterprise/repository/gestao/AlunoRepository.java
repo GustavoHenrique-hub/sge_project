@@ -20,6 +20,10 @@ public class AlunoRepository {
         return entity;
     }
 
+    public AlunoEntity update(AlunoEntity entity) {
+        return em.merge(entity);
+    }
+
     public List<AlunoEntity> findAll(){
         return em.createQuery("select p from AlunoEntity p order by p.nome", AlunoEntity.class)
                 .getResultList();

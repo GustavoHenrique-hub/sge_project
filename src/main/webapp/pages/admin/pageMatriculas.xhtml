@@ -25,13 +25,14 @@
                             label="Aluno"
                             value="#{alunoTurmaBean.filtroAluno}"
                             badgeValue="#{alunoTurmaBean.filtroAluno != null ? alunoTurmaBean.filtroAluno.rm : null}"
-                            completeMethod="#{alunoBean.completeAluno}"
+                            completeMethod="#{alunoBean.completeNomeAluno}"
                             converter="#{alunoEntityConverter}"
                             itemLabelProperty="nome"
                             parentDivStyle="filters-body-column"
                             childrenDivStyle="filters-body-column-row"
                             showMessage="false"
-                            required="false"/>
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
 
                     <cmp:baseAutocomplete
                             id="dropDownTurma"
@@ -44,7 +45,8 @@
                             parentDivStyle="filters-body-column"
                             childrenDivStyle="filters-body-column-row"
                             showMessage="false"
-                            required="false"/>
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
 
                     <cmp:baseAutocomplete
                             id="dropDownSituacao"
@@ -57,7 +59,8 @@
                             parentDivStyle="filters-body-column"
                             childrenDivStyle="filters-body-column-row"
                             showMessage="false"
-                            required="false"/>
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
 
                     <cmp:baseCommandButton value="Filtrar"
                                            action="#{alunoTurmaBean.filtrar}"
@@ -92,7 +95,7 @@
                                                     title="Detalhar"
                                                     styleClass="icon-action-btn"
                                                     ajax="true"
-                                                    render=":formDetalheMatricula"
+                                                    render=":modalDetalhesWrapper"
                                                     value="&#xe908;"/>
                             </h:column>
                             <h:column>
@@ -136,6 +139,14 @@
                 labelledby="modalMatriculaLabel"
                 modalTitle="Vincular aluno a turma"
                 modalTitleId="modalMatriculaLabel"
-                modalImport="newmatricula.xhtml"/>
+                modalImport="modalNewMatricula.xhtml"/>
+        <h:panelGroup id="modalDetalhesWrapper" layout="block">
+            <cmp:baseModal
+                    modalId="modalDetalhes"
+                    labelledby="modalDetalhesLabel"
+                    modalTitle="#{detalheModalBean.titulo}"
+                    modalTitleId="modalDetalhesLabel"
+                    modalImport="modalDetalhes.xhtml"/>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>

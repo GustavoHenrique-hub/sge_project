@@ -185,26 +185,4 @@ public class PerfilUsuarioBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));
     }
 
-    public List<UsuarioEntity> completeUsuario(String query) {
-        String formatUsuario = query == null ? "" : query.toLowerCase();
-        return usuarioService.listar()
-                .stream()
-                .filter(usuario -> usuario.getLogin() != null
-                        && usuario.getLogin().toLowerCase().startsWith(formatUsuario))
-                .collect(Collectors.toList());
-    }
-
-    public List<String> completeSituacao(String query) {
-        String formatSituacao = query == null ? "" : query.toLowerCase();
-        List<String> situacaoList = new ArrayList<>();
-        List<PerfilUsuarioDTO> situacoes = service.listarDTO();
-        for (PerfilUsuarioDTO perfilUsuarioDTO : situacoes) {
-            if (perfilUsuarioDTO.getSituacao() != null && perfilUsuarioDTO.getSituacao().getSituacao() != null) {
-                situacaoList.add(perfilUsuarioDTO.getSituacao().getSituacao());
-            }
-        }
-
-        return situacaoList.stream().filter(t -> t.toLowerCase().startsWith(formatSituacao)).collect(Collectors.toList());
-    }
-
 }

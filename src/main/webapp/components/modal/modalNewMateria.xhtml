@@ -10,27 +10,29 @@
         <div id="grid" class="modal-link-grid">
                 <cmp:baseAutocomplete id="dropDownProfessorModal"
                                       label="Professor"
-                                      value="#{professorDisciplinaBean.filtroProfessor}"
-                                      badgeValue="#{professorDisciplinaBean.filtroProfessor != null ? professorDisciplinaBean.filtroProfessor.rm : null}"
-                                      completeMethod="#{professorBean.completeProfessor}"
+                                      value="#{professorBean.filtroProfessor}"
+                                      badgeValue="#{professorBean.filtroProfessor != null ? professorBean.filtroProfessor.rm : null}"
+                                      completeMethod="#{professorBean.completeNomeProfessor}"
                                       converter="#{professorEntityConverter}"
                                       itemLabelProperty="nome"
                                       parentDivStyle="modal-link-item"
                                       childrenDivStyle="modal-id-inline"
                                       required="true"
-                                      requiredMessage="Professor é obrigatório!"/>
+                                      requiredMessage="Professor é obrigatório!"
+                                      fieldStyle="field-modal-autocomplete-wrap"/>
 
                 <cmp:baseAutocomplete id="dropDownDisciplinaModal"
                                       label="Disciplina"
-                                      value="#{professorDisciplinaBean.filtroDisciplina}"
-                                      badgeValue="#{professorDisciplinaBean.filtroDisciplina != null ? professorDisciplinaBean.filtroDisciplina.codigo : null}"
+                                      value="#{disciplinaBean.filtroDisciplina}"
+                                      badgeValue="#{disciplinaBean.filtroDisciplina != null ? disciplinaBean.filtroDisciplina.codigo : null}"
                                       completeMethod="#{disciplinaBean.completeDisciplina}"
                                       converter="#{disciplinaEntityConverter}"
                                       itemLabelProperty="descricao"
                                       parentDivStyle="modal-link-item"
                                       childrenDivStyle="modal-id-inline"
                                       required="true"
-                                      requiredMessage="Disciplina é obrigatório!"/>
+                                      requiredMessage="Disciplina é obrigatório!"
+                                      fieldStyle="field-modal-autocomplete-wrap"/>
             </div>
 
 

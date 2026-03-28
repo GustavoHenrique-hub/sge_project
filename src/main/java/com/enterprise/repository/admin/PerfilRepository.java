@@ -1,11 +1,9 @@
 package com.enterprise.repository.admin;
 
 import com.enterprise.model.entity.admin.PerfilEntity;
-import com.enterprise.model.entity.admin.PerfilUsuarioEntity;
-import com.enterprise.model.entity.admin.UsuarioEntity;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +11,10 @@ import java.util.Optional;
 @ApplicationScoped
 public class PerfilRepository {
 
-    @PersistenceContext
+    @Inject
     private EntityManager em;
 
-    public List<PerfilEntity> findAll(){
+    public List<PerfilEntity> findAll() {
         return em.createQuery("select p from PerfilEntity p order by p.id", PerfilEntity.class)
                 .getResultList();
     }

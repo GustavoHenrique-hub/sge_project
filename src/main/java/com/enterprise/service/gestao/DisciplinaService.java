@@ -8,7 +8,6 @@ import com.enterprise.repository.gestao.DisciplinaRepository;
 import com.enterprise.repository.gestao.TurmaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 
 import java.security.SecureRandom;
 import java.util.List;
@@ -22,7 +21,6 @@ public class DisciplinaService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
 
-    @Transactional
     public DisciplinaDTO criar(DisciplinaDTO dto) {
         validar(dto);
         DisciplinaEntity entity = new DisciplinaEntity(dto);
@@ -30,7 +28,6 @@ public class DisciplinaService {
         return new DisciplinaDTO(entity);
     }
 
-    @Transactional
     public DisciplinaDTO atualizar(DisciplinaDTO dto) {
         validar(dto);
         if (dto.getId() == null || dto.getCodigo() == null || dto.getCodigo().isBlank()) {

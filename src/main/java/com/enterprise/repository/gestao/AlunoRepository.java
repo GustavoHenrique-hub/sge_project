@@ -1,9 +1,10 @@
 package com.enterprise.repository.gestao;
 
+import com.enterprise.config.JpaTransaction;
 import com.enterprise.model.entity.gestao.AlunoEntity;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
@@ -12,19 +13,21 @@ import java.util.Optional;
 @ApplicationScoped
 public class AlunoRepository {
 
-    @PersistenceContext
+    @Inject
     private EntityManager em;
 
     public AlunoEntity save(AlunoEntity entity) {
-        em.persist(entity);
-        return entity;
+        return JpaTransaction.execute(em, () -> {
+            em.persist(entity);
+            return entity;
+        });
     }
 
     public AlunoEntity update(AlunoEntity entity) {
-        return em.merge(entity);
+        return JpaTransaction.execute(em, () -> em.merge(entity));
     }
 
-    public List<AlunoEntity> findAll(){
+    public List<AlunoEntity> findAll() {
         return em.createQuery("select p from AlunoEntity p order by p.nome", AlunoEntity.class)
                 .getResultList();
     }

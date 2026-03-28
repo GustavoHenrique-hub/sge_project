@@ -11,6 +11,8 @@ services:
     healthCheckPath: /pages/alunos/pageAlunos.xhtml
 
     envVars:
+      - key: DB_URL
+        sync: false   # Opcional: URL JDBC completa
       - key: DB_HOST
         sync: false   # Host do PostgreSQL criado no Render
       - key: DB_PORT

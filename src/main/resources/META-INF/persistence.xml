@@ -1,13 +1,22 @@
 <persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.0">
-    <persistence-unit name="meuPU" transaction-type="JTA">
-        <jta-data-source>java:/jdbc/sgeDS</jta-data-source>
-
+    <persistence-unit name="meuPU" transaction-type="RESOURCE_LOCAL">
+        <!--
+            Tomcat não tem JTA nem JNDI de datasource como o WildFly.
+            Usamos RESOURCE_LOCAL e configuramos a conexão diretamente aqui.
+            As propriedades de conexão são lidas das variáveis de ambiente.
+        -->
         <properties>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="hibernate.show_sql" value="true"/>
-            <!-- <property name="hibernate.format_sql" value="true"/> -->
-            <!-- opcional, ajuda a ver bind de parâmetros -->
-            <property name="hibernate.use_sql_comments" value="true"/>
+            <!-- Driver e URL do PostgreSQL -->
+            <property name="jakarta.persistence.jdbc.driver"   value="org.postgresql.Driver"/>
+            <property name="jakarta.persistence.jdbc.url"      value="${DB_URL}"/>
+            <property name="jakarta.persistence.jdbc.user"     value="${DB_USER}"/>
+            <property name="jakarta.persistence.jdbc.password" value="${DB_PASSWORD}"/>
+
+            <!-- Hibernate -->
+            <property name="hibernate.hbm2ddl.auto"     value="update"/>
+            <property name="hibernate.show_sql"          value="true"/>
+            <property name="hibernate.use_sql_comments"  value="true"/>
+            <property name="hibernate.dialect"           value="org.hibernate.dialect.PostgreSQLDialect"/>
         </properties>
     </persistence-unit>
 </persistence>

@@ -5,7 +5,6 @@ import com.enterprise.model.entity.gestao.TurmaEntity;
 import com.enterprise.repository.gestao.TurmaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +17,6 @@ public class TurmaService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
 
-    @Transactional
     public TurmaDTO criar(TurmaDTO dto) {
         validar(dto);
         TurmaEntity entity = new TurmaEntity(dto);
@@ -26,7 +24,6 @@ public class TurmaService {
         return new TurmaDTO(entity);
     }
 
-    @Transactional
     public TurmaDTO atualizar(TurmaDTO dto) {
         validar(dto);
         if (dto.getId() == null || dto.getCodigo() == null || dto.getCodigo().isBlank()) {

@@ -6,7 +6,6 @@ import com.enterprise.model.entity.admin.SituacaoEntity;
 import com.enterprise.repository.admin.PerfilUsuarioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -26,7 +25,6 @@ public class PerfilUsuarioService {
         return repository.findByFilters(login, perfilId, situacaoId).stream().map(PerfilUsuarioDTO::new).toList();
     }
 
-    @Transactional
     public PerfilUsuarioDTO vincular(PerfilUsuarioDTO dto) {
         validar(dto);
 
@@ -44,21 +42,18 @@ public class PerfilUsuarioService {
         }
     }
 
-    @Transactional
     public PerfilUsuarioDTO ativarVinculo(Long id) {
         SituacaoEntity situacao = situacaoService.findBySituacao("ATIVO").orElseThrow(() -> new IllegalStateException("Situação ATIVO não encontrada."));
         PerfilUsuarioEntity entity = repository.atualizarSituacao(id, situacao);
         return new PerfilUsuarioDTO(entity);
     }
 
-    @Transactional
     public PerfilUsuarioDTO inativarVinculo(Long id) {
         SituacaoEntity situacao = situacaoService.findBySituacao("INATIVO").orElseThrow(() -> new IllegalStateException("Situação INATIVO não encontrada."));
         PerfilUsuarioEntity entity = repository.atualizarSituacao(id, situacao);
         return new PerfilUsuarioDTO(entity);
     }
 
-    @Transactional
     public void excluirVinculoSeInativo(Long id) {
         PerfilUsuarioEntity entity = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Vínculo não encontrado."));
         String situacao = entity.getSituacao() == null ? null : entity.getSituacao().getSituacao();

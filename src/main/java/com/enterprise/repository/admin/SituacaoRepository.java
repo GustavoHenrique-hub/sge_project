@@ -1,10 +1,10 @@
 package com.enterprise.repository.admin;
 
+import com.enterprise.config.JpaTransaction;
 import com.enterprise.model.entity.admin.SituacaoEntity;
-import com.enterprise.model.entity.gestao.AlunoEntity;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
@@ -13,12 +13,14 @@ import java.util.Optional;
 @ApplicationScoped
 public class SituacaoRepository {
 
-    @PersistenceContext
+    @Inject
     private EntityManager em;
 
     public SituacaoEntity save(SituacaoEntity entity) {
-        em.persist(entity);
-        return entity;
+        return JpaTransaction.execute(em, () -> {
+            em.persist(entity);
+            return entity;
+        });
     }
 
     public Optional<SituacaoEntity> findById(Long id) {

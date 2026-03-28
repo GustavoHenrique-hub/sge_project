@@ -9,7 +9,6 @@ import com.enterprise.repository.gestao.ProfessorDisciplinaRepository;
 import com.enterprise.service.admin.SituacaoService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -33,7 +32,6 @@ public class ProfessorDisciplinaService {
         return repository.findByFilters(professorId, disciplinaId, situacaoId).stream().map(ProfessorDisciplinaDTO::new).toList();
     }
 
-    @Transactional
     public ProfessorDisciplinaDTO vincular(Long professorId, Long disciplinaId) {
         validar(professorId, disciplinaId);
 
@@ -50,7 +48,6 @@ public class ProfessorDisciplinaService {
         return new ProfessorDisciplinaDTO(entity);
     }
 
-    @Transactional
     public ProfessorDisciplinaDTO atualizar(ProfessorDisciplinaDTO dto) {
         if (dto == null || dto.getId() == null || dto.getProfessor() == null || dto.getDisciplina() == null || dto.getSituacao() == null) {
             throw new IllegalArgumentException("Vinculo invalido para atualizacao.");

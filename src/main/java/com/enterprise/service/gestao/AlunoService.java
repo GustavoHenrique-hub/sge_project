@@ -5,7 +5,6 @@ import com.enterprise.model.entity.gestao.AlunoEntity;
 import com.enterprise.repository.gestao.AlunoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 
 import java.security.SecureRandom;
 import java.util.Date;
@@ -20,7 +19,6 @@ public class AlunoService {
     @Inject
     private AlunoRepository repository;
 
-    @Transactional
     public AlunoDTO criar(AlunoDTO dto) {
         validar(dto);
         AlunoEntity entity = new AlunoEntity(dto);
@@ -28,7 +26,6 @@ public class AlunoService {
         return new AlunoDTO(entity);
     }
 
-    @Transactional
     public AlunoDTO atualizar(AlunoDTO dto) {
         validar(dto);
         if (dto.getId() == null || dto.getRm() == null || dto.getRm().isBlank()) {

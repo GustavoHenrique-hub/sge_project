@@ -5,7 +5,6 @@ import com.enterprise.model.entity.gestao.ProfessorEntity;
 import com.enterprise.repository.gestao.ProfessorRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 
 import java.security.SecureRandom;
 import java.util.Date;
@@ -20,7 +19,6 @@ public class ProfessorService {
     @Inject
     private ProfessorRepository repository;
 
-    @Transactional
     public ProfessorDTO criar(ProfessorDTO dto) {
         validar(dto);
         ProfessorEntity entity = new ProfessorEntity(dto);
@@ -28,7 +26,6 @@ public class ProfessorService {
         return new ProfessorDTO(entity);
     }
 
-    @Transactional
     public ProfessorDTO atualizar(ProfessorDTO dto) {
         validar(dto);
         if (dto.getId() == null || dto.getRm() == null || dto.getRm().isBlank()) {

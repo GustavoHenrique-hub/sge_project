@@ -4,7 +4,7 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 import java.io.Serializable;
 
-@Named
+@Named("themeBean")
 @SessionScoped
 public class ThemeBean implements Serializable {
     private boolean darkTheme = true;

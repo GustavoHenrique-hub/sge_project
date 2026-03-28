@@ -5,7 +5,6 @@ import com.enterprise.model.entity.admin.UsuarioEntity;
 import com.enterprise.repository.admin.UsuarioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +15,6 @@ public class UsuarioService {
     @Inject
     private UsuarioRepository repository;
 
-    @Transactional
     public UsuarioDTO criar(UsuarioDTO dto) {
         validar(dto);
 
@@ -25,7 +23,6 @@ public class UsuarioService {
         return new UsuarioDTO(entity);
     }
 
-    @Transactional
     public UsuarioDTO atualizar(UsuarioDTO dto) {
         if (dto.getId() == null) {
             throw new IllegalArgumentException("ID é obrigatório para atualizar.");
@@ -45,7 +42,6 @@ public class UsuarioService {
         return repository.findById(id);
     }
 
-    @Transactional
     public void remover(Long id) {
         repository.removeById(id);
     }

@@ -9,7 +9,6 @@ import com.enterprise.repository.gestao.AlunoTurmaRepository;
 import com.enterprise.service.admin.SituacaoService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -33,7 +32,6 @@ public class AlunoTurmaService {
         return repository.findByFilters(alunoId, turmaId, situacaoId).stream().map(AlunoTurmaDTO::new).toList();
     }
 
-    @Transactional
     public AlunoTurmaDTO matricular(Long alunoId, Long turmaId) {
         validar(alunoId, turmaId);
 
@@ -50,7 +48,6 @@ public class AlunoTurmaService {
         return new AlunoTurmaDTO(entity);
     }
 
-    @Transactional
     public AlunoTurmaDTO atualizar(AlunoTurmaDTO dto) {
         if (dto == null || dto.getId() == null || dto.getAluno() == null || dto.getTurma() == null || dto.getSituacao() == null) {
             throw new IllegalArgumentException("Matricula invalida para atualizacao.");

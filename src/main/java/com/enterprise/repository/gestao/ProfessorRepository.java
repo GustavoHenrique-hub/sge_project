@@ -1,9 +1,10 @@
 package com.enterprise.repository.gestao;
 
+import com.enterprise.config.JpaTransaction;
 import com.enterprise.model.entity.gestao.ProfessorEntity;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
@@ -12,19 +13,21 @@ import java.util.Optional;
 @ApplicationScoped
 public class ProfessorRepository {
 
-    @PersistenceContext
+    @Inject
     private EntityManager em;
 
     public ProfessorEntity save(ProfessorEntity entity) {
-        em.persist(entity);
-        return entity;
+        return JpaTransaction.execute(em, () -> {
+            em.persist(entity);
+            return entity;
+        });
     }
 
     public ProfessorEntity update(ProfessorEntity entity) {
-        return em.merge(entity);
+        return JpaTransaction.execute(em, () -> em.merge(entity));
     }
 
-    public List<ProfessorEntity> findAll(){
+    public List<ProfessorEntity> findAll() {
         return em.createQuery("select p from ProfessorEntity p order by p.nome", ProfessorEntity.class)
                 .getResultList();
     }

@@ -1,9 +1,10 @@
 package com.enterprise.repository.gestao;
 
+import com.enterprise.config.JpaTransaction;
 import com.enterprise.model.entity.gestao.AlunoTurmaEntity;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
@@ -12,16 +13,18 @@ import java.util.Optional;
 @ApplicationScoped
 public class AlunoTurmaRepository {
 
-    @PersistenceContext
+    @Inject
     private EntityManager em;
 
     public AlunoTurmaEntity save(AlunoTurmaEntity entity) {
-        em.persist(entity);
-        return entity;
+        return JpaTransaction.execute(em, () -> {
+            em.persist(entity);
+            return entity;
+        });
     }
 
     public AlunoTurmaEntity update(AlunoTurmaEntity entity) {
-        return em.merge(entity);
+        return JpaTransaction.execute(em, () -> em.merge(entity));
     }
 
     public Optional<AlunoTurmaEntity> findById(Long id) {

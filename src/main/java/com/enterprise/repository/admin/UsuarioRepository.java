@@ -1,9 +1,10 @@
 package com.enterprise.repository.admin;
 
+import com.enterprise.config.JpaTransaction;
 import com.enterprise.model.entity.admin.UsuarioEntity;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,16 +12,18 @@ import java.util.Optional;
 @ApplicationScoped
 public class UsuarioRepository {
 
-    @PersistenceContext
+    @Inject
     private EntityManager em;
 
     public UsuarioEntity save(UsuarioEntity entity) {
-        em.persist(entity);
-        return entity;
+        return JpaTransaction.execute(em, () -> {
+            em.persist(entity);
+            return entity;
+        });
     }
 
     public UsuarioEntity update(UsuarioEntity entity) {
-        return em.merge(entity);
+        return JpaTransaction.execute(em, () -> em.merge(entity));
     }
 
     public Optional<UsuarioEntity> findById(Long id) {
@@ -33,9 +36,11 @@ public class UsuarioRepository {
     }
 
     public void removeById(Long id) {
-        UsuarioEntity ref = em.find(UsuarioEntity.class, id);
-        if (ref != null) {
-            em.remove(ref);
-        }
+        JpaTransaction.run(em, () -> {
+            UsuarioEntity ref = em.find(UsuarioEntity.class, id);
+            if (ref != null) {
+                em.remove(ref);
+            }
+        });
     }
 }

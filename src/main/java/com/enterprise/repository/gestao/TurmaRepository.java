@@ -1,9 +1,10 @@
 package com.enterprise.repository.gestao;
 
+import com.enterprise.config.JpaTransaction;
 import com.enterprise.model.entity.gestao.TurmaEntity;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,16 +12,18 @@ import java.util.Optional;
 @ApplicationScoped
 public class TurmaRepository {
 
-    @PersistenceContext
+    @Inject
     private EntityManager em;
 
     public TurmaEntity save(TurmaEntity entity) {
-        em.persist(entity);
-        return entity;
+        return JpaTransaction.execute(em, () -> {
+            em.persist(entity);
+            return entity;
+        });
     }
 
     public TurmaEntity update(TurmaEntity entity) {
-        return em.merge(entity);
+        return JpaTransaction.execute(em, () -> em.merge(entity));
     }
 
     public Optional<TurmaEntity> findById(Long id) {
@@ -43,6 +46,6 @@ public class TurmaRepository {
     }
 
     public void remove(TurmaEntity entity) {
-        em.remove(entity);
+        JpaTransaction.run(em, () -> em.remove(em.contains(entity) ? entity : em.merge(entity)));
     }
 }

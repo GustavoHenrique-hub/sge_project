@@ -18,11 +18,13 @@ FROM quay.io/wildfly/wildfly:latest-jdk17
 
 USER root
 
-# Baixa o driver JDBC e registra o módulo (sem datasource — não precisa de envs)
+# Baixa o driver JDBC do PostgreSQL
 ENV POSTGRES_DRIVER_VERSION=42.7.3
 RUN curl -L https://repo1.maven.org/maven2/org/postgresql/postgresql/${POSTGRES_DRIVER_VERSION}/postgresql-${POSTGRES_DRIVER_VERSION}.jar \
     -o /tmp/postgresql.jar
 
+# Registra o módulo e o driver JDBC no WildFly durante o build
+# (não depende de variáveis de ambiente, pode ser feito aqui)
 RUN /bin/sh -c ' \
     $JBOSS_HOME/bin/standalone.sh & \
     sleep 15 && \
@@ -40,24 +42,25 @@ RUN /bin/sh -c ' \
     rm -f /tmp/postgresql.jar \
 '
 
+# Limpa artefatos temporários do build
 RUN rm -rf $JBOSS_HOME/standalone/configuration/standalone_xml_history/ \
            $JBOSS_HOME/standalone/log/*
 
-# Copia o WAR
-# ⚠️ Ajuste o nome do .war conforme o <artifactId> e <version> do seu pom.xml
-COPY --from=build /app/target/*.war $JBOSS_HOME/standalone/deployments/
+# Copia o WAR gerado — artifactId=sge_project, version=1.0-SNAPSHOT
+COPY --from=build /app/target/sge_project-1.0-SNAPSHOT.war $JBOSS_HOME/standalone/deployments/ROOT.war
 
-# Copia o script CLI que configura o datasource na inicialização
-# O WildFly executa este arquivo automaticamente antes de abrir portas
-COPY postconfigure.cli $JBOSS_HOME/extensions/postconfigure.cli
+# Copia o entrypoint que configura o datasource em runtime
+COPY entrypoint.sh /entrypoint.sh
 
-RUN chown -R jboss:jboss $JBOSS_HOME/extensions
+# Garante permissões corretas para o usuário jboss em todos os diretórios necessários
+RUN chown -R jboss:jboss $JBOSS_HOME/standalone \
+                         $JBOSS_HOME/modules \
+                         /entrypoint.sh && \
+    chmod -R 755 $JBOSS_HOME/standalone && \
+    chmod +x /entrypoint.sh
 
 USER jboss
 
 EXPOSE 8080
 
-# --properties e -b garantem que o WildFly processa o postconfigure.cli e aceita conexões externas
-CMD ["/opt/jboss/wildfly/bin/standalone.sh", \
-     "-b", "0.0.0.0", \
-     "--start-mode=normal"]
+ENTRYPOINT ["/entrypoint.sh"]

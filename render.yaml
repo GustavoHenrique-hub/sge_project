@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: sge-project
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free            # troque para "starter" ou superior em produção
+
+    # Porta exposta pelo WildFly
+    port: 8080
+
+    # Health check — ajuste o path para uma URL válida da sua aplicação
+    healthCheckPath: /pages/alunos/pageAlunos.xhtml
+
+    # Variáveis de ambiente (configure os valores reais no painel do Render)
+    envVars:
+      - key: DB_HOST
+        value: <HOST_DO_POSTGRES>       # ex: dpg-xxxxx-a.oregon-postgres.render.com
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_NAME
+        value: <NOME_DO_BANCO>
+      - key: DB_USER
+        value: <USUARIO>
+      - key: DB_PASSWORD
+        sync: false                     # será pedido manualmente no painel (seguro)

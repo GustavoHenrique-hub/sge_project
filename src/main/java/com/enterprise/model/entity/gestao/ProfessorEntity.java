@@ -2,7 +2,6 @@ package com.enterprise.model.entity.gestao;
 
 import com.enterprise.dto.gestao.AlunoDTO;
 import com.enterprise.dto.gestao.ProfessorDTO;
-import com.enterprise.model.entity.embed.AlunoID;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +14,6 @@ import java.util.Date;
 @Setter
 @Entity
 @NoArgsConstructor
-@IdClass(AlunoID.class)
 @Table(name = "professor")
 public class ProfessorEntity {
 
@@ -25,7 +23,6 @@ public class ProfessorEntity {
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private Long id;
 
-    @Id
     @Column(name = "rm", nullable = false, unique = true, length = 5, updatable = false)
     private String rm;
 

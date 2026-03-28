@@ -1,9 +1,11 @@
 package com.enterprise.repository.admin;
 
 import com.enterprise.config.JpaTransaction;
+import com.enterprise.model.entity.admin.PerfilEntity;
 import com.enterprise.model.entity.admin.PerfilUsuarioEntity;
 import com.enterprise.model.entity.admin.SituacaoEntity;
-import jakarta.enterprise.context.ApplicationScoped;
+import com.enterprise.model.entity.admin.UsuarioEntity;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -11,7 +13,7 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@RequestScoped
 public class PerfilUsuarioRepository {
 
     @Inject
@@ -64,6 +66,7 @@ public class PerfilUsuarioRepository {
 
     public PerfilUsuarioEntity vincular(PerfilUsuarioEntity entity) {
         return JpaTransaction.execute(em, () -> {
+            attachReferences(entity);
             em.persist(entity);
             return entity;
         });
@@ -75,12 +78,24 @@ public class PerfilUsuarioRepository {
             if (entity == null) {
                 throw new IllegalArgumentException("Vinculo nao encontrado.");
             }
-            entity.setSituacao(situacao);
+            entity.setSituacao(em.getReference(SituacaoEntity.class, situacao.getId()));
             return entity;
         });
     }
 
     public void excluir(PerfilUsuarioEntity entity) {
         JpaTransaction.run(em, () -> em.remove(em.contains(entity) ? entity : em.merge(entity)));
+    }
+
+    private void attachReferences(PerfilUsuarioEntity entity) {
+        if (entity.getPerfil() != null && entity.getPerfil().getId() != null) {
+            entity.setPerfil(em.getReference(PerfilEntity.class, entity.getPerfil().getId()));
+        }
+        if (entity.getUsuario() != null && entity.getUsuario().getId() != null) {
+            entity.setUsuario(em.getReference(UsuarioEntity.class, entity.getUsuario().getId()));
+        }
+        if (entity.getSituacao() != null && entity.getSituacao().getId() != null) {
+            entity.setSituacao(em.getReference(SituacaoEntity.class, entity.getSituacao().getId()));
+        }
     }
 }

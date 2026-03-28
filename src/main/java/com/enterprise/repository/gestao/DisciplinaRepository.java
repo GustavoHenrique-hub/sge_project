@@ -2,14 +2,14 @@ package com.enterprise.repository.gestao;
 
 import com.enterprise.config.JpaTransaction;
 import com.enterprise.model.entity.gestao.DisciplinaEntity;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@RequestScoped
 public class DisciplinaRepository {
 
     @Inject

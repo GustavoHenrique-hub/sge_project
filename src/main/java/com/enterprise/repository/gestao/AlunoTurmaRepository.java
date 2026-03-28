@@ -1,8 +1,11 @@
 package com.enterprise.repository.gestao;
 
 import com.enterprise.config.JpaTransaction;
+import com.enterprise.model.entity.admin.SituacaoEntity;
+import com.enterprise.model.entity.gestao.AlunoEntity;
 import com.enterprise.model.entity.gestao.AlunoTurmaEntity;
-import jakarta.enterprise.context.ApplicationScoped;
+import com.enterprise.model.entity.gestao.TurmaEntity;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -10,7 +13,7 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@RequestScoped
 public class AlunoTurmaRepository {
 
     @Inject
@@ -18,13 +21,17 @@ public class AlunoTurmaRepository {
 
     public AlunoTurmaEntity save(AlunoTurmaEntity entity) {
         return JpaTransaction.execute(em, () -> {
+            attachReferences(entity);
             em.persist(entity);
             return entity;
         });
     }
 
     public AlunoTurmaEntity update(AlunoTurmaEntity entity) {
-        return JpaTransaction.execute(em, () -> em.merge(entity));
+        return JpaTransaction.execute(em, () -> {
+            attachReferences(entity);
+            return em.merge(entity);
+        });
     }
 
     public Optional<AlunoTurmaEntity> findById(Long id) {
@@ -110,5 +117,17 @@ public class AlunoTurmaRepository {
                 .setParameter("id", id == null ? -1L : id)
                 .getSingleResult();
         return total != null && total > 0;
+    }
+
+    private void attachReferences(AlunoTurmaEntity entity) {
+        if (entity.getAluno() != null && entity.getAluno().getId() != null) {
+            entity.setAluno(em.getReference(AlunoEntity.class, entity.getAluno().getId()));
+        }
+        if (entity.getTurma() != null && entity.getTurma().getId() != null) {
+            entity.setTurma(em.getReference(TurmaEntity.class, entity.getTurma().getId()));
+        }
+        if (entity.getSituacao() != null && entity.getSituacao().getId() != null) {
+            entity.setSituacao(em.getReference(SituacaoEntity.class, entity.getSituacao().getId()));
+        }
     }
 }

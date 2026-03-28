@@ -7,12 +7,12 @@ import com.enterprise.model.entity.gestao.ProfessorDisciplinaEntity;
 import com.enterprise.model.entity.gestao.DisciplinaEntity;
 import com.enterprise.repository.gestao.ProfessorDisciplinaRepository;
 import com.enterprise.service.admin.SituacaoService;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
 
-@ApplicationScoped
+@RequestScoped
 public class ProfessorDisciplinaService {
 
     @Inject

@@ -19,14 +19,21 @@ public final class JpaTransaction {
         try {
             T result = action.get();
             if (owner) {
-                transaction.commit();
+                try {
+                    transaction.commit();
+                } catch (RuntimeException ex) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+                    throw enrich(ex);
+                }
             }
             return result;
         } catch (RuntimeException ex) {
             if (owner && transaction.isActive()) {
                 transaction.rollback();
             }
-            throw ex;
+            throw enrich(ex);
         }
     }
 
@@ -35,5 +42,30 @@ public final class JpaTransaction {
             action.run();
             return null;
         });
+    }
+
+    private static RuntimeException enrich(RuntimeException ex) {
+        String detail = rootMessage(ex);
+        if (detail == null || detail.isBlank()) {
+            return ex;
+        }
+        if (ex.getMessage() != null && ex.getMessage().contains(detail)) {
+            return ex;
+        }
+        return new IllegalStateException(detail, ex);
+    }
+
+    private static String rootMessage(Throwable throwable) {
+        Throwable current = throwable;
+        String lastMessage = null;
+
+        while (current != null) {
+            if (current.getMessage() != null && !current.getMessage().isBlank()) {
+                lastMessage = current.getMessage();
+            }
+            current = current.getCause();
+        }
+
+        return lastMessage;
     }
 }

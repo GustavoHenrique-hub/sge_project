@@ -3,13 +3,13 @@ package com.enterprise.service.admin;
 import com.enterprise.dto.admin.UsuarioDTO;
 import com.enterprise.model.entity.admin.UsuarioEntity;
 import com.enterprise.repository.admin.UsuarioRepository;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@RequestScoped
 public class UsuarioService {
 
     @Inject

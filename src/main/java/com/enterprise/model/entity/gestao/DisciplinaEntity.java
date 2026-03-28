@@ -1,7 +1,6 @@
 package com.enterprise.model.entity.gestao;
 
 import com.enterprise.dto.gestao.DisciplinaDTO;
-import com.enterprise.model.entity.embed.TurmaID;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,6 @@ import java.security.SecureRandom;
 @Setter
 @Entity
 @NoArgsConstructor
-@IdClass(TurmaID.class)
 @Table(name = "disciplina")
 public class DisciplinaEntity {
 
@@ -23,7 +21,6 @@ public class DisciplinaEntity {
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private Long id;
 
-    @Id
     @Column(name = "codigo", nullable = false, unique = true, length = 6, updatable = false)
     private String codigo;
 

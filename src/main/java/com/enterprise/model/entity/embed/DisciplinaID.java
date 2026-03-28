@@ -13,11 +13,11 @@ import java.util.Objects;
 public class DisciplinaID implements Serializable {
 
     private Long id;
-    private String rm;
+    private String codigo;
 
-    public DisciplinaID(Long id, String rm) {
+    public DisciplinaID(Long id, String codigo) {
         this.id = id;
-        this.rm = rm;
+        this.codigo = codigo;
     }
 
     @Override
@@ -29,11 +29,11 @@ public class DisciplinaID implements Serializable {
             return false;
         }
         DisciplinaID disciplinaID = (DisciplinaID) o;
-        return Objects.equals(id, disciplinaID.id) && Objects.equals(rm, disciplinaID.rm);
+        return Objects.equals(id, disciplinaID.id) && Objects.equals(codigo, disciplinaID.codigo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, rm);
+        return Objects.hash(id, codigo);
     }
 }

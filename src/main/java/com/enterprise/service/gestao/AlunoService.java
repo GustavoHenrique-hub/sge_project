@@ -3,7 +3,7 @@ package com.enterprise.service.gestao;
 import com.enterprise.dto.gestao.AlunoDTO;
 import com.enterprise.model.entity.gestao.AlunoEntity;
 import com.enterprise.repository.gestao.AlunoRepository;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
 import java.security.SecureRandom;
@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@RequestScoped
 public class AlunoService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
@@ -31,7 +31,15 @@ public class AlunoService {
         if (dto.getId() == null || dto.getRm() == null || dto.getRm().isBlank()) {
             throw new IllegalArgumentException("Aluno invalido para atualizacao.");
         }
-        AlunoEntity merged = repository.update(new AlunoEntity(dto));
+        AlunoEntity existente = repository.findById(dto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Aluno nao encontrado."));
+        existente.setNome(dto.getNome());
+        existente.setCpf(dto.getCpf());
+        existente.setRg(dto.getRg());
+        existente.setDtNasc(dto.getDtNasc());
+        existente.setEmail(dto.getEmail());
+        existente.setTelefone(dto.getTelefone());
+        AlunoEntity merged = repository.update(existente);
         return new AlunoDTO(merged);
     }
 

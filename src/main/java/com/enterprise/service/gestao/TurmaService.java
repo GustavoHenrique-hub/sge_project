@@ -3,13 +3,13 @@ package com.enterprise.service.gestao;
 import com.enterprise.dto.gestao.TurmaDTO;
 import com.enterprise.model.entity.gestao.TurmaEntity;
 import com.enterprise.repository.gestao.TurmaRepository;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@RequestScoped
 public class TurmaService {
 
     @Inject
@@ -29,7 +29,10 @@ public class TurmaService {
         if (dto.getId() == null || dto.getCodigo() == null || dto.getCodigo().isBlank()) {
             throw new IllegalArgumentException("Turma invalida para atualizacao.");
         }
-        TurmaEntity merged = repository.update(new TurmaEntity(dto));
+        TurmaEntity existente = repository.findById(dto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Turma nao encontrada."));
+        existente.setTurma(dto.getTurma());
+        TurmaEntity merged = repository.update(existente);
         return new TurmaDTO(merged);
     }
 

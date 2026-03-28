@@ -3,7 +3,7 @@ package com.enterprise.service.gestao;
 import com.enterprise.dto.gestao.ProfessorDTO;
 import com.enterprise.model.entity.gestao.ProfessorEntity;
 import com.enterprise.repository.gestao.ProfessorRepository;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
 import java.security.SecureRandom;
@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@RequestScoped
 public class ProfessorService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
@@ -31,7 +31,15 @@ public class ProfessorService {
         if (dto.getId() == null || dto.getRm() == null || dto.getRm().isBlank()) {
             throw new IllegalArgumentException("Professor invalido para atualizacao.");
         }
-        ProfessorEntity merged = repository.update(new ProfessorEntity(dto));
+        ProfessorEntity existente = repository.findById(dto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Professor nao encontrado."));
+        existente.setNome(dto.getNome());
+        existente.setCpf(dto.getCpf());
+        existente.setRg(dto.getRg());
+        existente.setDtNasc(dto.getDtNasc());
+        existente.setEmail(dto.getEmail());
+        existente.setTelefone(dto.getTelefone());
+        ProfessorEntity merged = repository.update(existente);
         return new ProfessorDTO(merged);
     }
 

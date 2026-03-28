@@ -2,7 +2,7 @@ package com.enterprise.repository.gestao;
 
 import com.enterprise.config.JpaTransaction;
 import com.enterprise.model.entity.gestao.ProfessorEntity;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -10,7 +10,7 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@RequestScoped
 public class ProfessorRepository {
 
     @Inject

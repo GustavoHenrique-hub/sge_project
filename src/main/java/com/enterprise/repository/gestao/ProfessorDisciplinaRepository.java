@@ -1,8 +1,11 @@
 package com.enterprise.repository.gestao;
 
 import com.enterprise.config.JpaTransaction;
+import com.enterprise.model.entity.admin.SituacaoEntity;
+import com.enterprise.model.entity.gestao.DisciplinaEntity;
+import com.enterprise.model.entity.gestao.ProfessorEntity;
 import com.enterprise.model.entity.gestao.ProfessorDisciplinaEntity;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -10,7 +13,7 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@RequestScoped
 public class ProfessorDisciplinaRepository {
 
     @Inject
@@ -18,13 +21,17 @@ public class ProfessorDisciplinaRepository {
 
     public ProfessorDisciplinaEntity save(ProfessorDisciplinaEntity entity) {
         return JpaTransaction.execute(em, () -> {
+            attachReferences(entity);
             em.persist(entity);
             return entity;
         });
     }
 
     public ProfessorDisciplinaEntity update(ProfessorDisciplinaEntity entity) {
-        return JpaTransaction.execute(em, () -> em.merge(entity));
+        return JpaTransaction.execute(em, () -> {
+            attachReferences(entity);
+            return em.merge(entity);
+        });
     }
 
     public Optional<ProfessorDisciplinaEntity> findById(Long id) {
@@ -110,5 +117,17 @@ public class ProfessorDisciplinaRepository {
                 .setParameter("id", id == null ? -1L : id)
                 .getSingleResult();
         return total != null && total > 0;
+    }
+
+    private void attachReferences(ProfessorDisciplinaEntity entity) {
+        if (entity.getProfessor() != null && entity.getProfessor().getId() != null) {
+            entity.setProfessor(em.getReference(ProfessorEntity.class, entity.getProfessor().getId()));
+        }
+        if (entity.getDisciplina() != null && entity.getDisciplina().getId() != null) {
+            entity.setDisciplina(em.getReference(DisciplinaEntity.class, entity.getDisciplina().getId()));
+        }
+        if (entity.getSituacao() != null && entity.getSituacao().getId() != null) {
+            entity.setSituacao(em.getReference(SituacaoEntity.class, entity.getSituacao().getId()));
+        }
     }
 }

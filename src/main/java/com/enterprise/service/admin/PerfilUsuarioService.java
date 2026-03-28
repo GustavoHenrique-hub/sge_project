@@ -4,12 +4,12 @@ import com.enterprise.dto.admin.PerfilUsuarioDTO;
 import com.enterprise.model.entity.admin.PerfilUsuarioEntity;
 import com.enterprise.model.entity.admin.SituacaoEntity;
 import com.enterprise.repository.admin.PerfilUsuarioRepository;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
 
-@ApplicationScoped
+@RequestScoped
 public class PerfilUsuarioService {
 
     @Inject

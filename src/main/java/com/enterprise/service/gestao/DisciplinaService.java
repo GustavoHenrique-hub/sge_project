@@ -6,14 +6,14 @@ import com.enterprise.model.entity.gestao.DisciplinaEntity;
 import com.enterprise.model.entity.gestao.TurmaEntity;
 import com.enterprise.repository.gestao.DisciplinaRepository;
 import com.enterprise.repository.gestao.TurmaRepository;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@RequestScoped
 public class DisciplinaService {
 
     @Inject
@@ -33,7 +33,10 @@ public class DisciplinaService {
         if (dto.getId() == null || dto.getCodigo() == null || dto.getCodigo().isBlank()) {
             throw new IllegalArgumentException("Disciplina invalida para atualizacao.");
         }
-        DisciplinaEntity merged = repository.update(new DisciplinaEntity(dto));
+        DisciplinaEntity existente = repository.findById(dto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Disciplina nao encontrada."));
+        existente.setDescricao(dto.getDescricao());
+        DisciplinaEntity merged = repository.update(existente);
         return new DisciplinaDTO(merged);
     }
 

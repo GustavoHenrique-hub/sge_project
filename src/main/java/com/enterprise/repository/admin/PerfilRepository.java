@@ -1,14 +1,14 @@
 package com.enterprise.repository.admin;
 
 import com.enterprise.model.entity.admin.PerfilEntity;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@RequestScoped
 public class PerfilRepository {
 
     @Inject

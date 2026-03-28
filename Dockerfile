@@ -23,11 +23,17 @@ ENV POSTGRES_DRIVER_VERSION=42.7.3
 RUN curl -L https://repo1.maven.org/maven2/org/postgresql/postgresql/${POSTGRES_DRIVER_VERSION}/postgresql-${POSTGRES_DRIVER_VERSION}.jar \
     -o /tmp/postgresql.jar
 
-# Registra o módulo e o driver JDBC no WildFly durante o build
-# (não depende de variáveis de ambiente, pode ser feito aqui)
+# Durante o build: registra módulo + driver + datasource com valores fixos temporários.
+# Em runtime o WildFly lê as system properties passadas via -D no CMD,
+# substituindo os placeholders ${db.host}, ${db.port} etc. no standalone.xml.
 RUN /bin/sh -c ' \
-    $JBOSS_HOME/bin/standalone.sh & \
-    sleep 15 && \
+    $JBOSS_HOME/bin/standalone.sh \
+        -Ddb.host=localhost \
+        -Ddb.port=5432 \
+        -Ddb.name=placeholder \
+        -Ddb.user=placeholder \
+        -Ddb.password=placeholder & \
+    sleep 20 && \
     $JBOSS_HOME/bin/jboss-cli.sh --connect --command=" \
         module add \
         --name=org.postgresql \
@@ -38,29 +44,43 @@ RUN /bin/sh -c ' \
         driver-name=postgresql, \
         driver-module-name=org.postgresql, \
         driver-class-name=org.postgresql.Driver)" && \
-    $JBOSS_HOME/bin/jboss-cli.sh --connect --command=:shutdown && \
-    rm -f /tmp/postgresql.jar \
+    $JBOSS_HOME/bin/jboss-cli.sh --connect --command=" \
+        data-source add \
+        --name=sgeDS \
+        --jndi-name=java:/jdbc/sgeDS \
+        --driver-name=postgresql \
+        --connection-url=jdbc:postgresql://\${db.host}:\${db.port}/\${db.name} \
+        --user-name=\${db.user} \
+        --password=\${db.password} \
+        --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
+        --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
+        --enabled=true" && \
+    $JBOSS_HOME/bin/jboss-cli.sh --connect --command=:shutdown \
 '
 
-# Limpa artefatos temporários do build
 RUN rm -rf $JBOSS_HOME/standalone/configuration/standalone_xml_history/ \
-           $JBOSS_HOME/standalone/log/*
+           $JBOSS_HOME/standalone/log/* \
+           /tmp/postgresql.jar
 
-# Copia o WAR gerado — artifactId=sge_project, version=1.0-SNAPSHOT
-COPY --from=build /app/target/sge_project-1.0-SNAPSHOT.war $JBOSS_HOME/standalone/deployments/ROOT.war
+# WAR renomeado para ROOT.war → disponível na raiz /
+COPY --from=build /app/target/sge_project-1.0-SNAPSHOT.war \
+     $JBOSS_HOME/standalone/deployments/ROOT.war
 
-# Copia o entrypoint que configura o datasource em runtime
-COPY entrypoint.sh /entrypoint.sh
-
-# Garante permissões corretas para o usuário jboss em todos os diretórios necessários
-RUN chown -R jboss:jboss $JBOSS_HOME/standalone \
-                         $JBOSS_HOME/modules \
-                         /entrypoint.sh && \
-    chmod -R 755 $JBOSS_HOME/standalone && \
-    chmod +x /entrypoint.sh
+# Corrige permissões para o usuário jboss
+RUN chown -R jboss:jboss $JBOSS_HOME/standalone $JBOSS_HOME/modules && \
+    chmod -R 755 $JBOSS_HOME/standalone
 
 USER jboss
 
 EXPOSE 8080
 
-ENTRYPOINT ["/entrypoint.sh"]
+# Em runtime: passa as variáveis de ambiente do Render como system properties do Java.
+# O WildFly substitui ${db.host}, ${db.port} etc. no standalone.xml que foi gerado no build.
+CMD ["/bin/sh", "-c", \
+     "/opt/jboss/wildfly/bin/standalone.sh \
+      -b 0.0.0.0 \
+      -Ddb.host=${DB_HOST} \
+      -Ddb.port=${DB_PORT} \
+      -Ddb.name=${DB_NAME} \
+      -Ddb.user=${DB_USER} \
+      -Ddb.password=${DB_PASSWORD}"]

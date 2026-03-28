@@ -24,8 +24,7 @@ RUN curl -L https://repo1.maven.org/maven2/org/postgresql/postgresql/${POSTGRES_
     -o /tmp/postgresql.jar
 
 # Durante o build: registra módulo + driver + datasource com valores fixos temporários.
-# Em runtime o WildFly lê as system properties passadas via -D no CMD,
-# substituindo os placeholders ${db.host}, ${db.port} etc. no standalone.xml.
+# Remove o welcome-content do WildFly para que o ROOT.war tome o lugar da raiz /.
 RUN /bin/sh -c ' \
     $JBOSS_HOME/bin/standalone.sh \
         -Ddb.host=localhost \
@@ -55,12 +54,15 @@ RUN /bin/sh -c ' \
         --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker \
         --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter \
         --enabled=true" && \
+    $JBOSS_HOME/bin/jboss-cli.sh --connect --command=" \
+        /subsystem=undertow/server=default-server/host=default-host/location=\/:remove" && \
     $JBOSS_HOME/bin/jboss-cli.sh --connect --command=:shutdown \
 '
 
 RUN rm -rf $JBOSS_HOME/standalone/configuration/standalone_xml_history/ \
            $JBOSS_HOME/standalone/log/* \
-           /tmp/postgresql.jar
+           /tmp/postgresql.jar \
+           $JBOSS_HOME/welcome-content
 
 # WAR renomeado para ROOT.war → disponível na raiz /
 COPY --from=build /app/target/sge_project-1.0-SNAPSHOT.war \
@@ -74,8 +76,7 @@ USER jboss
 
 EXPOSE 8080
 
-# Em runtime: passa as variáveis de ambiente do Render como system properties do Java.
-# O WildFly substitui ${db.host}, ${db.port} etc. no standalone.xml que foi gerado no build.
+# Em runtime: passa as variáveis de ambiente do Render como system properties do Java
 CMD ["/bin/sh", "-c", \
      "/opt/jboss/wildfly/bin/standalone.sh \
       -b 0.0.0.0 \

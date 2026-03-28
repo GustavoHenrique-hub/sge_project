@@ -36,7 +36,7 @@
                                styleClass="form-control"
                                label="RG"
                                maxLength="12"
-                               inputMode="numeric"
+                               inputMode="text"
                                onInput="this.value = formatarRg(this.value);"/>
 
                 <cmp:baseInput id="inputDataNascimento"
@@ -79,7 +79,7 @@
                              style="border-radius: 10px"
                              action="#{professorBean.salvar}"
                              process="@form"
-                             update=":growl @form grid"
+                             update=":growl :formListaProfessor:listaProfessores @form grid"
                              oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovoProfessor')).hide();}" />
         </div>
 
@@ -108,16 +108,16 @@
         }
 
         function formatarRg(value) {
-        const digits = somenteNumeros(value).slice(0, 9);
-        let formatted = digits;
+        const chars = (value || '').replace(/[^0-9a-zA-Z]/g, '').toUpperCase().slice(0, 9);
+        let formatted = chars;
 
-        if (digits.length > 2) {
-        formatted = digits.slice(0, 2) + '.' + digits.slice(2);
+        if (chars.length > 2) {
+        formatted = chars.slice(0, 2) + '.' + chars.slice(2);
         }
-        if (digits.length > 5) {
+        if (chars.length > 5) {
         formatted = formatted.slice(0, 6) + '.' + formatted.slice(6);
         }
-        if (digits.length > 8) {
+        if (chars.length > 8) {
         formatted = formatted.slice(0, 10) + '-' + formatted.slice(10);
         }
 

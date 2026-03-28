@@ -10,9 +10,9 @@
         <div id="grid" class="modal-link-grid">
                 <cmp:baseAutocomplete id="dropDownProfessorModal"
                                       label="Professor"
-                                      value="#{professorBean.filtroProfessor}"
-                                      badgeValue="#{professorBean.filtroProfessor != null ? professorBean.filtroProfessor.rm : null}"
-                                      completeMethod="#{professorBean.completeNomeProfessor}"
+                                      value="#{professorDisciplinaBean.filtroProfessor}"
+                                      badgeValue="#{professorDisciplinaBean.filtroProfessor != null ? professorDisciplinaBean.filtroProfessor.rm : null}"
+                                      completeMethod="#{professorDisciplinaBean.completeProfessor}"
                                       converter="#{professorEntityConverter}"
                                       itemLabelProperty="nome"
                                       parentDivStyle="modal-link-item"
@@ -23,8 +23,8 @@
 
                 <cmp:baseAutocomplete id="dropDownDisciplinaModal"
                                       label="Disciplina"
-                                      value="#{disciplinaBean.filtroDisciplina}"
-                                      badgeValue="#{disciplinaBean.filtroDisciplina != null ? disciplinaBean.filtroDisciplina.codigo : null}"
+                                      value="#{professorDisciplinaBean.filtroDisciplina}"
+                                      badgeValue="#{professorDisciplinaBean.filtroDisciplina != null ? professorDisciplinaBean.filtroDisciplina.codigo : null}"
                                       completeMethod="#{disciplinaBean.completeDisciplina}"
                                       converter="#{disciplinaEntityConverter}"
                                       itemLabelProperty="descricao"
@@ -49,7 +49,7 @@
                              style="border-radius: 10px"
                              action="#{professorDisciplinaBean.confirmarPelosFiltros}"
                              process="@form"
-                             update=":growl :formListaProfessor:listaProfessores @form"
+                             update=":growl :formListaProfessor:listaProfessores :formFiltrosProfessor @form"
                              oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovaMateria')).hide();}"/>
         </div>
 

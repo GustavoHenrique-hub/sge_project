@@ -57,7 +57,12 @@ public class AlunoEntity {
 
     @PreUpdate
     private void preUpdate() {
-        this.nome = this.nome.toUpperCase();
+        if (this.nome != null) {
+            this.nome = this.nome.toUpperCase();
+        }
+        if (this.rg != null) {
+            this.rg = this.rg.toUpperCase();
+        }
     }
 
     @PrePersist
@@ -70,6 +75,9 @@ public class AlunoEntity {
         }
         if (this.nome != null) {
             this.nome = this.nome.toUpperCase();
+        }
+        if (this.rg != null) {
+            this.rg = this.rg.toUpperCase();
         }
     }
 

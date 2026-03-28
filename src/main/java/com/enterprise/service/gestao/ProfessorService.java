@@ -7,14 +7,18 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
 import java.security.SecureRandom;
+import java.sql.Array;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import com.enterprise.validation.DocumentsValidation;
 
 @RequestScoped
 public class ProfessorService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
+    private static DocumentsValidation validator = new DocumentsValidation();
 
     @Inject
     private ProfessorRepository repository;
@@ -63,11 +67,22 @@ public class ProfessorService {
         if (dto.getNome() == null || dto.getNome().isBlank()) {
             throw new IllegalArgumentException("Nome é obrigatório.");
         }
+        boolean validacaoCPF = validator.cpfValidation(dto.getCpf());
         if (dto.getCpf() == null || dto.getCpf().isBlank()) {
             throw new IllegalArgumentException("CPF é obrigatório.");
+        }else {
+            if (validacaoCPF != true) {
+                throw new IllegalArgumentException("CPF é inválido!");
+            }
         }
+
+        boolean validacaoRG = validator.rgValidation(dto.getRg());
         if (dto.getRg() == null || dto.getRg().isBlank()) {
             throw new IllegalArgumentException("RG é obrigatório.");
+        }else{
+            if (validacaoRG != true) {
+                throw new IllegalArgumentException("RG é inválido!");
+            }
         }
         if (dto.getDtNasc() == null) {
             throw new IllegalArgumentException("Data de nascimento é obrigatória.");

@@ -58,7 +58,12 @@ public class ProfessorEntity {
 
     @PreUpdate
     public void preUpdate() {
-        this.nome = this.nome.toUpperCase();
+        if (this.nome != null) {
+            this.nome = this.nome.toUpperCase();
+        }
+        if (this.rg != null) {
+            this.rg = this.rg.toUpperCase();
+        }
     }
 
     @PrePersist
@@ -71,6 +76,9 @@ public class ProfessorEntity {
         }
         if (this.nome != null) {
             this.nome = this.nome.toUpperCase();
+        }
+        if (this.rg != null) {
+            this.rg = this.rg.toUpperCase();
         }
     }
 

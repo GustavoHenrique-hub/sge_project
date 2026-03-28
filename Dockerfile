@@ -18,6 +18,28 @@ FROM quay.io/wildfly/wildfly:latest-jdk17
 
 USER root
 
+# Limita o uso de memória do WildFly para caber no plano free do Render (512MB)
+ENV JAVA_OPTS="-Xms64m -Xmx256m \
+  -Djdk.serialFilter=maxbytes=10485760;maxdepth=128;maxarray=100000;maxrefs=300000 \
+  -Djava.net.preferIPv4Stack=true \
+  -Djboss.modules.system.pkgs=org.jboss.byteman \
+  -Djava.awt.headless=true \
+  --add-exports=java.desktop/sun.awt=ALL-UNNAMED \
+  --add-exports=java.naming/com.sun.jndi.ldap=ALL-UNNAMED \
+  --add-exports=java.naming/com.sun.jndi.url.ldap=ALL-UNNAMED \
+  --add-exports=java.naming/com.sun.jndi.url.ldaps=ALL-UNNAMED \
+  --add-exports=jdk.naming.dns/com.sun.jndi.dns=ALL-UNNAMED \
+  --add-opens=java.base/java.lang=ALL-UNNAMED \
+  --add-opens=java.base/java.lang.invoke=ALL-UNNAMED \
+  --add-opens=java.base/java.lang.reflect=ALL-UNNAMED \
+  --add-opens=java.base/java.io=ALL-UNNAMED \
+  --add-opens=java.base/java.net=ALL-UNNAMED \
+  --add-opens=java.base/java.security=ALL-UNNAMED \
+  --add-opens=java.base/java.util=ALL-UNNAMED \
+  --add-opens=java.base/java.util.concurrent=ALL-UNNAMED \
+  --add-opens=java.management/javax.management=ALL-UNNAMED \
+  --add-opens=java.naming/javax.naming=ALL-UNNAMED"
+
 # Baixa o driver JDBC do PostgreSQL
 ENV POSTGRES_DRIVER_VERSION=42.7.3
 RUN curl -L https://repo1.maven.org/maven2/org/postgresql/postgresql/${POSTGRES_DRIVER_VERSION}/postgresql-${POSTGRES_DRIVER_VERSION}.jar \
@@ -76,7 +98,6 @@ USER jboss
 
 EXPOSE 8080
 
-# Em runtime: passa as variáveis de ambiente do Render como system properties do Java
 CMD ["/bin/sh", "-c", \
      "/opt/jboss/wildfly/bin/standalone.sh \
       -b 0.0.0.0 \

@@ -144,18 +144,14 @@
                     <span class="badge-pill badge-muted">Notificacoes</span>
                     <div class="profile-inline">
                         <div class="profile-inline-info">
-                            <span class="badge-pill badge-muted">#{empty authBean.nomeUsuarioLogado ? authBean.usuarioLogado : authBean.nomeUsuarioLogado}</span>
-                            <span class="profile-role">#{empty authBean.perfilLogado ? 'Perfil nao identificado' : authBean.perfilLogado}</span>
+                            <span class="badge-pill badge-muted">Visitante</span>
+                            <h:link outcome="/login.xhtml"
+                                    styleClass="btn-ghostx profile-logout"
+                                    title="Sair"
+                                    pt:aria-label="Sair">
+                                <i class="pi pi-sign-out"></i>
+                            </h:link>
                         </div>
-                        <h:form styleClass="d-inline">
-                            <p:commandButton action="#{authBean.logout}"
-                                             ajax="false"
-                                             icon="pi pi-sign-out"
-                                             title="Sair"
-                                             pt:aria-label="Sair"
-                                             styleClass="icon-action-btn profile-logout ui-button-icon-only"
-                                             data-no-loader="true"/>
-                        </h:form>
                     </div>
                     <h:form styleClass="d-inline">
                         <p:commandButton action="#{themeBean.toggleTheme}"

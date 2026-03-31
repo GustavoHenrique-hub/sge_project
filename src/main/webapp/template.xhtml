@@ -20,6 +20,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap"
           rel="stylesheet"/>
+    <link rel="icon"
+          href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%232563eb'/%3E%3Cpath d='M20 22h24v6H20zm0 10h24v6H20zm0 10h16v6H20z' fill='white'/%3E%3C/svg%3E"/>
     <h:outputStylesheet library="primeicons" name="primeicons.css"/>
 
 </h:head>
@@ -142,15 +144,18 @@
                     <span class="badge-pill badge-muted">Notificacoes</span>
                     <div class="profile-inline">
                         <div class="profile-inline-info">
-                            <span class="badge-pill badge-muted">Gustavo</span>
-                            <span class="profile-role">Admin / Professor / Secretaria</span>
+                            <span class="badge-pill badge-muted">#{empty authBean.nomeUsuarioLogado ? authBean.usuarioLogado : authBean.nomeUsuarioLogado}</span>
+                            <span class="profile-role">#{empty authBean.perfilLogado ? 'Perfil nao identificado' : authBean.perfilLogado}</span>
                         </div>
-                        <h:link outcome="/login.xhtml"
-                                styleClass="btn-ghostx profile-logout"
-                                title="Sair"
-                                pt:aria-label="Sair">
-                            <i class="pi pi-sign-out"></i>
-                        </h:link>
+                        <h:form styleClass="d-inline">
+                            <p:commandButton action="#{authBean.logout}"
+                                             ajax="false"
+                                             icon="pi pi-sign-out"
+                                             title="Sair"
+                                             pt:aria-label="Sair"
+                                             styleClass="icon-action-btn profile-logout ui-button-icon-only"
+                                             data-no-loader="true"/>
+                        </h:form>
                     </div>
                     <h:form styleClass="d-inline">
                         <p:commandButton action="#{themeBean.toggleTheme}"
@@ -179,7 +184,7 @@
              showSummary="true"
              showDetail="true"
              life="3200"
-             sticky="false" />
+             sticky="false"/>
 
     <h:panelGroup id="msgs" layout="block" styleClass="jsf-msgs-hidden">
         <h:messages globalOnly="true" layout="list"
@@ -193,7 +198,7 @@
 
     <div id="pageLoader" class="app-loader-backdrop" aria-hidden="true">
         <div class="app-loader-card">
-            <i class="pi pi-spin pi-spinner app-loader-icon" />
+            <i class="pi pi-spin pi-spinner app-loader-icon"/>
             <span>Carregando...</span>
         </div>
     </div>
@@ -202,7 +207,7 @@
                   onsuccess="window.AppLoader &amp;&amp; AppLoader.hide()"
                   onerror="window.AppLoader &amp;&amp; AppLoader.hide()"/>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"/>
     <script>
         //<![CDATA[
         (function () {

@@ -13,6 +13,7 @@
         <cc:attribute name="dataBsTarget" required="false" />
         <cc:attribute name="dataBsDismiss" required="false" />
         <cc:attribute name="buttonLabel" required="true"/>
+        <cc:attribute name="onclick" required="false" />
         <cc:attribute name="rendered" required="false" default="true" />
         <cc:attribute name="parentDivStyle" required="false" default="filters-body-button-column"/>
     </cc:interface>
@@ -21,7 +22,8 @@
         <ui:fragment rendered="#{cc.attrs.rendered and not empty cc.attrs.parentDivStyle}">
             <div class="#{cc.attrs.parentDivStyle}">
                 <button class="#{empty cc.attrs.styleClass ? cc.attrs['class'] : cc.attrs.styleClass}"
-                        type="#{cc.attrs.buttonType}"
+                        type="button"
+                        onclick="#{cc.attrs.onclick}"
                         data-bs-toggle="#{cc.attrs.dataBsToggle}"
                         data-bs-target="#{cc.attrs.dataBsTarget}"
                         data-bs-dismiss="#{cc.attrs.dataBsDismiss}">#{cc.attrs.buttonLabel}
@@ -32,6 +34,7 @@
         <ui:fragment rendered="#{cc.attrs.rendered and empty cc.attrs.parentDivStyle}">
             <button class="#{empty cc.attrs.styleClass ? cc.attrs['class'] : cc.attrs.styleClass}"
                     type="#{cc.attrs.buttonType}"
+                    onclick="#{cc.attrs.onclick}"
                     data-bs-toggle="#{cc.attrs.dataBsToggle}"
                     data-bs-target="#{cc.attrs.dataBsTarget}"
                     data-bs-dismiss="#{cc.attrs.dataBsDismiss}">#{cc.attrs.buttonLabel}

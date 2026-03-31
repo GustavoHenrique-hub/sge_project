@@ -7,6 +7,11 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <h:form id="formNovaTurma">
+        <p:remoteCommand name="rcLimparNovaTurma"
+                         action="#{turmaBean.limparFormulario}"
+                         process="@this"
+                         immediate="true"
+                         update="@form"/>
         <div class="field-group">
             <h:panelGrid id="grid" columns="1" cellpadding="7">
                 <cmp:baseInput id="inputTurma"
@@ -21,6 +26,7 @@
 
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
             <cmp:baseButton styleClass="btn-ghostx"
+                            onclick="rcLimparNovaTurma()"
                             dataBsDismiss="modal"
                             buttonLabel="Cancelar"
                             parentDivStyle=""/>
@@ -31,7 +37,7 @@
                              action="#{turmaBean.salvar}"
                              process="@form"
                              update=":growl :formListaTurma:listaTurmas @form grid"
-                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovaTurma')).hide();}" />
+                             oncomplete="if(!args.validationFailed){rcLimparNovaTurma();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovaTurma')).hide();}" />
         </div>
     </h:form>
 </ui:composition>

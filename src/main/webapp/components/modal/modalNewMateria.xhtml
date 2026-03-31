@@ -7,6 +7,11 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <h:form id="formNewMateria">
+        <p:remoteCommand name="rcLimparNovaMateria"
+                         action="#{professorDisciplinaBean.limparFormulario}"
+                         process="@this"
+                         immediate="true"
+                         update="@form :formFiltrosProfessor"/>
         <div id="grid" class="modal-link-grid">
                 <cmp:baseAutocomplete id="dropDownProfessorModal"
                                       label="Professor"
@@ -39,6 +44,7 @@
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
             <!-- Fecha modal sem submit -->
             <cmp:baseButton styleClass="btn-ghostx"
+                            onclick="rcLimparNovaMateria()"
                             dataBsDismiss="modal"
                             buttonLabel="Cancelar"
                             parentDivStyle=""/>
@@ -50,7 +56,7 @@
                              action="#{professorDisciplinaBean.confirmarPelosFiltros}"
                              process="@form"
                              update=":growl :formListaProfessor:listaProfessores :formFiltrosProfessor @form"
-                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovaMateria')).hide();}"/>
+                             oncomplete="if(!args.validationFailed){rcLimparNovaMateria();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovaMateria')).hide();}"/>
         </div>
 
     </h:form>

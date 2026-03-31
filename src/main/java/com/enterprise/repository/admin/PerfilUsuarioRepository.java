@@ -64,6 +64,30 @@ public class PerfilUsuarioRepository {
         return query.getResultList();
     }
 
+    public Optional<PerfilUsuarioEntity> findAtivoByLoginAndSenha(String login, String senha) {
+        if (login == null || login.isBlank() || senha == null || senha.isBlank()) {
+            return Optional.empty();
+        }
+
+        return em.createQuery(
+                        "select pu from PerfilUsuarioEntity pu " +
+                                "join fetch pu.usuario u " +
+                                "join fetch pu.perfil p " +
+                                "join fetch pu.situacao s " +
+                                "where u.login = :login " +
+                                "and u.senha = :senha " +
+                                "and upper(s.situacao) = :situacao " +
+                                "order by pu.id desc",
+                        PerfilUsuarioEntity.class
+                )
+                .setParameter("login", login)
+                .setParameter("senha", senha)
+                .setParameter("situacao", "ATIVO")
+                .setMaxResults(1)
+                .getResultStream()
+                .findFirst();
+    }
+
     public PerfilUsuarioEntity vincular(PerfilUsuarioEntity entity) {
         return JpaTransaction.execute(em, () -> {
             attachReferences(entity);

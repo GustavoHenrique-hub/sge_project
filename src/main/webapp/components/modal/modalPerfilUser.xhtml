@@ -7,6 +7,11 @@
                 xmlns:cmp="jakarta.faces.composite/components">
 
     <h:form id="formPerfilUser">
+        <p:remoteCommand name="rcLimparPerfilUsuario"
+                         action="#{perfilUsuarioBean.limparFormulario}"
+                         process="@this"
+                         immediate="true"
+                         update="@form"/>
         <div id="grid" class="modal-link-grid">
                 <cmp:baseAutocomplete
                         id="dropDownUsuarioModal"
@@ -53,6 +58,7 @@
 
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
             <cmp:baseButton styleClass="btn-ghostx"
+                            onclick="rcLimparPerfilUsuario()"
                             dataBsDismiss="modal"
                             buttonLabel="Cancelar"
                             parentDivStyle=""/>
@@ -63,7 +69,7 @@
                              action="#{perfilUsuarioBean.vincular}"
                              process="@form"
                              update=":growl :formLista:listaUsers @form"
-                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPerfilUser')).hide();}"/>
+                             oncomplete="if(!args.validationFailed){rcLimparPerfilUsuario();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPerfilUser')).hide();}"/>
         </div>
 
     </h:form>

@@ -7,6 +7,11 @@
                 xmlns:cmp="jakarta.faces.composite/components">
 
     <h:form id="formAlunoTurma">
+        <p:remoteCommand name="rcLimparNovaMatricula"
+                         action="#{alunoTurmaBean.limparFormulario}"
+                         process="@this"
+                         immediate="true"
+                         update="@form"/>
         <div id="grid" class="modal-link-grid">
             <cmp:baseAutocomplete id="dropDownAlunoModal"
                                   label="Aluno"
@@ -38,6 +43,7 @@
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
             <!-- Fecha modal sem submit -->
             <cmp:baseButton styleClass="btn-ghostx"
+                            onclick="rcLimparNovaMatricula()"
                             dataBsDismiss="modal"
                             buttonLabel="Cancelar"
                             parentDivStyle=""/>
@@ -49,7 +55,7 @@
                              action="#{alunoTurmaBean.confirmarPelosFiltros}"
                              process="@form"
                              update=":growl :formMatricula:listaMatriculas @form"
-                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalMatricula')).hide();}"/>
+                             oncomplete="if(!args.validationFailed){rcLimparNovaMatricula();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalMatricula')).hide();}"/>
         </div>
 
     </h:form>

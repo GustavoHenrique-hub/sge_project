@@ -96,8 +96,7 @@
                                                     rendered="#{!perfilUsuarioBean.isSituacaoInativa(usuario)}"
                                                     ajax="true"
                                                     value="&#xe935;"
-                                                    update=":formLista:listaUsers :growl" />
-
+                                                    update=":formLista :growl" />
                                 <cmp:baseIconButton id="ativarVinculo"
                                                     action="#{perfilUsuarioBean.ativarVinculo(usuario)}"
                                                     title="Ativar vínculo"
@@ -105,8 +104,7 @@
                                                     rendered="#{perfilUsuarioBean.isSituacaoInativa(usuario)}"
                                                     ajax="true"
                                                     value="&#xe909;"
-                                                    update=":formLista:listaUsers :growl" />
-
+                                                    update=":formLista :growl" />
                                 <cmp:baseIconButton id="excluirVinculo"
                                                     action="#{perfilUsuarioBean.excluirVinculo(usuario)}"
                                                     title="Excluir vínculo"
@@ -114,7 +112,7 @@
                                                     rendered="#{perfilUsuarioBean.isSituacaoInativa(usuario)}"
                                                     ajax="true"
                                                     value="&#xe93d;"
-                                                    update=":formLista:listaUsers :growl" />
+                                                    update=":formLista :growl" />
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Usuário</f:facet>

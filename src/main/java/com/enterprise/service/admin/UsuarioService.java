@@ -25,7 +25,7 @@ public class UsuarioService {
 
     public UsuarioDTO atualizar(UsuarioDTO dto) {
         if (dto.getId() == null) {
-            throw new IllegalArgumentException("ID é obrigatório para atualizar.");
+            throw new IllegalArgumentException("ID e obrigatorio para atualizar.");
         }
         validar(dto);
 
@@ -46,12 +46,16 @@ public class UsuarioService {
         repository.removeById(id);
     }
 
+    public UsuarioEntity login(String login, String senha) {
+        return repository.findByLoginAndSenha(login, senha).orElse(null);
+    }
+
     private void validar(UsuarioDTO dto) {
         if (dto.getLogin() == null || dto.getLogin().isBlank()) {
-            throw new IllegalArgumentException("Login é obrigatório.");
+            throw new IllegalArgumentException("Login e obrigatorio.");
         }
         if (dto.getUsuario() == null || dto.getUsuario().isBlank()) {
-            throw new IllegalArgumentException("Usuário é obrigatório.");
+            throw new IllegalArgumentException("Usuario e obrigatorio.");
         }
     }
 }

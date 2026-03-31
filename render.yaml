@@ -23,3 +23,5 @@ services:
         sync: false   # Usuário do banco
       - key: DB_PASSWORD
         sync: false   # Senha — nunca colocar em texto aqui
+      - key: JWT_SECRET
+        sync: false

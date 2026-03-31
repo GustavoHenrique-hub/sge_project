@@ -7,6 +7,11 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <h:form id="formNovoProfessor">
+        <p:remoteCommand name="rcLimparNovoProfessor"
+                         action="#{professorBean.limparFormulario}"
+                         process="@this"
+                         immediate="true"
+                         update="@form"/>
         <div class="field-group">
             <h:panelGrid id="grid" columns="1" cellpadding="7">
                 <cmp:baseInput id="inputNome"
@@ -70,6 +75,7 @@
 
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
             <cmp:baseButton styleClass="btn-ghostx"
+                            onclick="rcLimparNovoProfessor()"
                             dataBsDismiss="modal"
                             buttonLabel="Cancelar"
                             parentDivStyle=""/>
@@ -80,7 +86,7 @@
                              action="#{professorBean.salvar}"
                              process="@form"
                              update=":growl :formListaProfessor:listaProfessores @form grid"
-                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovoProfessor')).hide();}" />
+                             oncomplete="if(!args.validationFailed){rcLimparNovoProfessor();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovoProfessor')).hide();}" />
         </div>
 
     </h:form>

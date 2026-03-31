@@ -7,6 +7,11 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <h:form id="formNewUser">
+        <p:remoteCommand name="rcLimparNovoUsuario"
+                         action="#{usuarioBean.limparFormulario}"
+                         process="@this"
+                         immediate="true"
+                         update="@form"/>
         <div class="field-group">
             <h:panelGrid id="grid" columns="1" cellpadding="7">
                 <cmp:baseInput id="inputLogin"
@@ -38,6 +43,7 @@
 
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
             <cmp:baseButton styleClass="btn-ghostx"
+                            onclick="rcLimparNovoUsuario()"
                             dataBsDismiss="modal"
                             buttonLabel="Cancelar"
                             parentDivStyle=""/>
@@ -48,7 +54,7 @@
                              action="#{usuarioBean.salvar}"
                              process="@form"
                              update=":growl :formLista:listaUsers @form grid"
-                             oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNewUser')).hide();}" />
+                             oncomplete="if(!args.validationFailed){rcLimparNovoUsuario();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNewUser')).hide();}" />
         </div>
 
     </h:form>

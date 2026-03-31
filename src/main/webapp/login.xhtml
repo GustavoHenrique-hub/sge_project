@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 <h:head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Login - Gestão Escolar</title>
+    <title>Login - Gestao Escolar</title>
 
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap"
           rel="stylesheet"/>
+    <link rel="icon"
+          href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%232563eb'/%3E%3Cpath d='M20 22h24v6H20zm0 10h24v6H20zm0 10h16v6H20z' fill='white'/%3E%3C/svg%3E"/>
 
     <h:outputStylesheet library="primeicons" name="primeicons.css"/>
     <h:outputStylesheet library="css" name="app-v2.css"/>
@@ -43,28 +46,45 @@
                 </div>
             </div>
 
-            <h:form>
+            <h:form id="formLogin">
+                <h:messages globalOnly="true"
+                            layout="list"
+                            showSummary="true"
+                            showDetail="true"
+                            errorClass="field-error field-error-inline mb-3"
+                            infoClass="field-error field-error-inline mb-3"
+                            warnClass="field-error field-error-inline mb-3"
+                            fatalClass="field-error field-error-inline mb-3"/>
+
                 <div class="mb-3">
-                    <label class="form-label cardx-title">Usuário</label>
-                    <h:inputText value="#{authBean.username}"
+                    <label class="form-label cardx-title" for="formLogin:username">Usuario</label>
+                    <h:inputText id="username"
+                                 value="#{authBean.username}"
+                                 required="true"
+                                 requiredMessage="Usuario e obrigatorio."
                                  styleClass="form-control"
-                                 pt:placeholder="ex: gustavo"
-                                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"/>
+                                 pt:placeholder="ex: gustavo"/>
+                    <h:message for="username"
+                               styleClass="field-error field-error-inline"/>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label cardx-title">Senha</label>
-                    <h:inputSecret value="#{authBean.password}"
+                    <label class="form-label cardx-title" for="formLogin:password">Senha</label>
+                    <h:inputSecret id="password"
+                                   value="#{authBean.password}"
+                                   required="true"
+                                   requiredMessage="Senha e obrigatoria."
                                    styleClass="form-control"
-                                   pt:placeholder="••••••••"
-                                   xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"/>
+                                   pt:placeholder="........"/>
+                    <h:message for="password"
+                               styleClass="field-error field-error-inline"/>
                 </div>
 
                 <div class="d-grid gap-2">
                     <h:commandButton value="Entrar"
                                      styleClass="btn-primaryx"
-                                     action="#{authBean.login}"/>
-                    <button type="button" class="btn-ghostx">Esqueci a senha</button>
+                                     action="#{authBean.login}"
+                                     ajax="false"/>
                 </div>
 
                 <div class="mt-3">

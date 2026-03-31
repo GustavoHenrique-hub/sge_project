@@ -63,7 +63,7 @@ public class PerfilUsuarioBean implements Serializable {
         perfilUsuarios = service.listarDTO();
         PrimeFaces current = PrimeFaces.current();
         if (current != null) {
-            current.ajax().update("formLista:listaUsers", "growl");
+            current.ajax().update(":formLista", ":growl");
         }
     }
 

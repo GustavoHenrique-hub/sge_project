@@ -35,6 +35,21 @@ public class UsuarioRepository {
                 .getResultList();
     }
 
+    public Optional<UsuarioEntity> findByLoginAndSenha(String login, String senha) {
+        if (login == null || login.isBlank() || senha == null || senha.isBlank()) {
+            return Optional.empty();
+        }
+        return em.createQuery(
+                        "select u from UsuarioEntity u where upper(u.login) = :login and u.senha = :senha",
+                        UsuarioEntity.class
+                )
+                .setParameter("login", login.trim().toUpperCase())
+                .setParameter("senha", senha)
+                .setMaxResults(1)
+                .getResultStream()
+                .findFirst();
+    }
+
     public void removeById(Long id) {
         JpaTransaction.run(em, () -> {
             UsuarioEntity ref = em.find(UsuarioEntity.class, id);

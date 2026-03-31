@@ -8,6 +8,7 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestScoped
 public class PerfilUsuarioService {
@@ -23,6 +24,10 @@ public class PerfilUsuarioService {
 
     public List<PerfilUsuarioDTO> listarPorFiltros(String login, Long perfilId, Long situacaoId) {
         return repository.findByFilters(login, perfilId, situacaoId).stream().map(PerfilUsuarioDTO::new).toList();
+    }
+
+    public Optional<PerfilUsuarioEntity> autenticar(String login, String senha) {
+        return repository.findAtivoByLoginAndSenha(login, senha);
     }
 
     public PerfilUsuarioDTO vincular(PerfilUsuarioDTO dto) {

@@ -23,8 +23,8 @@
                     <cmp:baseAutocomplete
                             id="alunoNome"
                             label="Nome"
-                            value="#{alunoBean.filtroAluno}"
-                            badgeValue="#{alunoBean.filtroAluno != null ? alunoBean.filtroAluno.rm : null}"
+                            value="#{alunoBean.filtroAlunoNome}"
+                            badgeValue="#{alunoBean.filtroAlunoNome != null ? alunoBean.filtroAlunoNome.rm : null}"
                             completeMethod="#{alunoBean.completeNomeAluno}"
                             converter="#{alunoEntityConverter}"
                             itemLabelProperty="nome"
@@ -35,8 +35,8 @@
                     <cmp:baseAutocomplete
                             id="alunoCPF"
                             label="CPF"
-                            value="#{alunoBean.filtroAluno}"
-                            badgeValue="#{alunoBean.filtroAluno != null ? alunoBean.filtroAluno.rm : null}"
+                            value="#{alunoBean.filtroAlunoCpf}"
+                            badgeValue="#{alunoBean.filtroAlunoCpf != null ? alunoBean.filtroAlunoCpf.rm : null}"
                             completeMethod="#{alunoBean.completeCPFAluno}"
                             converter="#{alunoEntityConverter}"
                             itemLabelProperty="cpf"

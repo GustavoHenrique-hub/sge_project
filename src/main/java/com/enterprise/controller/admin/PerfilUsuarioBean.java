@@ -5,6 +5,7 @@ import com.enterprise.dto.admin.PerfilUsuarioDTO;
 import com.enterprise.dto.admin.SituacaoDTO;
 import com.enterprise.dto.admin.UsuarioDTO;
 import com.enterprise.model.entity.admin.PerfilEntity;
+import com.enterprise.model.entity.admin.PerfilUsuarioEntity;
 import com.enterprise.model.entity.admin.SituacaoEntity;
 import com.enterprise.model.entity.admin.UsuarioEntity;
 import com.enterprise.service.admin.PerfilService;
@@ -24,6 +25,7 @@ import org.primefaces.PrimeFaces;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Named("perfilUsuarioBean")
@@ -121,6 +123,15 @@ public class PerfilUsuarioBean implements Serializable {
             }
             recarregarLista();
             limparFormulario();
+        }catch (Exception e){
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
+        }
+    }
+
+    public void login(String login, String password) {
+        try{
+            service.autenticar(login, password);
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Seja bem-vindo!");
         }catch (Exception e){
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }

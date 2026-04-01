@@ -33,7 +33,8 @@ public class AlunoBean implements Serializable {
     private AlunoDTO detalheSelecionado;
     private AlunoDTO detalheEdicao = new AlunoDTO();
     private boolean editandoDetalhe;
-    private AlunoEntity filtroAluno;
+    private AlunoEntity filtroAlunoNome;
+    private AlunoEntity filtroAlunoCpf;
     private List<AlunoEntity> alunos = new ArrayList<>();
 
     @PostConstruct
@@ -135,13 +136,14 @@ public class AlunoBean implements Serializable {
 
     public void filtrar() {
         try {
-            Long alunoIdFiltro = filtroAluno == null ? null : filtroAluno.getId();
-            boolean filtroVazio = alunoIdFiltro == null;
+            String nome = filtroAlunoNome == null ? null : filtroAlunoNome.getNome();
+            String cpf = filtroAlunoCpf == null ? null : filtroAlunoCpf.getCpf();
+            boolean filtroVazio = (nome == null || nome.isBlank()) && (cpf == null || cpf.isBlank());
 
             if (filtroVazio) {
                 alunos = service.findAll();
             } else {
-                alunos = service.findByFilters(filtroAluno.getNome(), filtroAluno.getCpf());
+                alunos = service.findByFilters(nome, cpf);
             }
             int total = alunos == null ? 0 : alunos.size();
             addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Filtro aplicado. Registros: " + total + ".");

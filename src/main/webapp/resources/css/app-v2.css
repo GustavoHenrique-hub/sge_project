@@ -357,6 +357,27 @@ body {
     margin-top: 2px;
 }
 
+.welcome-banner {
+    margin-top: 0;
+    text-align: center;
+}
+
+.welcome-banner-header {
+    justify-content: center;
+}
+
+.welcome-banner-title {
+    font-size: 24px;
+}
+
+.welcome-banner-subtitle {
+    font-size: 14px;
+}
+
+.welcome-banner-separator {
+    margin-left: 12px;
+}
+
 /* ==========================================================================
    Buttons and Action Icons
    Used by: all forms + admin action column

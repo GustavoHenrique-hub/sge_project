@@ -7,6 +7,18 @@
     <ui:define name="subtitle">Painel / Visao geral</ui:define>
 
     <ui:define name="content">
+        <div class="cardx welcome-banner">
+            <div class="cardx-header welcome-banner-header">
+                <div>
+                    <div class="cardx-title welcome-banner-title">#{authBean.mensagemBoasVindas}</div>
+                    <div class="cardx-subtitle welcome-banner-subtitle">
+                        Ultimo acesso: #{authBean.ultimoAcessoFormatado}
+                        <span class="welcome-banner-separator">Tempo de sessao: #{authBean.tempoSessaoMinutos} minutos.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="cardx">
             <div class="cardx-header">
                 <div>

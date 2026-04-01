@@ -3,6 +3,7 @@ package com.enterprise.service.gestao;
 import com.enterprise.dto.gestao.AlunoDTO;
 import com.enterprise.model.entity.gestao.AlunoEntity;
 import com.enterprise.repository.gestao.AlunoRepository;
+import com.enterprise.validation.DocumentsValidation;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
@@ -11,10 +12,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+
 @RequestScoped
 public class AlunoService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
+    private static DocumentsValidation validator = new DocumentsValidation();
 
     @Inject
     private AlunoRepository repository;
@@ -63,8 +66,26 @@ public class AlunoService {
         if (dto.getNome() == null || dto.getNome().isBlank()) {
             throw new IllegalArgumentException("Nome e obrigatorio.");
         }
+
+        boolean validacaoCPF = validator.cpfValidation(dto.getCpf());
+        if (dto.getCpf() == null || dto.getCpf().isBlank()) {
+            throw new IllegalArgumentException("CPF é obrigatório.");
+        }else {
+            if (validacaoCPF != true) {
+                throw new IllegalArgumentException("CPF é inválido!");
+            }
+        }
         if (dto.getCpf() == null || dto.getCpf().isBlank()) {
             throw new IllegalArgumentException("CPF e obrigatorio.");
+        }
+
+        boolean validacaoRG = validator.rgValidation(dto.getRg());
+        if (dto.getRg() == null || dto.getRg().isBlank()) {
+            throw new IllegalArgumentException("RG é obrigatório.");
+        }else{
+            if (validacaoRG != true) {
+                throw new IllegalArgumentException("RG é inválido!");
+            }
         }
         if (dto.getRg() == null || dto.getRg().isBlank()) {
             throw new IllegalArgumentException("RG e obrigatorio.");

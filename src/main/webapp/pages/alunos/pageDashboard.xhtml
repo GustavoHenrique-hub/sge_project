@@ -7,7 +7,7 @@
     <ui:define name="subtitle">Painel / Visao geral</ui:define>
 
     <ui:define name="content">
-        <div class="cardx welcome-banner">
+        <div id="welcomeBanner" class="cardx welcome-banner">
             <div class="cardx-header welcome-banner-header">
                 <div>
                     <div class="cardx-title welcome-banner-title">#{authBean.mensagemBoasVindas}</div>
@@ -69,6 +69,18 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            //<![CDATA[
+            window.setTimeout(function () {
+                var banner = document.getElementById("welcomeBanner");
+                if (!banner) {
+                    return;
+                }
+                banner.classList.add("is-hidden");
+            }, 3000);
+            //]]>
+        </script>
     </ui:define>
 
 </ui:composition>

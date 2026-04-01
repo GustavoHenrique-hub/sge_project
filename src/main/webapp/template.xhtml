@@ -145,7 +145,12 @@
                     <div class="profile-inline">
                         <div class="profile-inline-info">
                             <span class="badge-pill badge-muted">#{empty authBean.nomeUsuarioLogado ? 'Visitante' : authBean.nomeUsuarioLogado}</span>
+                            <span class="badge-pill badge-muted">#{empty authBean.tempoSessaoMinutos ? 'Visitante' : authBean.tempoSessaoMinutos}</span>
+                        </div>
+                    </div>
+                    <div class="profile-inline">
                             <h:form styleClass="d-inline">
+                                <div class="profile-inline-info">
                                 <p:commandButton action="#{authBean.logout}"
                                                  ajax="false"
                                                  icon="pi pi-sign-out"
@@ -153,23 +158,21 @@
                                                  pt:aria-label="Sair"
                                                  styleClass="icon-action-btn profile-logout ui-button-icon-only ui-button-outlined rounded-button"
                                                  data-no-loader="true"/>
+                                <p:commandButton action="#{themeBean.toggleTheme}"
+                                                 rendered="#{themeBean.darkTheme}"
+                                                 ajax="false"
+                                                 icon="pi pi-sun"
+                                                 title="Trocar para tema claro"
+                                                 styleClass="btn-ghostx theme-toggle rounded-button ui-button-outlined"/>
+                                <p:commandButton action="#{themeBean.toggleTheme}"
+                                                 rendered="#{!themeBean.darkTheme}"
+                                                 ajax="false"
+                                                 icon="pi pi-moon"
+                                                 title="Trocar para tema escuro"
+                                                 styleClass="btn-ghostx theme-toggle rounded-button ui-button-outlined"/>
+                                </div>
                             </h:form>
-                        </div>
                     </div>
-                    <h:form styleClass="d-inline">
-                        <p:commandButton action="#{themeBean.toggleTheme}"
-                                         rendered="#{themeBean.darkTheme}"
-                                         ajax="false"
-                                         icon="pi pi-sun"
-                                         title="Trocar para tema claro"
-                                         styleClass="btn-ghostx theme-toggle rounded-button ui-button-outlined"/>
-                        <p:commandButton action="#{themeBean.toggleTheme}"
-                                         rendered="#{!themeBean.darkTheme}"
-                                         ajax="false"
-                                         icon="pi pi-moon"
-                                         title="Trocar para tema escuro"
-                                         styleClass="btn-ghostx theme-toggle rounded-button ui-button-outlined"/>
-                    </h:form>
                 </div>
             </div>
 

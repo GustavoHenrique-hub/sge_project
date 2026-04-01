@@ -358,8 +358,15 @@ body {
 }
 
 .welcome-banner {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    width: min(760px, calc(100vw - 48px));
     margin-top: 0;
+    z-index: 5000;
     text-align: center;
+    transition: opacity .35s ease, transform .35s ease, visibility .35s ease;
 }
 
 .welcome-banner-header {
@@ -376,6 +383,13 @@ body {
 
 .welcome-banner-separator {
     margin-left: 12px;
+}
+
+.welcome-banner.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(16px);
+    pointer-events: none;
 }
 
 /* ==========================================================================

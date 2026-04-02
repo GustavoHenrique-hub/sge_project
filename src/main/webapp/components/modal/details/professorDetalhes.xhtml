@@ -28,7 +28,7 @@
                            requiredMessage="CPF e obrigatorio."
                            disabled="#{not professorBean.editandoDetalhe}"
                            maxLength="14"
-                           inputMode="text"
+                           inputMode="numeric"
                            onInput="this.value = formatarCpf(this.value);"/>
             <cmp:baseInput id="detalheProfessorRg"
                            value="#{professorBean.detalheEdicao.rg}"

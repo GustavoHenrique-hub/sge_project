@@ -33,8 +33,7 @@ public class AlunoBean implements Serializable {
     private AlunoDTO detalheSelecionado;
     private AlunoDTO detalheEdicao = new AlunoDTO();
     private boolean editandoDetalhe;
-    private AlunoEntity filtroAlunoNome;
-    private AlunoEntity filtroAlunoCpf;
+    private AlunoEntity filtroAluno;
     private List<AlunoEntity> alunos = new ArrayList<>();
 
     @PostConstruct
@@ -76,13 +75,33 @@ public class AlunoBean implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    public List<AlunoEntity> completeCPFAluno(String query) {
-        String formatCPFAluno = query == null ? "" : query.toLowerCase();
+    public List<AlunoEntity> completeAlunoBuscaGeral(String query) {
+        String termo = query == null ? "" : query.trim().toLowerCase();
+        String termoNumerico = query == null ? "" : query.replaceAll("\\D", "");
         return service.findAll()
                 .stream()
-                .filter(aluno -> aluno.getCpf() != null
-                        && aluno.getCpf().toLowerCase().startsWith(formatCPFAluno))
+                .filter(aluno -> correspondeBuscaAluno(aluno, termo, termoNumerico))
                 .collect(Collectors.toList());
+    }
+
+    private boolean correspondeBuscaAluno(AlunoEntity aluno, String termo, String termoNumerico) {
+        if (aluno == null) {
+            return false;
+        }
+        boolean buscaVazia = termo.isBlank() && termoNumerico.isBlank();
+        if (buscaVazia) {
+            return true;
+        }
+
+        boolean nomeCorresponde = aluno.getNome() != null
+                && aluno.getNome().toLowerCase().contains(termo);
+        boolean rmCorresponde = aluno.getRm() != null
+                && aluno.getRm().toLowerCase().contains(termo);
+        boolean cpfCorresponde = !termoNumerico.isBlank()
+                && aluno.getCpf() != null
+                && aluno.getCpf().contains(termoNumerico);
+
+        return nomeCorresponde || rmCorresponde || cpfCorresponde;
     }
 
 
@@ -136,8 +155,8 @@ public class AlunoBean implements Serializable {
 
     public void filtrar() {
         try {
-            String nome = filtroAlunoNome == null ? null : filtroAlunoNome.getNome();
-            String cpf = filtroAlunoCpf == null ? null : filtroAlunoCpf.getCpf();
+            String nome = filtroAluno == null ? null : filtroAluno.getNome();
+            String cpf = filtroAluno == null ? null : filtroAluno.getCpf();
             boolean filtroVazio = (nome == null || nome.isBlank()) && (cpf == null || cpf.isBlank());
 
             if (filtroVazio) {
@@ -157,12 +176,23 @@ public class AlunoBean implements Serializable {
         copia.setId(origem.getId());
         copia.setRm(origem.getRm());
         copia.setNome(origem.getNome());
-        copia.setCpf(origem.getCpf());
+        copia.setCpf(formatarCpf(origem.getCpf()));
         copia.setRg(origem.getRg());
         copia.setDtNasc(origem.getDtNasc());
         copia.setEmail(origem.getEmail());
         copia.setTelefone(origem.getTelefone());
         return copia;
+    }
+
+    public String formatarCpf(String cpf) {
+        if (cpf == null) {
+            return null;
+        }
+        String digitos = cpf.replaceAll("\\D", "");
+        if (digitos.length() != 11) {
+            return cpf;
+        }
+        return digitos.replaceFirst("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
     }
 
 }

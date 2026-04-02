@@ -25,28 +25,26 @@
                             label="Nome"
                             value="#{professorBean.filtroProfessor}"
                             badgeValue="#{professorBean.filtroProfessor != null ? professorBean.filtroProfessor.rm : null}"
-                            completeMethod="#{professorBean.completeNomeProfessor}"
+                            completeMethod="#{professorBean.completeProfessorBuscaGeral}"
                             converter="#{professorEntityConverter}"
                             itemLabelProperty="nome"
                             parentDivStyle="filters-body-column"
                             childrenDivStyle="filters-body-column-row"
                             showMessage="false"
                             required="false"
-                            fieldStyle="field-filters-autocomplete-wrap"/>
+                            fieldStyle="field-filters-autocomplete-wrap"
+                            placeholder="Busque por nome, RM ou CPF">
+                        <p:column>
+                            <h:outputText value="Nome: #{item.nome}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="RM: #{item.rm}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="CPF: #{professorBean.formatarCpf(item.cpf)}"/>
+                        </p:column>
+                    </cmp:baseAutocomplete>
 
-                    <cmp:baseAutocomplete
-                            id="dropCPFProfessor"
-                            label="CPF"
-                            value="#{professorBean.filtroProfessor}"
-                            badgeValue="#{professorBean.filtroProfessor != null ? professorBean.filtroProfessor.rm : null}"
-                            completeMethod="#{professorBean.completeCPFProfessor}"
-                            converter="#{professorEntityConverter}"
-                            itemLabelProperty="cpf"
-                            parentDivStyle="filters-body-column"
-                            childrenDivStyle="filters-body-column-row"
-                            showMessage="false"
-                            required="false"
-                            fieldStyle="field-filters-autocomplete-wrap"/>
                     <cmp:baseCommandButton value="Filtrar"
                                            action="#{professorBean.filtrar}"
                                            render=":growl :formListaProfessor:listaProfessores"/>
@@ -88,7 +86,7 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">CPF</f:facet>
-                                <h:outputText value="#{professores.cpf}"/>
+                                <h:outputText value="#{professorBean.formatarCpf(professores.cpf)}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">RG</f:facet>

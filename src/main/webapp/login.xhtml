@@ -47,14 +47,13 @@
             </div>
 
             <h:form id="formLogin">
-                <h:messages globalOnly="true"
-                            layout="list"
-                            showSummary="true"
-                            showDetail="true"
-                            errorClass="field-error field-error-inline mb-3"
-                            infoClass="field-error field-error-inline mb-3"
-                            warnClass="field-error field-error-inline mb-3"
-                            fatalClass="field-error field-error-inline mb-3"/>
+                <p:growl id="growl"
+                         showSummary="true"
+                         showDetail="true"
+                         life="3200"
+                         sticky="false"
+                         redisplay="true"
+                         styleClass="mb-3"/>
 
                 <div class="mb-3">
                     <label class="form-label cardx-title" for="formLogin:username">Usuario</label>
@@ -64,8 +63,6 @@
                                  requiredMessage="Usuario e obrigatorio."
                                  styleClass="form-control"
                                  pt:placeholder="ex: gustavo"/>
-                    <h:message for="username"
-                               styleClass="field-error field-error-inline"/>
                 </div>
 
                 <div class="mb-3">
@@ -76,13 +73,13 @@
                                    requiredMessage="Senha e obrigatoria."
                                    styleClass="form-control"
                                    pt:placeholder="........"/>
-                    <h:message for="password"
-                               styleClass="field-error field-error-inline"/>
                 </div>
 
                 <div class="d-grid gap-2">
                     <h:commandButton value="Entrar"
                                      styleClass="btn-primaryx"
+                                     process="@form"
+                                     ajax="false"
                                      action="#{authBean.login}"/>
                 </div>
 

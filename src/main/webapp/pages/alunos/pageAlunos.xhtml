@@ -21,28 +21,29 @@
             <h:form id="formFiltrosAluno">
                 <div class="filters-body">
                     <cmp:baseAutocomplete
-                            id="alunoNome"
+                            id="dropDownNomeAluno"
                             label="Nome"
-                            value="#{alunoBean.filtroAlunoNome}"
-                            badgeValue="#{alunoBean.filtroAlunoNome != null ? alunoBean.filtroAlunoNome.rm : null}"
-                            completeMethod="#{alunoBean.completeNomeAluno}"
+                            value="#{alunoBean.filtroAluno}"
+                            badgeValue="#{alunoBean.filtroAluno != null ? alunoBean.filtroAluno.rm : null}"
+                            completeMethod="#{alunoBean.completeAlunoBuscaGeral}"
                             converter="#{alunoEntityConverter}"
                             itemLabelProperty="nome"
-                            required="false"
+                            parentDivStyle="filters-body-column"
+                            childrenDivStyle="filters-body-column-row"
                             showMessage="false"
-                            fieldStyle="field-filters-autocomplete-wrap"/>
-
-                    <cmp:baseAutocomplete
-                            id="alunoCPF"
-                            label="CPF"
-                            value="#{alunoBean.filtroAlunoCpf}"
-                            badgeValue="#{alunoBean.filtroAlunoCpf != null ? alunoBean.filtroAlunoCpf.rm : null}"
-                            completeMethod="#{alunoBean.completeCPFAluno}"
-                            converter="#{alunoEntityConverter}"
-                            itemLabelProperty="cpf"
                             required="false"
-                            showMessage="false"
-                            fieldStyle="field-filters-autocomplete-wrap"/>
+                            fieldStyle="field-filters-autocomplete-wrap"
+                            placeholder="Busque por nome, RM ou CPF">
+                        <p:column>
+                            <h:outputText value="Nome: #{item.nome}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="RM: #{item.rm}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="CPF: #{alunoBean.formatarCpf(item.cpf)}"/>
+                        </p:column>
+                    </cmp:baseAutocomplete>
 
                     <cmp:baseCommandButton value="Filtrar"
                                            action="#{alunoBean.filtrar}"

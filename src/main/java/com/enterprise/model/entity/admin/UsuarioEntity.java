@@ -23,11 +23,15 @@ public class UsuarioEntity {
 
     private String senha;
 
+    @Column(name = "session_timeout")
+    private Integer sessionTimeout;
+
     public UsuarioEntity(UsuarioDTO user) {
         this.id = user.getId();
         this.usuario = user.getUsuario();
         this.login = user.getLogin();
         this.senha = user.getSenha();
+        this.sessionTimeout = user.getSessionTimeout();
     }
 
     @PreUpdate

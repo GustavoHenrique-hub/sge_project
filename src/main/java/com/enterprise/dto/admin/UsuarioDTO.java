@@ -13,11 +13,13 @@ public class UsuarioDTO {
     private String usuario;
     private String login;
     private String senha;
+    private Integer sessionTimeout;
 
     public UsuarioDTO(UsuarioEntity usuario){
         this.id = usuario.getId();
         this.usuario = usuario.getUsuario();
         this.login = usuario.getLogin();
         this.senha = usuario.getSenha();
+        this.sessionTimeout = usuario.getSessionTimeout();
     }
 }

@@ -23,7 +23,7 @@
   </servlet-mapping>
 
   <welcome-file-list>
-    <welcome-file>pages/admin/pageAdmin.xhtml</welcome-file>
+    <welcome-file>login.xhtml</welcome-file>
   </welcome-file-list>
 
 </web-app>

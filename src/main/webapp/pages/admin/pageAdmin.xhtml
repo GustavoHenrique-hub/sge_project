@@ -132,6 +132,10 @@
                                     #{usuario.situacao != null ? usuario.situacao.situacao : '-'}
                                 </span>
                             </h:column>
+                            <h:column>
+                                <f:facet name="header">Tempo de Sessão</f:facet>
+                                <h:outputText value="#{usuario.usuario.sessionTimeout}:00"/>
+                            </h:column>
                         </h:dataTable>
                     </h:form>
                 </div>

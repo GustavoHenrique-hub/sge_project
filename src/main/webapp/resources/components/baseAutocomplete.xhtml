@@ -24,6 +24,7 @@
         <cc:attribute name="forceSelection" required="false" default="true"/>
         <cc:attribute name="showMessage" required="false" default="true"/>
         <cc:attribute name="fieldStyle" required="false" />
+        <cc:attribute name="placeholder" required="false"/>
     </cc:interface>
 
     <cc:implementation>
@@ -49,11 +50,13 @@
                                     scrollHeight="#{cc.attrs.scrollHeight}"
                                     forceSelection="#{cc.attrs.forceSelection}"
                                     required="#{cc.attrs.required}"
-                                    requiredMessage="#{cc.attrs.requiredMessage}">
+                                    requiredMessage="#{cc.attrs.requiredMessage}"
+                                    placeholder="#{cc.attrs.placeholder}">
                         <p:ajax event="itemSelect"
                                 update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}"/>
                         <p:ajax event="clear"
                                 update="#{empty cc.attrs.update ? cc.attrs.id.concat('IdLabel') : cc.attrs.update}"/>
+                        <cc:insertChildren/>
                     </p:autoComplete>
                 </div>
                 <p:message for="@previous"

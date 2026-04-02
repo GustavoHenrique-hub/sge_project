@@ -55,6 +55,7 @@ public class UsuarioBean implements Serializable {
         form.setId(u.getId());
         form.setLogin(u.getLogin());
         form.setUsuario(u.getUsuario());
+        form.setSessionTimeout(u.getSessionTimeout());
     }
 
     public void remover(Long id) {

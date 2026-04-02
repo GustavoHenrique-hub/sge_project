@@ -38,6 +38,14 @@
                                required="true"
                                requiredMessage="Senha é obrigatória!"
                                label="Senha"/>
+
+                <cmp:baseInput id="inputSessionTimeout"
+                               value="#{usuarioBean.form.sessionTimeout}"
+                               styleClass="form-control"
+                               required="true"
+                               requiredMessage="Tempo de Sessão é obrigatório!"
+                               converterMessage="Tempo de Sessão é  deve ser um número inteiro!"
+                               label="Tempo de Sessão"/>
             </h:panelGrid>
         </div>
 

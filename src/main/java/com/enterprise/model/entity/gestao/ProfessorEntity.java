@@ -26,7 +26,7 @@ public class ProfessorEntity {
     @Column(name = "rm", nullable = false, unique = true, length = 5, updatable = false)
     private String rm;
 
-    @Column(name = "cpf", nullable = false, unique = true, length = 14)
+    @Column(name = "cpf", nullable = false, unique = true, length = 11)
     private String cpf;
 
     @Column(name = "rg", nullable = false, unique = true, length = 20)
@@ -58,6 +58,9 @@ public class ProfessorEntity {
 
     @PreUpdate
     public void preUpdate() {
+        if (this.cpf != null) {
+            this.cpf = this.cpf.replaceAll("\\D", "");
+        }
         if (this.nome != null) {
             this.nome = this.nome.toUpperCase();
         }
@@ -73,6 +76,9 @@ public class ProfessorEntity {
         }
         if (rm == null || rm.isBlank()) {
             rm = String.format("%05d", RANDOM.nextInt(100000));
+        }
+        if (this.cpf != null) {
+            this.cpf = this.cpf.replaceAll("\\D", "");
         }
         if (this.nome != null) {
             this.nome = this.nome.toUpperCase();

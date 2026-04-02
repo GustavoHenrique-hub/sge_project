@@ -33,11 +33,12 @@ public class ProfessorRepository {
     }
 
     public List<ProfessorEntity> findByFilters(String nome, String cpf) {
+        String cpfNormalizado = cpf == null ? null : cpf.replaceAll("\\D", "");
         StringBuilder jpql = new StringBuilder("select p from ProfessorEntity p where 1=1");
         if (nome != null && !nome.isBlank()) {
             jpql.append(" and lower(p.nome) like :nome");
         }
-        if (cpf != null && !cpf.isBlank()) {
+        if (cpfNormalizado != null && !cpfNormalizado.isBlank()) {
             jpql.append(" and p.cpf like :cpf");
         }
         jpql.append(" order by p.nome");
@@ -46,8 +47,8 @@ public class ProfessorRepository {
         if (nome != null && !nome.isBlank()) {
             query.setParameter("nome", "%" + nome.trim().toLowerCase() + "%");
         }
-        if (cpf != null && !cpf.isBlank()) {
-            query.setParameter("cpf", "%" + cpf.trim() + "%");
+        if (cpfNormalizado != null && !cpfNormalizado.isBlank()) {
+            query.setParameter("cpf", "%" + cpfNormalizado.trim() + "%");
         }
         return query.getResultList();
     }

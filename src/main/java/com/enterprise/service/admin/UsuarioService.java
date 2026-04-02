@@ -57,5 +57,11 @@ public class UsuarioService {
         if (dto.getUsuario() == null || dto.getUsuario().isBlank()) {
             throw new IllegalArgumentException("Usuario e obrigatorio.");
         }
+        if (dto.getSessionTimeout() == null) {
+            throw new IllegalArgumentException("Session timeout e obrigatorio.");
+        }
+        if (dto.getSessionTimeout() <= 0) {
+            throw new IllegalArgumentException("Session timeout deve ser um numero inteiro maior que zero.");
+        }
     }
 }

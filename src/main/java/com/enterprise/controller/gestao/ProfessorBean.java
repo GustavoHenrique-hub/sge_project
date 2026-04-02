@@ -75,24 +75,45 @@ public class ProfessorBean implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    public List<ProfessorEntity> completeCPFProfessor(String query) {
-        String formatProfessor = query == null ? "" : query.toLowerCase();
+    public List<ProfessorEntity> completeProfessorBuscaGeral(String query) {
+        String termo = query == null ? "" : query.trim().toLowerCase();
+        String termoNumerico = query == null ? "" : query.replaceAll("\\D", "");
         return service.findAll()
                 .stream()
-                .filter(professor -> professor.getCpf() != null
-                        && professor.getCpf().toLowerCase().startsWith(formatProfessor))
+                .filter(professor -> correspondeBuscaProfessor(professor, termo, termoNumerico))
                 .collect(Collectors.toList());
+    }
+
+    private boolean correspondeBuscaProfessor(ProfessorEntity professor, String termo, String termoNumerico) {
+        if (professor == null) {
+            return false;
+        }
+        boolean buscaVazia = termo.isBlank() && termoNumerico.isBlank();
+        if (buscaVazia) {
+            return true;
+        }
+
+        boolean nomeCorresponde = professor.getNome() != null
+                && professor.getNome().toLowerCase().contains(termo);
+        boolean rmCorresponde = professor.getRm() != null
+                && professor.getRm().toLowerCase().contains(termo);
+        boolean cpfCorresponde = !termoNumerico.isBlank()
+                && professor.getCpf() != null
+                && professor.getCpf().contains(termoNumerico);
+
+        return nomeCorresponde || rmCorresponde || cpfCorresponde;
     }
 
     public void filtrar() {
         try {
-            Long professorIdFiltro = filtroProfessor == null ? null : filtroProfessor.getId();
-            boolean filtroVazio = professorIdFiltro == null;
+            String nome = filtroProfessor != null ? filtroProfessor.getNome() : null;
+            String cpf = filtroProfessor != null ? filtroProfessor.getCpf() : null;
+            boolean filtroVazio = (nome == null || nome.isBlank()) && (cpf == null || cpf.isBlank());
 
             if (filtroVazio) {
                 professores = service.findAll();
             } else {
-                professores = service.findByFilters(filtroProfessor.getNome(), filtroProfessor.getCpf());
+                professores = service.findByFilters(nome, cpf);
             }
             int total = professores == null ? 0 : professores.size();
             addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Filtro aplicado. Registros: " + total + ".");
@@ -144,12 +165,23 @@ public class ProfessorBean implements Serializable {
         copia.setId(origem.getId());
         copia.setRm(origem.getRm());
         copia.setNome(origem.getNome());
-        copia.setCpf(origem.getCpf());
+        copia.setCpf(formatarCpf(origem.getCpf()));
         copia.setRg(origem.getRg());
         copia.setDtNasc(origem.getDtNasc());
         copia.setEmail(origem.getEmail());
         copia.setTelefone(origem.getTelefone());
         return copia;
+    }
+
+    public String formatarCpf(String cpf) {
+        if (cpf == null) {
+            return null;
+        }
+        String digitos = cpf.replaceAll("\\D", "");
+        if (digitos.length() != 11) {
+            return cpf;
+        }
+        return digitos.replaceFirst("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
     }
 
 }

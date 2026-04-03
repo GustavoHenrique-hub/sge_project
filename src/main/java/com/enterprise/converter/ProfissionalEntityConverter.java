@@ -1,9 +1,9 @@
 package com.enterprise.converter;
 
 import com.enterprise.model.entity.gestao.AlunoEntity;
-import com.enterprise.model.entity.gestao.ProfessorEntity;
+import com.enterprise.model.entity.gestao.ProfissionalEntity;
 import com.enterprise.service.gestao.AlunoService;
-import com.enterprise.service.gestao.ProfessorService;
+import com.enterprise.service.gestao.ProfissionalService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
@@ -11,28 +11,28 @@ import jakarta.faces.convert.Converter;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
-@Named("professorEntityConverter")
+@Named("profissionalEntityConverter")
 @RequestScoped
-public class ProfessorEntityConverter implements Converter<ProfessorEntity> {
+public class ProfissionalEntityConverter implements Converter<ProfissionalEntity> {
 
     @Inject
-    private ProfessorService professorService;
+    private ProfissionalService profissionalService;
 
     @Override
-    public ProfessorEntity getAsObject(FacesContext context, UIComponent component, String value) {
+    public ProfissionalEntity getAsObject(FacesContext context, UIComponent component, String value) {
         if (value == null || value.isBlank()) {
             return null;
         }
         try {
             Long id = Long.valueOf(value);
-            return professorService.findById(id).orElse(null);
+            return profissionalService.findById(id).orElse(null);
         } catch (NumberFormatException e) {
             return null;
         }
     }
 
     @Override
-    public String getAsString(FacesContext context, UIComponent component, ProfessorEntity value) {
+    public String getAsString(FacesContext context, UIComponent component, ProfissionalEntity value) {
         if (value == null || value.getId() == null) {
             return "";
         }

@@ -10,12 +10,12 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProfessorID implements Serializable {
+public class ProfissionalID implements Serializable {
 
     private Long id;
     private String rm;
 
-    public ProfessorID(Long id, String rm) {
+    public ProfissionalID(Long id, String rm) {
         this.id = id;
         this.rm = rm;
     }
@@ -28,8 +28,8 @@ public class ProfessorID implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ProfessorID professorID = (ProfessorID) o;
-        return Objects.equals(id, professorID.id) && Objects.equals(rm, professorID.rm);
+        ProfissionalID profissionalID = (ProfissionalID) o;
+        return Objects.equals(id, profissionalID.id) && Objects.equals(rm, profissionalID.rm);
     }
 
     @Override
@@ -37,3 +37,4 @@ public class ProfessorID implements Serializable {
         return Objects.hash(id, rm);
     }
 }
+

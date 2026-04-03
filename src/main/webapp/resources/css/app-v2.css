@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    Design Tokens
    Used by: all pages that include template.xhtml and login.xhtml
    ========================================================================== */
@@ -303,7 +303,7 @@ body {
 
 /* ==========================================================================
    Cards and Generic Surfaces
-   Used by: dashboard, alunos, professores, turmas, admin, matriculas, login
+   Used by: dashboard, alunos, profissionais, turmas, admin, matriculas, login
    ========================================================================== */
 .cardx {
     margin-top: 16px;
@@ -607,10 +607,13 @@ body {
     border: 1px solid var(--card-border);
     border-radius: 12px;
     box-shadow: 0 12px 32px var(--shadow);
-    overflow: hidden;
+    max-height: 250px;
+    overflow-x: hidden;
+    overflow-y: auto;
     z-index: 2000 !important;
 }
 
+.ui-autocomplete-panel .ui-autocomplete-items-wrapper,
 .ui-autocomplete-panel .ui-autocomplete-items {
     max-height: 250px;
     overflow-y: auto;
@@ -629,7 +632,7 @@ body {
 
 /* ==========================================================================
    Tables and Status Badges
-   Used by: admin tables + alunos/professores/turmas/matriculas pages
+   Used by: admin tables + alunos/profissionais/turmas/matriculas pages
    ========================================================================== */
 .table-modern {
     width: 100%;
@@ -718,8 +721,8 @@ body {
    Used by: template.xhtml (p:growl)
    ========================================================================== */
 .ui-growl {
-    top: auto !important;
-    bottom: 18px !important;
+    top: 18px !important;
+    bottom: auto !important;
     right: 18px !important;
     left: auto !important;
     width: min(360px, calc(100vw - 36px)) !important;
@@ -1119,3 +1122,4 @@ body {
         overflow: auto;
     }
 }
+

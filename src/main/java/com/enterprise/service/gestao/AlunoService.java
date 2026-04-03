@@ -69,10 +69,10 @@ public class AlunoService {
 
         boolean validacaoCPF = validator.cpfValidation(dto.getCpf());
         if (dto.getCpf() == null || dto.getCpf().isBlank()) {
-            throw new IllegalArgumentException("CPF é obrigatório.");
+            throw new IllegalArgumentException("CPF Ã© obrigatÃ³rio.");
         }else {
             if (validacaoCPF != true) {
-                throw new IllegalArgumentException("CPF é inválido!");
+                throw new IllegalArgumentException("CPF Ã© invÃ¡lido!");
             }
         }
         if (dto.getCpf() == null || dto.getCpf().isBlank()) {
@@ -81,10 +81,10 @@ public class AlunoService {
 
         boolean validacaoRG = validator.rgValidation(dto.getRg());
         if (dto.getRg() == null || dto.getRg().isBlank()) {
-            throw new IllegalArgumentException("RG é obrigatório.");
+            throw new IllegalArgumentException("RG Ã© obrigatÃ³rio.");
         }else{
             if (validacaoRG != true) {
-                throw new IllegalArgumentException("RG é inválido!");
+                throw new IllegalArgumentException("RG Ã© invÃ¡lido!");
             }
         }
         if (dto.getRg() == null || dto.getRg().isBlank()) {

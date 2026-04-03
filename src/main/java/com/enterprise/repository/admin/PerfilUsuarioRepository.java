@@ -27,22 +27,24 @@ public class PerfilUsuarioRepository {
         return em.createQuery(
                 "select pu from PerfilUsuarioEntity pu " +
                         "left join fetch pu.perfil " +
-                        "left join fetch pu.usuario",
+                        "left join fetch pu.usuario u " +
+                        "left join fetch u.profissional",
                 PerfilUsuarioEntity.class
         ).getResultList();
     }
 
-    public List<PerfilUsuarioEntity> findByFilters(String login, Long perfilId, Long situacaoId) {
+    public List<PerfilUsuarioEntity> findByFilters(Long profissionalId, Long perfilId, Long situacaoId) {
         StringBuilder jpql = new StringBuilder(
                 "select pu from PerfilUsuarioEntity pu " +
                         "left join fetch pu.perfil " +
-                        "left join fetch pu.usuario " +
+                        "left join fetch pu.usuario u " +
+                        "left join fetch u.profissional " +
                         "left join fetch pu.situacao " +
                         "where 1=1"
         );
 
-        if (login != null && !login.isBlank()) {
-            jpql.append(" and lower(pu.usuario.login) like :login");
+        if (profissionalId != null) {
+            jpql.append(" and u.profissional.id = :profissionalId");
         }
         if (perfilId != null) {
             jpql.append(" and pu.perfil.id = :perfilId");
@@ -52,8 +54,8 @@ public class PerfilUsuarioRepository {
         }
 
         TypedQuery<PerfilUsuarioEntity> query = em.createQuery(jpql.toString(), PerfilUsuarioEntity.class);
-        if (login != null && !login.isBlank()) {
-            query.setParameter("login", "%" + login.toLowerCase() + "%");
+        if (profissionalId != null) {
+            query.setParameter("profissionalId", profissionalId);
         }
         if (perfilId != null) {
             query.setParameter("perfilId", perfilId);
@@ -72,6 +74,7 @@ public class PerfilUsuarioRepository {
         return em.createQuery(
                         "select pu from PerfilUsuarioEntity pu " +
                                 "join fetch pu.usuario u " +
+                                "join fetch u.profissional pr " +
                                 "join fetch pu.perfil p " +
                                 "join fetch pu.situacao s " +
                                 "where u.login = :login " +
@@ -80,7 +83,7 @@ public class PerfilUsuarioRepository {
                                 "order by pu.id desc",
                         PerfilUsuarioEntity.class
                 )
-                .setParameter("login", login)
+                .setParameter("login", login.replaceAll("\\D", ""))
                 .setParameter("senha", senha)
                 .setParameter("situacao", "ATIVO")
                 .setMaxResults(1)

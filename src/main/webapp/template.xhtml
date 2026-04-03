@@ -86,18 +86,18 @@
                     </div>
                 </div>
 
-                <div class="nav-module #{request.servletPath eq '/pages/professores/pageProfessores.xhtml' or request.servletPath eq '/pages/professores/pageDisciplina.xhtml' ? 'is-expanded' : ''}">
+                <div class="nav-module #{request.servletPath eq '/pages/profissionais/pageProfissionais.xhtml' or request.servletPath eq '/pages/profissionais/pageDisciplina.xhtml' ? 'is-expanded' : ''}">
                     <button type="button"
                             class="nav-module-toggle"
                             aria-expanded="false">
-                        <span>Professores</span>
+                        <span>Profissionais</span>
                         <i class="pi pi-chevron-down"></i>
                     </button>
                     <div class="nav-module-links">
-                        <h:link outcome="/pages/professores/pageProfessores.xhtml"
-                                styleClass="#{request.servletPath eq '/pages/professores/pageProfessores.xhtml' ? 'active' : ''}">Cadastro</h:link>
-                        <h:link outcome="/pages/professores/pageDisciplina.xhtml"
-                                styleClass="#{request.servletPath eq '/pages/professores/pageDisciplina.xhtml' ? 'active' : ''}">Disciplina</h:link>
+                        <h:link outcome="/pages/profissionais/pageProfissionais.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/profissionais/pageProfissionais.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                        <h:link outcome="/pages/profissionais/pageDisciplina.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/profissionais/pageDisciplina.xhtml' ? 'active' : ''}">Disciplina</h:link>
                     </div>
                 </div>
 
@@ -135,7 +135,7 @@
                     <h:form>
                         <h:inputText value="#{layoutBean.search}"
                                      styleClass=""
-                                     pt:placeholder="Buscar aluno, turma, professor..."
+                                     pt:placeholder="Buscar aluno, turma, profissional..."
                                      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"/>
                     </h:form>
                 </div>
@@ -144,8 +144,13 @@
                     <span class="badge-pill badge-muted">Notificacoes</span>
                     <div class="profile-inline">
                         <div class="profile-inline-info">
-                            <span class="badge-pill badge-muted">#{empty authBean.nomeUsuarioLogado ? 'Visitante' : authBean.nomeUsuarioLogado}</span>
-                            <span class="badge-pill badge-muted">#{empty authBean.tempoSessaoMinutos ? 'Visitante' : authBean.tempoSessaoMinutos}</span>
+                            <span class="badge-pill badge-muted">#{authBean.nomeUsuarioLogado}</span>
+                            <span class="badge-pill badge-muted">#{authBean.perfilUsuarioLogado}</span>
+                            <span class="badge-pill badge-muted"
+                                  id="sessionTimerBadge"
+                                  data-session-seconds="#{authBean.tempoSessaoRestanteSegundos}">
+                                #{authBean.tempoSessaoRestanteFormatado}
+                            </span>
                         </div>
                     </div>
                     <div class="profile-inline">
@@ -296,9 +301,37 @@
                 });
             });
         })();
+
+        (function () {
+            var timerBadge = document.getElementById("sessionTimerBadge");
+            if (!timerBadge) {
+                return;
+            }
+
+            var remaining = parseInt(timerBadge.getAttribute("data-session-seconds") || "0", 10);
+            if (!Number.isFinite(remaining) || remaining < 0) {
+                remaining = 0;
+            }
+
+            function render() {
+                var minutes = Math.floor(remaining / 60);
+                var seconds = remaining % 60;
+                timerBadge.textContent =
+                    String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+            }
+
+            render();
+            window.setInterval(function () {
+                if (remaining > 0) {
+                    remaining -= 1;
+                    render();
+                }
+            }, 1000);
+        })();
         //]]>
     </script>
 
     <h:outputStylesheet library="css" name="app-v2.css" target="body"/>
 </h:body>
 </html>
+

@@ -1,9 +1,10 @@
-package com.enterprise.model.entity.gestao;
+package com.enterprise.model.entity.academico;
 
 import com.enterprise.dto.admin.SituacaoDTO;
-import com.enterprise.dto.gestao.AlunoTurmaDTO;
-import com.enterprise.dto.gestao.ProfessorDisciplinaDTO;
+import com.enterprise.dto.academico.BoletimDTO;
 import com.enterprise.model.entity.admin.SituacaoEntity;
+import com.enterprise.model.entity.gestao.DisciplinaEntity;
+import com.enterprise.model.entity.gestao.AlunoEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,13 +15,13 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Table(
-        name = "professor_disciplina",
+        name = "aluno_disciplina",
         indexes = {
-                @Index(name = "idx_professor_disciplina_professor", columnList = "professor_id, professor_rm"),
-                @Index(name = "idx_professor_disciplina_disciplina", columnList = "disciplina_id, disciplina_codigo")
+                @Index(name = "idx_boletim_aluno", columnList = "aluno_id, aluno_rm"),
+                @Index(name = "idx_boletim_disciplina", columnList = "disciplina_id, disciplina_codigo")
         }
 )
-public class ProfessorDisciplinaEntity {
+public class BoletimEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,15 +29,15 @@ public class ProfessorDisciplinaEntity {
 
     @ManyToOne(optional = false)
     @JoinColumns({
-            @JoinColumn(name = "professor_id", referencedColumnName = "id", nullable = false),
+            @JoinColumn(name = "aluno_id", referencedColumnName = "id", nullable = false),
             @JoinColumn(
-                    name = "professor_rm",
+                    name = "aluno_rm",
                     referencedColumnName = "rm",
                     nullable = false,
-                    foreignKey = @ForeignKey(name = "fk_professor_disciplina_professor")
+                    foreignKey = @ForeignKey(name = "fk_aluno_disciplina_aluno")
             )
     })
-    private ProfessorEntity professor;
+    private AlunoEntity aluno;
 
     @ManyToOne(optional = false)
     @JoinColumns({
@@ -45,7 +46,7 @@ public class ProfessorDisciplinaEntity {
                     name = "disciplina_codigo",
                     referencedColumnName = "codigo",
                     nullable = false,
-                    foreignKey = @ForeignKey(name = "fk_professor_disciplina_disciplina")
+                    foreignKey = @ForeignKey(name = "fk_aluno_disciplina_disciplina")
             )
     })
     private DisciplinaEntity disciplina;
@@ -54,14 +55,14 @@ public class ProfessorDisciplinaEntity {
     @JoinColumn(
             name = "situacao_id",
             nullable = false,
-            foreignKey = @ForeignKey(name = "fk_professor_disciplina_situacao")
+            foreignKey = @ForeignKey(name = "fk_aluno_disciplina_situacao")
     )
     private SituacaoEntity situacao;
 
-    public ProfessorDisciplinaEntity(ProfessorDisciplinaDTO dto) {
+    public BoletimEntity(BoletimDTO dto) {
         this.id = dto.getId();
-        if (dto.getProfessor() != null) {
-            this.professor = new ProfessorEntity(dto.getProfessor());
+        if (dto.getAluno() != null) {
+            this.aluno = new AlunoEntity(dto.getAluno());
         }
         if (dto.getDisciplina() != null) {
             this.disciplina = new DisciplinaEntity(dto.getDisciplina());

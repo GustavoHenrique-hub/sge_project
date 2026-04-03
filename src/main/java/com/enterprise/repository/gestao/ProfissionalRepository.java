@@ -1,7 +1,7 @@
 package com.enterprise.repository.gestao;
 
 import com.enterprise.config.JpaTransaction;
-import com.enterprise.model.entity.gestao.ProfessorEntity;
+import com.enterprise.model.entity.gestao.ProfissionalEntity;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -11,30 +11,30 @@ import java.util.List;
 import java.util.Optional;
 
 @RequestScoped
-public class ProfessorRepository {
+public class ProfissionalRepository {
 
     @Inject
     private EntityManager em;
 
-    public ProfessorEntity save(ProfessorEntity entity) {
+    public ProfissionalEntity save(ProfissionalEntity entity) {
         return JpaTransaction.execute(em, () -> {
             em.persist(entity);
             return entity;
         });
     }
 
-    public ProfessorEntity update(ProfessorEntity entity) {
+    public ProfissionalEntity update(ProfissionalEntity entity) {
         return JpaTransaction.execute(em, () -> em.merge(entity));
     }
 
-    public List<ProfessorEntity> findAll() {
-        return em.createQuery("select p from ProfessorEntity p order by p.nome", ProfessorEntity.class)
+    public List<ProfissionalEntity> findAll() {
+        return em.createQuery("select p from ProfissionalEntity p order by p.nome", ProfissionalEntity.class)
                 .getResultList();
     }
 
-    public List<ProfessorEntity> findByFilters(String nome, String cpf) {
+    public List<ProfissionalEntity> findByFilters(String nome, String cpf) {
         String cpfNormalizado = cpf == null ? null : cpf.replaceAll("\\D", "");
-        StringBuilder jpql = new StringBuilder("select p from ProfessorEntity p where 1=1");
+        StringBuilder jpql = new StringBuilder("select p from ProfissionalEntity p where 1=1");
         if (nome != null && !nome.isBlank()) {
             jpql.append(" and lower(p.nome) like :nome");
         }
@@ -43,7 +43,7 @@ public class ProfessorRepository {
         }
         jpql.append(" order by p.nome");
 
-        TypedQuery<ProfessorEntity> query = em.createQuery(jpql.toString(), ProfessorEntity.class);
+        TypedQuery<ProfissionalEntity> query = em.createQuery(jpql.toString(), ProfissionalEntity.class);
         if (nome != null && !nome.isBlank()) {
             query.setParameter("nome", "%" + nome.trim().toLowerCase() + "%");
         }
@@ -53,13 +53,13 @@ public class ProfessorRepository {
         return query.getResultList();
     }
 
-    public Optional<ProfessorEntity> findById(Long id) {
+    public Optional<ProfissionalEntity> findById(Long id) {
         if (id == null) {
             return Optional.empty();
         }
         return em.createQuery(
-                        "select p from ProfessorEntity p where p.id = :id",
-                        ProfessorEntity.class
+                        "select p from ProfissionalEntity p where p.id = :id",
+                        ProfissionalEntity.class
                 )
                 .setParameter("id", id)
                 .setMaxResults(1)
@@ -67,3 +67,4 @@ public class ProfessorRepository {
                 .findFirst();
     }
 }
+

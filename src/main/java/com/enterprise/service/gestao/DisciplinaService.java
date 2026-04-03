@@ -45,7 +45,7 @@ public class DisciplinaService {
             throw new IllegalArgumentException("Disciplina invalida.");
         }
         if (dto == null || dto.getDescricao() == null || dto.getDescricao().isBlank()) {
-            throw new IllegalArgumentException("Descrição é obrigatoria.");
+            throw new IllegalArgumentException("DescriÃ§Ã£o Ã© obrigatoria.");
         }
         if (dto.getCodigo() == null || dto.getCodigo().isBlank()) {
             dto.setCodigo(String.format("%06d", RANDOM.nextInt(1_000_000)));

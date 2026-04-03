@@ -2,6 +2,7 @@ package com.enterprise.service.admin;
 
 import com.enterprise.dto.admin.UsuarioDTO;
 import com.enterprise.model.entity.admin.UsuarioEntity;
+import com.enterprise.model.entity.gestao.ProfissionalEntity;
 import com.enterprise.repository.admin.UsuarioRepository;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -18,6 +19,11 @@ public class UsuarioService {
     public UsuarioDTO criar(UsuarioDTO dto) {
         validar(dto);
 
+        Long profissionalId = dto.getProfissional().getId();
+        if (repository.findByProfissionalId(profissionalId).isPresent()) {
+            throw new IllegalArgumentException("Ja existe um usuario vinculado a este profissional.");
+        }
+
         UsuarioEntity entity = new UsuarioEntity(dto);
         repository.save(entity);
         return new UsuarioDTO(entity);
@@ -28,6 +34,12 @@ public class UsuarioService {
             throw new IllegalArgumentException("ID e obrigatorio para atualizar.");
         }
         validar(dto);
+
+        Long profissionalId = dto.getProfissional().getId();
+        Optional<UsuarioEntity> existenteProfissional = repository.findByProfissionalId(profissionalId);
+        if (existenteProfissional.isPresent() && !existenteProfissional.get().getId().equals(dto.getId())) {
+            throw new IllegalArgumentException("Ja existe um usuario vinculado a este profissional.");
+        }
 
         UsuarioEntity entity = new UsuarioEntity(dto);
         UsuarioEntity merged = repository.update(entity);
@@ -51,11 +63,14 @@ public class UsuarioService {
     }
 
     private void validar(UsuarioDTO dto) {
-        if (dto.getLogin() == null || dto.getLogin().isBlank()) {
-            throw new IllegalArgumentException("Login e obrigatorio.");
+        if (dto == null) {
+            throw new IllegalArgumentException("Usuario invalido.");
         }
-        if (dto.getUsuario() == null || dto.getUsuario().isBlank()) {
-            throw new IllegalArgumentException("Usuario e obrigatorio.");
+        if (dto.getProfissional() == null || dto.getProfissional().getId() == null) {
+            throw new IllegalArgumentException("Profissional e obrigatorio.");
+        }
+        if (dto.getProfissional().getCpf() == null || dto.getProfissional().getCpf().isBlank()) {
+            throw new IllegalArgumentException("CPF do profissional e obrigatorio para gerar o login.");
         }
         if (dto.getSessionTimeout() == null) {
             throw new IllegalArgumentException("Session timeout e obrigatorio.");
@@ -63,5 +78,13 @@ public class UsuarioService {
         if (dto.getSessionTimeout() <= 0) {
             throw new IllegalArgumentException("Session timeout deve ser um numero inteiro maior que zero.");
         }
+
+        String cpfSemPontuacao = dto.getProfissional().getCpf().replaceAll("\\D", "");
+        if (cpfSemPontuacao.isBlank()) {
+            throw new IllegalArgumentException("CPF do profissional invalido para gerar o login.");
+        }
+
+        dto.setLogin(cpfSemPontuacao);
+        dto.setSenha(cpfSemPontuacao + "_@ABC");
     }
 }

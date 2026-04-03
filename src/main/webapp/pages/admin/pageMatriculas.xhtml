@@ -20,47 +20,49 @@
 
             <h:form id="formNovaMatricula">
                 <div class="filters-body">
-                    <cmp:baseAutocomplete
-                            id="dropDownAluno"
-                            label="Aluno"
-                            value="#{alunoTurmaBean.filtroAluno}"
-                            badgeValue="#{alunoTurmaBean.filtroAluno != null ? alunoTurmaBean.filtroAluno.rm : null}"
-                            completeMethod="#{alunoBean.completeNomeAluno}"
-                            converter="#{alunoEntityConverter}"
-                            itemLabelProperty="nome"
-                            parentDivStyle="filters-body-column"
-                            childrenDivStyle="filters-body-column-row"
-                            showMessage="false"
-                            required="false"
-                            fieldStyle="field-filters-autocomplete-wrap"/>
+                    <cmp:baseAutocomplete id="dropDownAluno"
+                                          label="Aluno"
+                                          value="#{alunoTurmaBean.filtroAluno}"
+                                          badgeValue="#{alunoTurmaBean.filtroAluno != null ? alunoTurmaBean.filtroAluno.rm : null}"
+                                          completeMethod="#{alunoBean.completeAlunoBuscaGeral}"
+                                          converter="#{alunoEntityConverter}"
+                                          itemLabelProperty="nome"
+                                          parentDivStyle="filters-body-column"
+                                          childrenDivStyle="filters-body-column-row"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"
+                                          placeholder="Busque por nome, RM ou CPF">
+                        <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
+                        <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
+                        <p:column><h:outputText value="CPF: #{alunoBean.formatarCpf(item.cpf)}"/></p:column>
+                    </cmp:baseAutocomplete>
 
-                    <cmp:baseAutocomplete
-                            id="dropDownTurma"
-                            label="Turma"
-                            value="#{alunoTurmaBean.filtroTurma}"
-                            badgeValue="#{alunoTurmaBean.filtroTurma != null ? alunoTurmaBean.filtroTurma.codigo : null}"
-                            completeMethod="#{turmaBean.completeTurma}"
-                            converter="#{turmaEntityConverter}"
-                            itemLabelProperty="turma"
-                            parentDivStyle="filters-body-column"
-                            childrenDivStyle="filters-body-column-row"
-                            showMessage="false"
-                            required="false"
-                            fieldStyle="field-filters-autocomplete-wrap"/>
+                    <cmp:baseAutocomplete id="dropDownTurma"
+                                          label="Turma"
+                                          value="#{alunoTurmaBean.filtroTurma}"
+                                          badgeValue="#{alunoTurmaBean.filtroTurma != null ? alunoTurmaBean.filtroTurma.codigo : null}"
+                                          completeMethod="#{turmaBean.completeTurma}"
+                                          converter="#{turmaEntityConverter}"
+                                          itemLabelProperty="turma"
+                                          parentDivStyle="filters-body-column"
+                                          childrenDivStyle="filters-body-column-row"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"/>
 
-                    <cmp:baseAutocomplete
-                            id="dropDownSituacao"
-                            label="Situacao"
-                            value="#{alunoTurmaBean.filtroSituacao}"
-                            badgeValue="#{alunoTurmaBean.filtroSituacao != null ? alunoTurmaBean.filtroSituacao.id : null}"
-                            completeMethod="#{situacaoBean.completeSituacao}"
-                            converter="#{situacaoEntityConverter}"
-                            itemLabelProperty="situacao"
-                            parentDivStyle="filters-body-column"
-                            childrenDivStyle="filters-body-column-row"
-                            showMessage="false"
-                            required="false"
-                            fieldStyle="field-filters-autocomplete-wrap"/>
+                    <cmp:baseAutocomplete id="dropDownSituacao"
+                                          label="Situacao"
+                                          value="#{alunoTurmaBean.filtroSituacao}"
+                                          badgeValue="#{alunoTurmaBean.filtroSituacao != null ? alunoTurmaBean.filtroSituacao.id : null}"
+                                          completeMethod="#{situacaoBean.completeSituacao}"
+                                          converter="#{situacaoEntityConverter}"
+                                          itemLabelProperty="situacao"
+                                          parentDivStyle="filters-body-column"
+                                          childrenDivStyle="filters-body-column-row"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"/>
 
                     <cmp:baseCommandButton value="Filtrar"
                                            action="#{alunoTurmaBean.filtrar}"
@@ -98,18 +100,9 @@
                                                     render=":modalDetalhesWrapper"
                                                     value="&#xe908;"/>
                             </h:column>
-                            <h:column>
-                                <f:facet name="header">Nome</f:facet>
-                                <h:outputText value="#{matricula.aluno.nome}"/>
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">CPF</f:facet>
-                                <h:outputText value="#{matricula.aluno.cpf}"/>
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">Turma</f:facet>
-                                <h:outputText value="#{matricula.turma.turma}"/>
-                            </h:column>
+                            <h:column><f:facet name="header">Nome</f:facet><h:outputText value="#{matricula.aluno.nome}"/></h:column>
+                            <h:column><f:facet name="header">CPF</f:facet><h:outputText value="#{matricula.aluno.cpf}"/></h:column>
+                            <h:column><f:facet name="header">Turma</f:facet><h:outputText value="#{matricula.turma.turma}"/></h:column>
                             <h:column>
                                 <f:facet name="header">Situacao</f:facet>
                                 <span class="badge-pill #{alunoTurmaBean.situacaoSeverity(matricula.situacao != null ? matricula.situacao.situacao : null)}">
@@ -134,19 +127,17 @@
             </h:panelGroup>
         </h:form>
 
-        <cmp:baseModal
-                modalId="modalMatricula"
-                labelledby="modalMatriculaLabel"
-                modalTitle="Vincular aluno a turma"
-                modalTitleId="modalMatriculaLabel"
-                modalImport="modalNewMatricula.xhtml"/>
+        <cmp:baseModal modalId="modalMatricula"
+                       labelledby="modalMatriculaLabel"
+                       modalTitle="Vincular aluno a turma"
+                       modalTitleId="modalMatriculaLabel"
+                       modalImport="modalNewMatricula.xhtml"/>
         <h:panelGroup id="modalDetalhesWrapper" layout="block">
-            <cmp:baseModal
-                    modalId="modalDetalhes"
-                    labelledby="modalDetalhesLabel"
-                    modalTitle="#{detalheModalBean.titulo}"
-                    modalTitleId="modalDetalhesLabel"
-                    modalImport="modalDetalhes.xhtml"/>
+            <cmp:baseModal modalId="modalDetalhes"
+                           labelledby="modalDetalhesLabel"
+                           modalTitle="#{detalheModalBean.titulo}"
+                           modalTitleId="modalDetalhesLabel"
+                           modalImport="modalDetalhes.xhtml"/>
         </h:panelGroup>
     </ui:define>
 </ui:composition>

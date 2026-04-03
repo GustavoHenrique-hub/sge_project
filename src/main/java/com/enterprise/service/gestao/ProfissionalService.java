@@ -1,8 +1,8 @@
 package com.enterprise.service.gestao;
 
-import com.enterprise.dto.gestao.ProfessorDTO;
-import com.enterprise.model.entity.gestao.ProfessorEntity;
-import com.enterprise.repository.gestao.ProfessorRepository;
+import com.enterprise.dto.gestao.ProfissionalDTO;
+import com.enterprise.model.entity.gestao.ProfissionalEntity;
+import com.enterprise.repository.gestao.ProfissionalRepository;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
@@ -15,80 +15,80 @@ import java.util.Optional;
 import com.enterprise.validation.DocumentsValidation;
 
 @RequestScoped
-public class ProfessorService {
+public class ProfissionalService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
     private static DocumentsValidation validator = new DocumentsValidation();
 
     @Inject
-    private ProfessorRepository repository;
+    private ProfissionalRepository repository;
 
-    public ProfessorDTO criar(ProfessorDTO dto) {
+    public ProfissionalDTO criar(ProfissionalDTO dto) {
         validar(dto);
-        ProfessorEntity entity = new ProfessorEntity(dto);
+        ProfissionalEntity entity = new ProfissionalEntity(dto);
         repository.save(entity);
-        return new ProfessorDTO(entity);
+        return new ProfissionalDTO(entity);
     }
 
-    public ProfessorDTO atualizar(ProfessorDTO dto) {
+    public ProfissionalDTO atualizar(ProfissionalDTO dto) {
         validar(dto);
         if (dto.getId() == null || dto.getRm() == null || dto.getRm().isBlank()) {
-            throw new IllegalArgumentException("Professor invalido para atualizacao.");
+            throw new IllegalArgumentException("Profissional invalido para atualizacao.");
         }
-        ProfessorEntity existente = repository.findById(dto.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Professor nao encontrado."));
+        ProfissionalEntity existente = repository.findById(dto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Profissional nao encontrado."));
         existente.setNome(dto.getNome());
         existente.setCpf(dto.getCpf());
         existente.setRg(dto.getRg());
         existente.setDtNasc(dto.getDtNasc());
         existente.setEmail(dto.getEmail());
         existente.setTelefone(dto.getTelefone());
-        ProfessorEntity merged = repository.update(existente);
-        return new ProfessorDTO(merged);
+        ProfissionalEntity merged = repository.update(existente);
+        return new ProfissionalDTO(merged);
     }
 
-    public List<ProfessorEntity> findAll() {
+    public List<ProfissionalEntity> findAll() {
         return repository.findAll();
     }
 
-    public List<ProfessorEntity> findByFilters(String nome, String cpf) {
+    public List<ProfissionalEntity> findByFilters(String nome, String cpf) {
         return repository.findByFilters(nome, cpf);
     }
 
-    public Optional<ProfessorEntity> findById(Long id){
+    public Optional<ProfissionalEntity> findById(Long id){
         return repository.findById(id);
     }
 
-    private void validar(ProfessorDTO dto) {
+    private void validar(ProfissionalDTO dto) {
         if (dto == null) {
-            throw new IllegalArgumentException("Professor invalido.");
+            throw new IllegalArgumentException("Profissional invalido.");
         }
 
         if (dto.getNome() == null || dto.getNome().isBlank()) {
-            throw new IllegalArgumentException("Nome é obrigatório.");
+            throw new IllegalArgumentException("Nome Ã© obrigatÃ³rio.");
         }
         boolean validacaoCPF = validator.cpfValidation(dto.getCpf());
         if (dto.getCpf() == null || dto.getCpf().isBlank()) {
-            throw new IllegalArgumentException("CPF é obrigatório.");
+            throw new IllegalArgumentException("CPF Ã© obrigatÃ³rio.");
         }else {
             if (validacaoCPF != true) {
-                throw new IllegalArgumentException("CPF é inválido!");
+                throw new IllegalArgumentException("CPF Ã© invÃ¡lido!");
             }
         }
 
         boolean validacaoRG = validator.rgValidation(dto.getRg());
         if (dto.getRg() == null || dto.getRg().isBlank()) {
-            throw new IllegalArgumentException("RG é obrigatório.");
+            throw new IllegalArgumentException("RG Ã© obrigatÃ³rio.");
         }else{
             if (validacaoRG != true) {
-                throw new IllegalArgumentException("RG é inválido!");
+                throw new IllegalArgumentException("RG Ã© invÃ¡lido!");
             }
         }
         if (dto.getDtNasc() == null) {
-            throw new IllegalArgumentException("Data de nascimento é obrigatória.");
+            throw new IllegalArgumentException("Data de nascimento Ã© obrigatÃ³ria.");
         }
         if (dto.getDtNasc().after(new Date())) {
-            throw new IllegalArgumentException("Data de nascimento inválida.");
+            throw new IllegalArgumentException("Data de nascimento invÃ¡lida.");
         }
         if (dto.getRm() == null){
             dto.setRm(String.format("%05d", RANDOM.nextInt(100000)));
@@ -99,3 +99,4 @@ public class ProfessorService {
         return valor == null ? null : valor.replaceAll("[^0-9A-Za-z]", "").toUpperCase();
     }
 }
+

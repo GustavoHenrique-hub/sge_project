@@ -1,6 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:cmp="jakarta.faces.composite/components"
+                xmlns:h="jakarta.faces.html"
                 xmlns:p="http://primefaces.org/ui">
 
     <div class="detail-badge-row">
@@ -9,39 +10,52 @@
 
     <ui:fragment rendered="#{not alunoTurmaBean.editandoDetalhe}">
         <div class="detail-read-grid">
-            <div class="detail-read-item"><span class="detail-read-label">Aluno</span><span
-                    class="detail-read-value">#{alunoTurmaBean.detalheSelecionado.aluno.nome}</span></div>
-            <div class="detail-read-item"><span class="detail-read-label">CPF</span><span
-                    class="detail-read-value">#{alunoTurmaBean.detalheSelecionado.aluno.cpf}</span></div>
-            <div class="detail-read-item"><span class="detail-read-label">Turma</span><span
-                    class="detail-read-value">#{alunoTurmaBean.detalheSelecionado.turma.turma}</span></div>
-            <div class="detail-read-item"><span class="detail-read-label">Situacao</span><span
-                    class="detail-read-value">#{alunoTurmaBean.detalheSelecionado.situacao.situacao}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">Aluno</span><span class="detail-read-value">#{alunoTurmaBean.detalheSelecionado.aluno.nome}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">CPF</span><span class="detail-read-value">#{alunoTurmaBean.detalheSelecionado.aluno.cpf}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">Turma</span><span class="detail-read-value">#{alunoTurmaBean.detalheSelecionado.turma.turma}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">Situacao</span><span class="detail-read-value">#{alunoTurmaBean.detalheSelecionado.situacao.situacao}</span></div>
         </div>
     </ui:fragment>
 
     <ui:fragment rendered="#{alunoTurmaBean.editandoDetalhe}">
         <div class="modal-link-grid">
-            <cmp:baseAutocomplete id="detalheMatriculaAluno" label="Aluno"
+            <cmp:baseAutocomplete id="detalheMatriculaAluno"
+                                  label="Aluno"
                                   value="#{alunoTurmaBean.detalheAlunoSelecionado}"
                                   badgeValue="#{alunoTurmaBean.detalheAlunoSelecionado != null ? alunoTurmaBean.detalheAlunoSelecionado.rm : null}"
-                                  completeMethod="#{alunoBean.completeNomeAluno}" converter="#{alunoEntityConverter}"
-                                  itemLabelProperty="nome" parentDivStyle="modal-link-item"
-                                  childrenDivStyle="modal-id-inline" required="true"
-                                  requiredMessage="Aluno e obrigatorio."/>
-            <cmp:baseAutocomplete id="detalheMatriculaTurma" label="Turma"
+                                  completeMethod="#{alunoBean.completeAlunoBuscaGeral}"
+                                  converter="#{alunoEntityConverter}"
+                                  itemLabelProperty="nome"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
+                                  requiredMessage="Aluno e obrigatorio."
+                                  placeholder="Busque por nome, RM ou CPF">
+                <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
+                <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
+                <p:column><h:outputText value="CPF: #{alunoBean.formatarCpf(item.cpf)}"/></p:column>
+            </cmp:baseAutocomplete>
+            <cmp:baseAutocomplete id="detalheMatriculaTurma"
+                                  label="Turma"
                                   value="#{alunoTurmaBean.detalheTurmaSelecionada}"
                                   badgeValue="#{alunoTurmaBean.detalheTurmaSelecionada != null ? alunoTurmaBean.detalheTurmaSelecionada.codigo : null}"
-                                  completeMethod="#{turmaBean.completeTurma}" converter="#{turmaEntityConverter}"
-                                  itemLabelProperty="turma" parentDivStyle="modal-link-item"
-                                  childrenDivStyle="modal-id-inline" required="true"
+                                  completeMethod="#{turmaBean.completeTurma}"
+                                  converter="#{turmaEntityConverter}"
+                                  itemLabelProperty="turma"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
                                   requiredMessage="Turma e obrigatoria."/>
-            <cmp:baseAutocomplete id="detalheMatriculaSituacao" label="Situacao"
+            <cmp:baseAutocomplete id="detalheMatriculaSituacao"
+                                  label="Situacao"
                                   value="#{alunoTurmaBean.detalheSituacaoSelecionada}"
                                   badgeValue="#{alunoTurmaBean.detalheSituacaoSelecionada != null ? alunoTurmaBean.detalheSituacaoSelecionada.id : null}"
                                   completeMethod="#{situacaoBean.completeSituacao}"
-                                  converter="#{situacaoEntityConverter}" itemLabelProperty="situacao"
-                                  parentDivStyle="modal-link-item" childrenDivStyle="modal-id-inline" required="true"
+                                  converter="#{situacaoEntityConverter}"
+                                  itemLabelProperty="situacao"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
                                   requiredMessage="Situacao e obrigatoria."/>
         </div>
     </ui:fragment>

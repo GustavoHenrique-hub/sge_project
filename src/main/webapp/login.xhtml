@@ -56,13 +56,13 @@
                          styleClass="mb-3"/>
 
                 <div class="mb-3">
-                    <label class="form-label cardx-title" for="formLogin:username">Usuario</label>
+                    <label class="form-label cardx-title" for="formLogin:username">Login</label>
                     <h:inputText id="username"
                                  value="#{authBean.username}"
                                  required="true"
                                  requiredMessage="Usuario e obrigatorio."
                                  styleClass="form-control"
-                                 pt:placeholder="ex: gustavo"/>
+                                 pt:placeholder="CPF sem pontuacao"/>
                 </div>
 
                 <div class="mb-3">
@@ -85,7 +85,7 @@
 
                 <div class="mt-3">
                     <span class="badge-pill badge-muted">Admin</span>
-                    <span class="badge-pill badge-muted">Professor</span>
+                    <span class="badge-pill badge-muted">Profissional</span>
                     <span class="badge-pill badge-muted">Secretaria</span>
                 </div>
             </h:form>
@@ -175,3 +175,4 @@
     </script>
 </h:body>
 </html>
+

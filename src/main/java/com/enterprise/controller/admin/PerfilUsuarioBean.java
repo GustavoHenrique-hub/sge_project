@@ -8,6 +8,7 @@ import com.enterprise.model.entity.admin.PerfilEntity;
 import com.enterprise.model.entity.admin.PerfilUsuarioEntity;
 import com.enterprise.model.entity.admin.SituacaoEntity;
 import com.enterprise.model.entity.admin.UsuarioEntity;
+import com.enterprise.model.entity.gestao.ProfissionalEntity;
 import com.enterprise.service.admin.PerfilService;
 import com.enterprise.service.admin.PerfilUsuarioService;
 import com.enterprise.service.admin.SituacaoService;
@@ -25,8 +26,6 @@ import org.primefaces.PrimeFaces;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Named("perfilUsuarioBean")
 @ViewScoped
@@ -50,7 +49,7 @@ public class PerfilUsuarioBean implements Serializable {
     private UsuarioEntity usuarioSelecionado;
     private PerfilEntity perfilSelecionado;
     private SituacaoEntity situacaoSelecionada;
-    private UsuarioEntity filtroUsuario;
+    private ProfissionalEntity filtroProfissional;
     private PerfilEntity filtroPerfil;
     private SituacaoEntity filtroSituacao;
     private List<String> situacao = new ArrayList<>();
@@ -106,20 +105,20 @@ public class PerfilUsuarioBean implements Serializable {
                 }
                 if (perfilId != null) {
                     PerfilEntity perfil = perfilService.findById(perfilId)
-                            .orElseThrow(() -> new IllegalArgumentException("Perfil inválido."));
+                            .orElseThrow(() -> new IllegalArgumentException("Perfil invÃ¡lido."));
                     perfilUsuarioDTO.setPerfil(new PerfilDTO(perfil));
                 } else {
                     perfilUsuarioDTO.setPerfil(null);
                 }
                 if (situacaoId != null){
                     SituacaoEntity situacao = situacaoService.findById(situacaoId)
-                            .orElseThrow(() -> new IllegalArgumentException("Situacao inválida."));
+                            .orElseThrow(() -> new IllegalArgumentException("Situacao invÃ¡lida."));
                     perfilUsuarioDTO.setSituacao(new SituacaoDTO(situacao));
                 } else {
                     perfilUsuarioDTO.setSituacao(null);
                 }
                 service.vincular(perfilUsuarioDTO);
-                addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Usuário criado.");
+                addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "UsuÃ¡rio criado.");
             }
             recarregarLista();
             limparFormulario();
@@ -139,16 +138,16 @@ public class PerfilUsuarioBean implements Serializable {
 
     public void filtrar() {
         try {
-            String login = filtroUsuario == null ? null : filtroUsuario.getLogin();
+            Long profissionalId = filtroProfissional == null ? null : filtroProfissional.getId();
             Long perfilId = filtroPerfil == null ? null : filtroPerfil.getId();
             Long situacaoId = filtroSituacao == null ? null : filtroSituacao.getId();
-            boolean filtroVazio = (login == null || login.isBlank())
+            boolean filtroVazio = profissionalId == null
                     && perfilId == null
                     && situacaoId == null;
             if (filtroVazio) {
                 perfilUsuarios = service.listarDTO();
             } else {
-                perfilUsuarios = service.listarPorFiltros(login, perfilId, situacaoId);
+                perfilUsuarios = service.listarPorFiltros(profissionalId, perfilId, situacaoId);
             }
             int total = perfilUsuarios == null ? 0 : perfilUsuarios.size();
             addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Filtro aplicado. Registros: " + total + ".");
@@ -160,7 +159,7 @@ public class PerfilUsuarioBean implements Serializable {
     public void ativarVinculo(PerfilUsuarioDTO dto) {
         try {
             service.ativarVinculo(dto.getId());
-            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Vínculo ativado.");
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "VÃ­nculo ativado.");
             recarregarLista();
         } catch (Exception e) {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
@@ -170,7 +169,7 @@ public class PerfilUsuarioBean implements Serializable {
     public void inativarVinculo(PerfilUsuarioDTO dto) {
         try {
             service.inativarVinculo(dto.getId());
-            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Vínculo inativado.");
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "VÃ­nculo inativado.");
             recarregarLista();
         } catch (Exception e) {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
@@ -180,7 +179,7 @@ public class PerfilUsuarioBean implements Serializable {
     public void excluirVinculo(PerfilUsuarioDTO dto) {
         try {
             service.excluirVinculoSeInativo(dto.getId());
-            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Vínculo excluído.");
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "VÃ­nculo excluÃ­do.");
             recarregarLista();
         } catch (Exception e) {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());

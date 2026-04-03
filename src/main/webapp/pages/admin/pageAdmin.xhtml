@@ -15,23 +15,29 @@
             <div class="cardx-header">
                 <div>
                     <div class="cardx-title">Usuários e perfis</div>
-                    <div class="cardx-subtitle">Admin / Professor / Secretaria</div>
+                    <div class="cardx-subtitle">Admin / Profissional / Secretaria</div>
                 </div>
 
             </div>
             <h:form id="formFiltros">
                 <div class="filters-body">
-                    <cmp:baseAutocomplete
-                            id="dropDownUsuario"
-                            label="Usuário"
-                            value="#{perfilUsuarioBean.filtroUsuario}"
-                            badgeValue="#{perfilUsuarioBean.filtroUsuario != null ? perfilUsuarioBean.filtroUsuario.id : null}"
-                            completeMethod="#{usuarioBean.completeUsuario}"
-                            converter="#{usuarioEntityConverter}"
-                            itemLabelProperty="login"
-                            showMessage="false"
-                            required="false"
-                            fieldStyle="field-filters-autocomplete-wrap"/>
+                    <cmp:baseAutocomplete id="dropDownProfissional"
+                                          label="Profissional"
+                                          value="#{perfilUsuarioBean.filtroProfissional}"
+                                          badgeValue="#{perfilUsuarioBean.filtroProfissional != null ? perfilUsuarioBean.filtroProfissional.rm : null}"
+                                          completeMethod="#{usuarioBean.completeProfissionalUsuario}"
+                                          converter="#{profissionalEntityConverter}"
+                                          itemLabelProperty="nome"
+                                          parentDivStyle="filters-body-column"
+                                          childrenDivStyle="filters-body-column-row"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"
+                                          placeholder="Busque por nome, RM ou CPF">
+                    <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
+                    <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
+                    <p:column><h:outputText value="CPF: #{profissionalBean.formatarCpf(item.cpf)}"/></p:column>
+                    </cmp:baseAutocomplete>
 
                     <cmp:baseAutocomplete
                             id="dropDownPerfil"
@@ -115,8 +121,12 @@
                                                     update=":formLista :growl" />
                             </h:column>
                             <h:column>
-                                <f:facet name="header">Usuário</f:facet>
-                                <h:outputText value="#{usuario.usuario.usuario}"/>
+                                <f:facet name="header">Profissional</f:facet>
+                                <h:outputText value="#{usuario.usuario.profissional != null ? usuario.usuario.profissional.nome : '-'}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">RM</f:facet>
+                                <h:outputText value="#{usuario.usuario.profissional != null ? usuario.usuario.profissional.rm : '-'}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Login</f:facet>
@@ -157,5 +167,6 @@
                 modalImport="modalPerfilUser.xhtml"/>
     </ui:define>
 </ui:composition>
+
 
 

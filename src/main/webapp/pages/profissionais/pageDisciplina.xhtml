@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core"
+                xmlns:cmp="jakarta.faces.composite/components"
+                template="/template.xhtml">
+
+    <ui:define name="title">Profissionais</ui:define>
+    <ui:define name="subtitle">Profissionais / Cadastro</ui:define>
+
+    <ui:define name="content">
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Cadastro de profissionais</div>
+                    <div class="cardx-subtitle">Filtros e consulta por docente</div>
+                </div>
+            </div>
+
+            <h:form id="formFiltrosProfissional">
+                <div class="filters-body">
+                    <cmp:baseAutocomplete id="dropDownNomeProfissional"
+                                          label="Profissional"
+                                          value="#{profissionalDisciplinaBean.filtroProfissional}"
+                                          badgeValue="#{profissionalDisciplinaBean.filtroProfissional != null ? profissionalDisciplinaBean.filtroProfissional.rm : null}"
+                                          completeMethod="#{profissionalBean.completeProfissionalBuscaGeral}"
+                                          converter="#{profissionalEntityConverter}"
+                                          itemLabelProperty="nome"
+                                          parentDivStyle="filters-body-column"
+                                          childrenDivStyle="filters-body-column-row"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"
+                                          placeholder="Busque por nome, RM ou CPF">
+                        <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
+                        <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
+                        <p:column><h:outputText value="CPF: #{profissionalBean.formatarCpf(item.cpf)}"/></p:column>
+                    </cmp:baseAutocomplete>
+
+                    <cmp:baseAutocomplete id="dropCPFProfissional"
+                                          label="Disciplina"
+                                          value="#{profissionalDisciplinaBean.filtroDisciplina}"
+                                          badgeValue="#{profissionalDisciplinaBean.filtroDisciplina != null ? profissionalDisciplinaBean.filtroDisciplina.codigo : null}"
+                                          completeMethod="#{disciplinaBean.completeDisciplina}"
+                                          converter="#{disciplinaEntityConverter}"
+                                          itemLabelProperty="descricao"
+                                          parentDivStyle="filters-body-column"
+                                          childrenDivStyle="filters-body-column-row"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"/>
+
+                    <cmp:baseAutocomplete id="dropDownSituacao"
+                                          label="Situacao"
+                                          value="#{profissionalDisciplinaBean.filtroSituacao}"
+                                          badgeValue="#{profissionalDisciplinaBean.filtroSituacao != null ? profissionalDisciplinaBean.filtroSituacao.id : null}"
+                                          completeMethod="#{situacaoBean.completeSituacao}"
+                                          converter="#{situacaoEntityConverter}"
+                                          itemLabelProperty="situacao"
+                                          parentDivStyle="filters-body-column"
+                                          childrenDivStyle="filters-body-column-row"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"/>
+
+                    <cmp:baseCommandButton value="Filtrar"
+                                           action="#{profissionalDisciplinaBean.filtrar}"
+                                           render=":growl :formListaProfissional:listaProfissionais"/>
+
+                    <cmp:baseButton dataBsToggle="modal"
+                                    styleClass="btn-primaryx"
+                                    dataBsTarget="#modalNovaMateria"
+                                    buttonLabel="Vincular"
+                                    parentDivStyle="filters-body-button-column"/>
+                </div>
+            </h:form>
+        </div>
+
+        <div class="cardx-datatable">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Lista de profissionais</div>
+                    <div class="cardx-subtitle">Submodulo de consulta</div>
+                </div>
+            </div>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <h:form id="formListaProfissional">
+                        <h:dataTable styleClass="table-modern" id="listaProfissionais" var="profissionais"
+                                     value="#{profissionalDisciplinaBean.profissionalDisciplinas}" rowKey="#{profissionais.id}">
+                            <h:column class="d-flex gap-2">
+                                <f:facet name="header">Acoes</f:facet>
+                                <cmp:baseIconButton id="detalharProfissional"
+                                                    action="#{profissionalDisciplinaBean.detalhar(profissionais)}"
+                                                    title="Detalhar"
+                                                    styleClass="icon-action-btn"
+                                                    ajax="true"
+                                                    render=":modalDetalhesWrapper"
+                                                    value="&#xe908;"/>
+                            </h:column>
+                            <h:column><f:facet name="header">Nome</f:facet><h:outputText value="#{profissionais.profissional.nome}"/></h:column>
+                            <h:column><f:facet name="header">Disciplina</f:facet><h:outputText value="#{profissionais.disciplina.descricao}"/></h:column>
+                            <h:column><f:facet name="header">RM</f:facet><h:outputText value="#{profissionais.profissional.rm}"/></h:column>
+                            <h:column>
+                                <f:facet name="header">Situacao</f:facet>
+                                <span class="badge-pill #{profissionalDisciplinaBean.situacaoSeverity(profissionais.situacao != null ? profissionais.situacao.situacao : null)}">
+                                    #{profissionais.situacao != null ? profissionais.situacao.situacao : '-'}
+                                </span>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <cmp:baseModal modalId="modalNovaMateria"
+                       labelledby="modalNovaMateriaLabel"
+                       modalTitle="Cadastrar Materia"
+                       modalTitleId="modalNovaMateriaLabel"
+                       modalImport="modalNewMateria.xhtml"/>
+        <h:panelGroup id="modalDetalhesWrapper" layout="block">
+            <cmp:baseModal modalId="modalDetalhes"
+                           labelledby="modalDetalhesLabel"
+                           modalTitle="#{detalheModalBean.titulo}"
+                           modalTitleId="modalDetalhesLabel"
+                           modalImport="modalDetalhes.xhtml"/>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

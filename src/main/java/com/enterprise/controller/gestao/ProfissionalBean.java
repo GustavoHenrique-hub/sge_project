@@ -1,9 +1,9 @@
 package com.enterprise.controller.gestao;
 
 import com.enterprise.controller.common.DetalheModalBean;
-import com.enterprise.dto.gestao.ProfessorDTO;
-import com.enterprise.model.entity.gestao.ProfessorEntity;
-import com.enterprise.service.gestao.ProfessorService;
+import com.enterprise.dto.gestao.ProfissionalDTO;
+import com.enterprise.model.entity.gestao.ProfissionalEntity;
+import com.enterprise.service.gestao.ProfissionalService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -18,23 +18,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Named("professorBean")
+@Named("profissionalBean")
 @ViewScoped
 @Getter
 @Setter
-public class ProfessorBean implements Serializable {
+public class ProfissionalBean implements Serializable {
 
     @Inject
-    private ProfessorService service;
+    private ProfissionalService service;
     @Inject
     private DetalheModalBean detalheModalBean;
 
-    private ProfessorDTO professorDTO = new ProfessorDTO();
-    private ProfessorEntity filtroProfessor = new ProfessorEntity();
-    private ProfessorDTO detalheProfessor;
-    private ProfessorDTO detalheEdicao = new ProfessorDTO();
+    private ProfissionalDTO profissionalDTO = new ProfissionalDTO();
+    private ProfissionalEntity filtroProfissional = new ProfissionalEntity();
+    private ProfissionalDTO detalheProfissional;
+    private ProfissionalDTO detalheEdicao = new ProfissionalDTO();
     private boolean editandoDetalhe;
-    private List<ProfessorEntity> professores = new ArrayList<>();
+    private List<ProfissionalEntity> profissionais = new ArrayList<>();
 
     @PostConstruct
     public void init() {
@@ -43,9 +43,9 @@ public class ProfessorBean implements Serializable {
 
     public void salvar() {
         try {
-            if (professorDTO.getId() == null) {
-                service.criar(professorDTO);
-                addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Professor criado.");
+            if (profissionalDTO.getId() == null) {
+                service.criar(profissionalDTO);
+                addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Profissional criado.");
             }
             limparFormulario();
             recarregarLista();
@@ -55,37 +55,37 @@ public class ProfessorBean implements Serializable {
     }
 
     private void recarregarLista() {
-        professores = service.findAll();
+        profissionais = service.findAll();
     }
 
     public void limparFormulario() {
-        professorDTO = new ProfessorDTO();
+        profissionalDTO = new ProfissionalDTO();
     }
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));
     }
 
-    public List<ProfessorEntity> completeNomeProfessor(String query) {
-        String formatProfessor = query == null ? "" : query.toLowerCase();
+    public List<ProfissionalEntity> completeNomeProfissional(String query) {
+        String formatProfissional = query == null ? "" : query.toLowerCase();
         return service.findAll()
                 .stream()
-                .filter(professor -> professor.getNome() != null
-                        && professor.getNome().toLowerCase().startsWith(formatProfessor))
+                .filter(profissional -> profissional.getNome() != null
+                        && profissional.getNome().toLowerCase().startsWith(formatProfissional))
                 .collect(Collectors.toList());
     }
 
-    public List<ProfessorEntity> completeProfessorBuscaGeral(String query) {
+    public List<ProfissionalEntity> completeProfissionalBuscaGeral(String query) {
         String termo = query == null ? "" : query.trim().toLowerCase();
         String termoNumerico = query == null ? "" : query.replaceAll("\\D", "");
         return service.findAll()
                 .stream()
-                .filter(professor -> correspondeBuscaProfessor(professor, termo, termoNumerico))
+                .filter(profissional -> correspondeBuscaProfissional(profissional, termo, termoNumerico))
                 .collect(Collectors.toList());
     }
 
-    private boolean correspondeBuscaProfessor(ProfessorEntity professor, String termo, String termoNumerico) {
-        if (professor == null) {
+    private boolean correspondeBuscaProfissional(ProfissionalEntity profissional, String termo, String termoNumerico) {
+        if (profissional == null) {
             return false;
         }
         boolean buscaVazia = termo.isBlank() && termoNumerico.isBlank();
@@ -93,75 +93,75 @@ public class ProfessorBean implements Serializable {
             return true;
         }
 
-        boolean nomeCorresponde = professor.getNome() != null
-                && professor.getNome().toLowerCase().contains(termo);
-        boolean rmCorresponde = professor.getRm() != null
-                && professor.getRm().toLowerCase().contains(termo);
+        boolean nomeCorresponde = profissional.getNome() != null
+                && profissional.getNome().toLowerCase().contains(termo);
+        boolean rmCorresponde = profissional.getRm() != null
+                && profissional.getRm().toLowerCase().contains(termo);
         boolean cpfCorresponde = !termoNumerico.isBlank()
-                && professor.getCpf() != null
-                && professor.getCpf().contains(termoNumerico);
+                && profissional.getCpf() != null
+                && profissional.getCpf().contains(termoNumerico);
 
         return nomeCorresponde || rmCorresponde || cpfCorresponde;
     }
 
     public void filtrar() {
         try {
-            String nome = filtroProfessor != null ? filtroProfessor.getNome() : null;
-            String cpf = filtroProfessor != null ? filtroProfessor.getCpf() : null;
+            String nome = filtroProfissional != null ? filtroProfissional.getNome() : null;
+            String cpf = filtroProfissional != null ? filtroProfissional.getCpf() : null;
             boolean filtroVazio = (nome == null || nome.isBlank()) && (cpf == null || cpf.isBlank());
 
             if (filtroVazio) {
-                professores = service.findAll();
+                profissionais = service.findAll();
             } else {
-                professores = service.findByFilters(nome, cpf);
+                profissionais = service.findByFilters(nome, cpf);
             }
-            int total = professores == null ? 0 : professores.size();
+            int total = profissionais == null ? 0 : profissionais.size();
             addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Filtro aplicado. Registros: " + total + ".");
         } catch (Exception e) {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao filtrar. " + e.getMessage());
         }
     }
 
-    public void detalhar(ProfessorEntity entity) {
+    public void detalhar(ProfissionalEntity entity) {
         if (entity == null) {
-            detalheProfessor = null;
-            detalheEdicao = new ProfessorDTO();
+            detalheProfissional = null;
+            detalheEdicao = new ProfissionalDTO();
             editandoDetalhe = false;
             return;
         }
-        detalheProfessor = new ProfessorDTO(entity);
-        detalheEdicao = copiar(detalheProfessor);
+        detalheProfissional = new ProfissionalDTO(entity);
+        detalheEdicao = copiar(detalheProfissional);
         editandoDetalhe = false;
-        detalheModalBean.abrir("Detalhes do professor", "/components/modal/details/professorDetalhes.xhtml");
+        detalheModalBean.abrir("Detalhes do profissional", "/components/modal/details/profissionalDetalhes.xhtml");
     }
 
     public void habilitarEdicaoDetalhe() {
-        if (detalheProfessor == null) {
+        if (detalheProfissional == null) {
             return;
         }
-        detalheEdicao = copiar(detalheProfessor);
+        detalheEdicao = copiar(detalheProfissional);
         editandoDetalhe = true;
     }
 
     public void cancelarEdicaoDetalhe() {
-        detalheEdicao = copiar(detalheProfessor);
+        detalheEdicao = copiar(detalheProfissional);
         editandoDetalhe = false;
     }
 
     public void salvarDetalhe() {
         try {
-            detalheProfessor = service.atualizar(detalheEdicao);
-            detalheEdicao = copiar(detalheProfessor);
+            detalheProfissional = service.atualizar(detalheEdicao);
+            detalheEdicao = copiar(detalheProfissional);
             editandoDetalhe = false;
             recarregarLista();
-            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Professor atualizado.");
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Profissional atualizado.");
         } catch (Exception e) {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
 
-    private ProfessorDTO copiar(ProfessorDTO origem) {
-        ProfessorDTO copia = new ProfessorDTO();
+    private ProfissionalDTO copiar(ProfissionalDTO origem) {
+        ProfissionalDTO copia = new ProfissionalDTO();
         copia.setId(origem.getId());
         copia.setRm(origem.getRm());
         copia.setNome(origem.getNome());
@@ -185,3 +185,5 @@ public class ProfessorBean implements Serializable {
     }
 
 }
+
+

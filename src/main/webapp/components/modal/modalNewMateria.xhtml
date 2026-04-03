@@ -8,54 +8,56 @@
 
     <h:form id="formNewMateria">
         <p:remoteCommand name="rcLimparNovaMateria"
-                         action="#{professorDisciplinaBean.limparFormulario}"
+                         action="#{profissionalDisciplinaBean.limparFormulario}"
                          process="@this"
                          immediate="true"
-                         update="@form :formFiltrosProfessor"/>
+                         update="@form :formFiltrosProfissional"/>
         <div id="grid" class="modal-link-grid">
-                <cmp:baseAutocomplete id="dropDownProfessorModal"
-                                      label="Professor"
-                                      value="#{professorDisciplinaBean.filtroProfessor}"
-                                      badgeValue="#{professorDisciplinaBean.filtroProfessor != null ? professorDisciplinaBean.filtroProfessor.rm : null}"
-                                      completeMethod="#{professorDisciplinaBean.completeProfessor}"
-                                      converter="#{professorEntityConverter}"
-                                      itemLabelProperty="nome"
-                                      parentDivStyle="modal-link-item"
-                                      childrenDivStyle="modal-id-inline"
-                                      required="true"
-                                      requiredMessage="Professor é obrigatório!"
-                                      fieldStyle="field-modal-autocomplete-wrap"/>
+            <cmp:baseAutocomplete id="dropDownProfissionalModal"
+                                  label="Profissional"
+                                  value="#{profissionalDisciplinaBean.filtroProfissional}"
+                                  badgeValue="#{profissionalDisciplinaBean.filtroProfissional != null ? profissionalDisciplinaBean.filtroProfissional.rm : null}"
+                                  completeMethod="#{profissionalBean.completeProfissionalBuscaGeral}"
+                                  converter="#{profissionalEntityConverter}"
+                                  itemLabelProperty="nome"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
+                                  requiredMessage="Profissional e obrigatorio!"
+                                  fieldStyle="field-modal-autocomplete-wrap"
+                                  placeholder="Busque por nome, RM ou CPF">
+                <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
+                <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
+                <p:column><h:outputText value="CPF: #{profissionalBean.formatarCpf(item.cpf)}"/></p:column>
+            </cmp:baseAutocomplete>
 
-                <cmp:baseAutocomplete id="dropDownDisciplinaModal"
-                                      label="Disciplina"
-                                      value="#{professorDisciplinaBean.filtroDisciplina}"
-                                      badgeValue="#{professorDisciplinaBean.filtroDisciplina != null ? professorDisciplinaBean.filtroDisciplina.codigo : null}"
-                                      completeMethod="#{disciplinaBean.completeDisciplina}"
-                                      converter="#{disciplinaEntityConverter}"
-                                      itemLabelProperty="descricao"
-                                      parentDivStyle="modal-link-item"
-                                      childrenDivStyle="modal-id-inline"
-                                      required="true"
-                                      requiredMessage="Disciplina é obrigatório!"
-                                      fieldStyle="field-modal-autocomplete-wrap"/>
-            </div>
-
+            <cmp:baseAutocomplete id="dropDownDisciplinaModal"
+                                  label="Disciplina"
+                                  value="#{profissionalDisciplinaBean.filtroDisciplina}"
+                                  badgeValue="#{profissionalDisciplinaBean.filtroDisciplina != null ? profissionalDisciplinaBean.filtroDisciplina.codigo : null}"
+                                  completeMethod="#{disciplinaBean.completeDisciplina}"
+                                  converter="#{disciplinaEntityConverter}"
+                                  itemLabelProperty="descricao"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
+                                  requiredMessage="Disciplina e obrigatoria!"
+                                  fieldStyle="field-modal-autocomplete-wrap"/>
+        </div>
 
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
-            <!-- Fecha modal sem submit -->
             <cmp:baseButton styleClass="btn-ghostx"
                             onclick="rcLimparNovaMateria()"
                             dataBsDismiss="modal"
                             buttonLabel="Cancelar"
                             parentDivStyle=""/>
 
-            <!-- Submit do JSF -->
             <p:commandButton value="Salvar"
                              styleClass="btn-primaryx ui-button-outlined"
                              style="border-radius: 10px"
-                             action="#{professorDisciplinaBean.confirmarPelosFiltros}"
+                             action="#{profissionalDisciplinaBean.confirmarPelosFiltros}"
                              process="@form"
-                             update=":growl :formListaProfessor:listaProfessores :formFiltrosProfessor @form"
+                             update=":growl :formListaProfissional:listaProfissionais :formFiltrosProfissional @form"
                              oncomplete="if(!args.validationFailed){rcLimparNovaMateria();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovaMateria')).hide();}"/>
         </div>
 

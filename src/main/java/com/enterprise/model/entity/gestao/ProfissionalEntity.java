@@ -1,7 +1,7 @@
 package com.enterprise.model.entity.gestao;
 
 import com.enterprise.dto.gestao.AlunoDTO;
-import com.enterprise.dto.gestao.ProfessorDTO;
+import com.enterprise.dto.gestao.ProfissionalDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +14,8 @@ import java.util.Date;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "professor")
-public class ProfessorEntity {
+@Table(name = "profissional")
+public class ProfissionalEntity {
 
     private static final SecureRandom RANDOM = new SecureRandom();
 
@@ -45,15 +45,15 @@ public class ProfessorEntity {
     @Column(name = "telefone", length = 20)
     private String telefone;
 
-    public ProfessorEntity(ProfessorDTO professor) {
-        this.id = professor.getId();
-        this.rm = professor.getRm();
-        this.cpf = professor.getCpf();
-        this.rg = professor.getRg();
-        this.nome = professor.getNome();
-        this.dtNasc = professor.getDtNasc();
-        this.email = professor.getEmail();
-        this.telefone = professor.getTelefone();
+    public ProfissionalEntity(ProfissionalDTO profissional) {
+        this.id = profissional.getId();
+        this.rm = profissional.getRm();
+        this.cpf = profissional.getCpf();
+        this.rg = profissional.getRg();
+        this.nome = profissional.getNome();
+        this.dtNasc = profissional.getDtNasc();
+        this.email = profissional.getEmail();
+        this.telefone = profissional.getTelefone();
     }
 
     @PreUpdate
@@ -96,3 +96,4 @@ public class ProfessorEntity {
         return generated;
     }
 }
+

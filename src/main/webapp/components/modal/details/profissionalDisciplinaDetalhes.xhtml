@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:cmp="jakarta.faces.composite/components"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="detail-badge-row">
+        <span class="badge-pill badge-muted">ID: #{profissionalDisciplinaBean.detalheSelecionado.id}</span>
+    </div>
+
+    <ui:fragment rendered="#{not profissionalDisciplinaBean.editandoDetalhe}">
+        <div class="detail-read-grid">
+            <div class="detail-read-item"><span class="detail-read-label">Profissional</span><span class="detail-read-value">#{profissionalDisciplinaBean.detalheSelecionado.profissional.nome}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">RM</span><span class="detail-read-value">#{profissionalDisciplinaBean.detalheSelecionado.profissional.rm}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">Disciplina</span><span class="detail-read-value">#{profissionalDisciplinaBean.detalheSelecionado.disciplina.descricao}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">Situacao</span><span class="detail-read-value">#{profissionalDisciplinaBean.detalheSelecionado.situacao.situacao}</span></div>
+        </div>
+    </ui:fragment>
+
+    <ui:fragment rendered="#{profissionalDisciplinaBean.editandoDetalhe}">
+        <div class="modal-link-grid">
+            <cmp:baseAutocomplete id="detalheVinculoProfissional"
+                                  label="Profissional"
+                                  value="#{profissionalDisciplinaBean.detalheProfissionalSelecionado}"
+                                  badgeValue="#{profissionalDisciplinaBean.detalheProfissionalSelecionado != null ? profissionalDisciplinaBean.detalheProfissionalSelecionado.rm : null}"
+                                  completeMethod="#{profissionalBean.completeProfissionalBuscaGeral}"
+                                  converter="#{profissionalEntityConverter}"
+                                  itemLabelProperty="nome"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
+                                  requiredMessage="Profissional e obrigatorio."
+                                  placeholder="Busque por nome, RM ou CPF">
+                <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
+                <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
+                <p:column><h:outputText value="CPF: #{profissionalBean.formatarCpf(item.cpf)}"/></p:column>
+            </cmp:baseAutocomplete>
+            <cmp:baseAutocomplete id="detalheVinculoDisciplina"
+                                  label="Disciplina"
+                                  value="#{profissionalDisciplinaBean.detalheDisciplinaSelecionada}"
+                                  badgeValue="#{profissionalDisciplinaBean.detalheDisciplinaSelecionada != null ? profissionalDisciplinaBean.detalheDisciplinaSelecionada.codigo : null}"
+                                  completeMethod="#{disciplinaBean.completeDisciplina}"
+                                  converter="#{disciplinaEntityConverter}"
+                                  itemLabelProperty="descricao"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
+                                  requiredMessage="Disciplina e obrigatoria."/>
+            <cmp:baseAutocomplete id="detalheVinculoSituacao"
+                                  label="Situacao"
+                                  value="#{profissionalDisciplinaBean.detalheSituacaoSelecionada}"
+                                  badgeValue="#{profissionalDisciplinaBean.detalheSituacaoSelecionada != null ? profissionalDisciplinaBean.detalheSituacaoSelecionada.id : null}"
+                                  completeMethod="#{situacaoBean.completeSituacao}"
+                                  converter="#{situacaoEntityConverter}"
+                                  itemLabelProperty="situacao"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
+                                  requiredMessage="Situacao e obrigatoria."/>
+        </div>
+    </ui:fragment>
+
+    <div class="detail-actions">
+        <p:commandButton value="Editar" rendered="#{not profissionalDisciplinaBean.editandoDetalhe}"
+                         action="#{profissionalDisciplinaBean.habilitarEdicaoDetalhe}" update="@form"
+                         styleClass="btn-ghostx ui-button-outlined"
+                         style="border-radius: 10px"/>
+        <p:commandButton value="Cancelar" rendered="#{profissionalDisciplinaBean.editandoDetalhe}"
+                         action="#{profissionalDisciplinaBean.cancelarEdicaoDetalhe}" update="@form"
+                         styleClass="btn-ghostx ui-button-outlined"
+                         style="border-radius: 10px"/>
+        <p:commandButton value="Salvar" rendered="#{profissionalDisciplinaBean.editandoDetalhe}"
+                         action="#{profissionalDisciplinaBean.salvarDetalhe}" process="@form"
+                         update=":growl @form :formListaProfissional:listaProfissionais"
+                         oncomplete="if(!args.validationFailed){bootstrap.Modal.getOrCreateInstance(document.getElementById('modalDetalhes')).hide();}"
+                         styleClass="btn-primaryx ui-button-outlined"
+                         style="border-radius: 10px"/>
+    </div>
+
+</ui:composition>

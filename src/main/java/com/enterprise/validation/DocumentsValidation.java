@@ -4,17 +4,17 @@ public class DocumentsValidation {
 
     public static boolean cpfValidation(String cpf) {
 
-        // Remove caracteres não numéricos
+        // Remove caracteres nÃ£o numÃ©ricos
         cpf = cpf.replaceAll("[^\\d]", "");
 
         // Verifica tamanho
         if (cpf.length() != 11) return false;
 
-        // Verifica se todos os dígitos são iguais
+        // Verifica se todos os dÃ­gitos sÃ£o iguais
         if (cpf.matches("(\\d)\\1{10}")) return false;
 
         try {
-            // Cálculo do 1º dígito verificador
+            // CÃ¡lculo do 1Âº dÃ­gito verificador
             int soma = 0;
             for (int i = 0; i < 9; i++) {
                 soma += (cpf.charAt(i) - '0') * (10 - i);
@@ -23,7 +23,7 @@ public class DocumentsValidation {
             int digito1 = 11 - (soma % 11);
             if (digito1 >= 10) digito1 = 0;
 
-            // Cálculo do 2º dígito verificador
+            // CÃ¡lculo do 2Âº dÃ­gito verificador
             soma = 0;
             for (int i = 0; i < 10; i++) {
                 soma += (cpf.charAt(i) - '0') * (11 - i);
@@ -32,7 +32,7 @@ public class DocumentsValidation {
             int digito2 = 11 - (soma % 11);
             if (digito2 >= 10) digito2 = 0;
 
-            // Verifica se os dígitos batem
+            // Verifica se os dÃ­gitos batem
             return digito1 == (cpf.charAt(9) - '0') &&
                     digito2 == (cpf.charAt(10) - '0');
 

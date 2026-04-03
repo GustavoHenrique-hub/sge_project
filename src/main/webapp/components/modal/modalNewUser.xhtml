@@ -14,38 +14,53 @@
                          update="@form"/>
         <div class="field-group">
             <h:panelGrid id="grid" columns="1" cellpadding="7">
-                <cmp:baseInput id="inputLogin"
-                               value="#{usuarioBean.form.login}"
-                               styleClass="form-control"
-                               style="text-transform: uppercase;"
-                               required="true"
-                               requiredMessage="Login é obrigatório!"
-                               label="Login"/>
+                <cmp:baseAutocomplete
+                        id="dropDownProfissionalUsuario"
+                        label="Profissional"
+                        value="#{usuarioBean.profissionalSelecionado}"
+                        badgeValue="#{usuarioBean.profissionalSelecionado != null ? usuarioBean.profissionalSelecionado.rm : null}"
+                        completeMethod="#{usuarioBean.completeProfissionalUsuario}"
+                        converter="#{profissionalEntityConverter}"
+                        itemLabelProperty="nome"
+                        parentDivStyle="modal-link-item"
+                        childrenDivStyle="modal-id-inline"
+                        update="@form"
+                        required="true"
+                        requiredMessage="Profissional e obrigatorio!"
+                        fieldStyle="field-modal-autocomplete-wrap"
+                        placeholder="Busque por nome, RM ou CPF">
+                    <p:column>
+                        <h:outputText value="Nome: #{item.nome}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="RM: #{item.rm}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="CPF: #{item.cpf}"/>
+                    </p:column>
+                </cmp:baseAutocomplete>
 
-                <cmp:baseInput id="inputUsuario"
-                               value="#{usuarioBean.form.usuario}"
-                               styleClass="form-control"
-                               style="text-transform: uppercase;"
-                               required="true"
-                               requiredMessage="Usuario é obrigatório!"
-                               label="Usuario"/>
+                <h:panelGroup id="credenciaisPanel" layout="block">
+                    <cmp:baseInput id="inputLogin"
+                                   value="#{usuarioBean.loginGerado}"
+                                   styleClass="form-control"
+                                   readonly="true"
+                                   label="Login"/>
 
-                <cmp:baseInput id="inputSenha"
-                               value="#{usuarioBean.form.senha}"
-                               styleClass="form-control"
-                               style=""
-                               secret="true"
-                               required="true"
-                               requiredMessage="Senha é obrigatória!"
-                               label="Senha"/>
+                    <cmp:baseInput id="inputSenha"
+                                   value="#{usuarioBean.senhaGerada}"
+                                   styleClass="form-control"
+                                   readonly="true"
+                                   label="Senha padrão"/>
+                </h:panelGroup>
 
                 <cmp:baseInput id="inputSessionTimeout"
                                value="#{usuarioBean.form.sessionTimeout}"
                                styleClass="form-control"
                                required="true"
-                               requiredMessage="Tempo de Sessão é obrigatório!"
-                               converterMessage="Tempo de Sessão é  deve ser um número inteiro!"
-                               label="Tempo de Sessão"/>
+                               requiredMessage="Tempo de sessao e obrigatorio!"
+                               converterMessage="Tempo de sessao deve ser um numero inteiro!"
+                               label="Tempo de Sessao"/>
             </h:panelGrid>
         </div>
 
@@ -62,7 +77,7 @@
                              action="#{usuarioBean.salvar}"
                              process="@form"
                              update=":growl :formLista:listaUsers @form grid"
-                             oncomplete="if(!args.validationFailed){rcLimparNovoUsuario();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNewUser')).hide();}" />
+                             oncomplete="if(!args.validationFailed){rcLimparNovoUsuario();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNewUser')).hide();}"/>
         </div>
 
     </h:form>

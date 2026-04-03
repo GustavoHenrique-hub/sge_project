@@ -17,14 +17,19 @@
                                   label="Aluno"
                                   value="#{alunoTurmaBean.filtroAluno}"
                                   badgeValue="#{alunoTurmaBean.filtroAluno != null ? alunoTurmaBean.filtroAluno.rm : null}"
-                                  completeMethod="#{alunoBean.completeNomeAluno}"
+                                  completeMethod="#{alunoBean.completeAlunoBuscaGeral}"
                                   converter="#{alunoEntityConverter}"
                                   itemLabelProperty="nome"
                                   parentDivStyle="modal-link-item"
                                   childrenDivStyle="modal-id-inline"
                                   required="true"
-                                  requiredMessage="Aluno é obrigatório!"
-                                  fieldStyle="field-modal-autocomplete-wrap"/>
+                                  requiredMessage="Aluno e obrigatorio!"
+                                  fieldStyle="field-modal-autocomplete-wrap"
+                                  placeholder="Busque por nome, RM ou CPF">
+                <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
+                <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
+                <p:column><h:outputText value="CPF: #{alunoBean.formatarCpf(item.cpf)}"/></p:column>
+            </cmp:baseAutocomplete>
 
             <cmp:baseAutocomplete id="dropDownTurmaModal"
                                   label="Turma"
@@ -36,19 +41,17 @@
                                   parentDivStyle="modal-link-item"
                                   childrenDivStyle="modal-id-inline"
                                   required="true"
-                                  requiredMessage="Turma é obrigatória!"
+                                  requiredMessage="Turma e obrigatoria!"
                                   fieldStyle="field-modal-autocomplete-wrap"/>
         </div>
 
         <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
-            <!-- Fecha modal sem submit -->
             <cmp:baseButton styleClass="btn-ghostx"
                             onclick="rcLimparNovaMatricula()"
                             dataBsDismiss="modal"
                             buttonLabel="Cancelar"
                             parentDivStyle=""/>
 
-            <!-- Submit do JSF -->
             <p:commandButton value="Salvar"
                              styleClass="btn-primaryx ui-button-outlined"
                              style="border-radius: 10px"

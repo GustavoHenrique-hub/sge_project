@@ -1,48 +1,62 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:cmp="jakarta.faces.composite/components"
+                xmlns:h="jakarta.faces.html"
                 xmlns:p="http://primefaces.org/ui">
 
     <div class="detail-badge-row">
         <span class="badge-pill badge-muted">ID: #{lancamentoBean.detalheSelecionado.id}</span>
-        <span class="badge-pill badge-muted">Bimestre: #{lancamentoBean.bimestre != null ? lancamentoBean.bimestre : '-'}</span>
+        <span class="badge-pill badge-muted">Bimestre: #{lancamentoBean.bimestre != null ? lancamentoBean.bimestre : '-'} </span>
     </div>
 
     <ui:fragment rendered="#{not lancamentoBean.editandoDetalhe}">
         <div class="detail-read-grid">
-            <div class="detail-read-item"><span class="detail-read-label">Aluno</span><span
-                    class="detail-read-value">#{lancamentoBean.detalheSelecionado.aluno.nome}</span></div>
-            <div class="detail-read-item"><span class="detail-read-label">Turma</span><span
-                    class="detail-read-value">#{lancamentoBean.detalheSelecionado.turma.turma}</span></div>
-            <div class="detail-read-item"><span class="detail-read-label">Situacao</span><span
-                    class="detail-read-value">#{lancamentoBean.detalheSelecionado.situacao.situacao}</span></div>
-            <div class="detail-read-item"><span class="detail-read-label">Nota / Frequencia</span><span
-                    class="detail-read-value">Nao configurado no modelo atual</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">Aluno</span><span class="detail-read-value">#{lancamentoBean.detalheSelecionado.aluno.nome}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">Turma</span><span class="detail-read-value">#{lancamentoBean.detalheSelecionado.turma.turma}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">Situacao</span><span class="detail-read-value">#{lancamentoBean.detalheSelecionado.situacao.situacao}</span></div>
+            <div class="detail-read-item"><span class="detail-read-label">Nota / Frequencia</span><span class="detail-read-value">Nao configurado no modelo atual</span></div>
         </div>
     </ui:fragment>
 
     <ui:fragment rendered="#{lancamentoBean.editandoDetalhe}">
         <div class="modal-link-grid">
-            <cmp:baseAutocomplete id="detalheLancamentoAluno" label="Aluno"
+            <cmp:baseAutocomplete id="detalheLancamentoAluno"
+                                  label="Aluno"
                                   value="#{lancamentoBean.detalheAlunoSelecionado}"
                                   badgeValue="#{lancamentoBean.detalheAlunoSelecionado != null ? lancamentoBean.detalheAlunoSelecionado.rm : null}"
-                                  completeMethod="#{alunoBean.completeNomeAluno}" converter="#{alunoEntityConverter}"
-                                  itemLabelProperty="nome" parentDivStyle="modal-link-item"
-                                  childrenDivStyle="modal-id-inline" required="true"
-                                  requiredMessage="Aluno e obrigatorio."/>
-            <cmp:baseAutocomplete id="detalheLancamentoTurma" label="Turma"
+                                  completeMethod="#{alunoBean.completeAlunoBuscaGeral}"
+                                  converter="#{alunoEntityConverter}"
+                                  itemLabelProperty="nome"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
+                                  requiredMessage="Aluno e obrigatorio."
+                                  placeholder="Busque por nome, RM ou CPF">
+                <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
+                <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
+                <p:column><h:outputText value="CPF: #{alunoBean.formatarCpf(item.cpf)}"/></p:column>
+            </cmp:baseAutocomplete>
+            <cmp:baseAutocomplete id="detalheLancamentoTurma"
+                                  label="Turma"
                                   value="#{lancamentoBean.detalheTurmaSelecionada}"
                                   badgeValue="#{lancamentoBean.detalheTurmaSelecionada != null ? lancamentoBean.detalheTurmaSelecionada.codigo : null}"
-                                  completeMethod="#{turmaBean.completeTurma}" converter="#{turmaEntityConverter}"
-                                  itemLabelProperty="turma" parentDivStyle="modal-link-item"
-                                  childrenDivStyle="modal-id-inline" required="true"
+                                  completeMethod="#{turmaBean.completeTurma}"
+                                  converter="#{turmaEntityConverter}"
+                                  itemLabelProperty="turma"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
                                   requiredMessage="Turma e obrigatoria."/>
-            <cmp:baseAutocomplete id="detalheLancamentoSituacao" label="Situacao"
+            <cmp:baseAutocomplete id="detalheLancamentoSituacao"
+                                  label="Situacao"
                                   value="#{lancamentoBean.detalheSituacaoSelecionada}"
                                   badgeValue="#{lancamentoBean.detalheSituacaoSelecionada != null ? lancamentoBean.detalheSituacaoSelecionada.id : null}"
                                   completeMethod="#{situacaoBean.completeSituacao}"
-                                  converter="#{situacaoEntityConverter}" itemLabelProperty="situacao"
-                                  parentDivStyle="modal-link-item" childrenDivStyle="modal-id-inline" required="true"
+                                  converter="#{situacaoEntityConverter}"
+                                  itemLabelProperty="situacao"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
                                   requiredMessage="Situacao e obrigatoria."/>
         </div>
     </ui:fragment>

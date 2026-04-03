@@ -13,26 +13,30 @@
         <div class="cardx">
             <div class="cardx-header">
                 <div>
-                    <div class="cardx-title">Consulta de histórico</div>
-                    <div class="cardx-subtitle">Submódulo de visualização</div>
+                    <div class="cardx-title">Consulta de historico</div>
+                    <div class="cardx-subtitle">Submodulo de visualizacao</div>
                 </div>
             </div>
 
             <h:form id="formFiltrosHistorico">
                 <div class="filters-body">
-                    <cmp:baseAutocomplete
-                            id="dropDownAlunoHistorico"
-                            label="Aluno"
-                            value="#{historicoBean.filtroAluno}"
-                            badgeValue="#{historicoBean.filtroAluno != null ? historicoBean.filtroAluno.rm : null}"
-                            completeMethod="#{alunoBean.completeNomeAluno}"
-                            converter="#{alunoEntityConverter}"
-                            itemLabelProperty="nome"
-                            parentDivStyle="filters-body-column"
-                            childrenDivStyle="filters-body-column-row"
-                            showMessage="false"
-                            required="false"
-                            fieldStyle="field-filters-autocomplete-wrap"/>
+                    <cmp:baseAutocomplete id="dropDownAlunoHistorico"
+                                          label="Aluno"
+                                          value="#{historicoBean.filtroAluno}"
+                                          badgeValue="#{historicoBean.filtroAluno != null ? historicoBean.filtroAluno.rm : null}"
+                                          completeMethod="#{alunoBean.completeAlunoBuscaGeral}"
+                                          converter="#{alunoEntityConverter}"
+                                          itemLabelProperty="nome"
+                                          parentDivStyle="filters-body-column"
+                                          childrenDivStyle="filters-body-column-row"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"
+                                          placeholder="Busque por nome, RM ou CPF">
+                        <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
+                        <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
+                        <p:column><h:outputText value="CPF: #{alunoBean.formatarCpf(item.cpf)}"/></p:column>
+                    </cmp:baseAutocomplete>
                     <cmp:baseCommandButton value="Filtrar"
                                            action="#{historicoBean.buscar}"
                                            render=":growl :formListaHistorico:listaHistorico"/>
@@ -43,7 +47,7 @@
         <div class="cardx-datatable">
             <div class="cardx-header">
                 <div>
-                    <div class="cardx-title">Histórico de matrículas</div>
+                    <div class="cardx-title">Historico de matriculas</div>
                     <div class="cardx-subtitle">Registros por aluno</div>
                 </div>
             </div>
@@ -62,18 +66,9 @@
                                                     render=":modalDetalhesWrapper"
                                                     value="&#xe908;"/>
                             </h:column>
-                            <h:column>
-                                <f:facet name="header">Aluno</f:facet>
-                                <h:outputText value="#{registro.aluno.nome}"/>
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">RM</f:facet>
-                                <h:outputText value="#{registro.aluno.rm}"/>
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">Turma</f:facet>
-                                <h:outputText value="#{registro.turma.turma}"/>
-                            </h:column>
+                            <h:column><f:facet name="header">Aluno</f:facet><h:outputText value="#{registro.aluno.nome}"/></h:column>
+                            <h:column><f:facet name="header">RM</f:facet><h:outputText value="#{registro.aluno.rm}"/></h:column>
+                            <h:column><f:facet name="header">Turma</f:facet><h:outputText value="#{registro.turma.turma}"/></h:column>
                             <h:column>
                                 <f:facet name="header">Situacao</f:facet>
                                 <span class="badge-pill #{historicoBean.situacaoSeverity(registro.situacao != null ? registro.situacao.situacao : null)}">
@@ -98,12 +93,11 @@
             </h:panelGroup>
         </h:form>
         <h:panelGroup id="modalDetalhesWrapper" layout="block">
-            <cmp:baseModal
-                    modalId="modalDetalhes"
-                    labelledby="modalDetalhesLabel"
-                    modalTitle="#{detalheModalBean.titulo}"
-                    modalTitleId="modalDetalhesLabel"
-                    modalImport="modalDetalhes.xhtml"/>
+            <cmp:baseModal modalId="modalDetalhes"
+                           labelledby="modalDetalhesLabel"
+                           modalTitle="#{detalheModalBean.titulo}"
+                           modalTitleId="modalDetalhesLabel"
+                           modalImport="modalDetalhes.xhtml"/>
         </h:panelGroup>
     </ui:define>
 </ui:composition>

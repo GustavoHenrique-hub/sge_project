@@ -55,6 +55,10 @@ public class ProfissionalService {
         return repository.findByFilters(nome, cpf);
     }
 
+    public List<ProfissionalEntity> findProfessoresAtivosByTermo(String termo) {
+        return repository.findProfessoresAtivosByTermo(termo);
+    }
+
     public Optional<ProfissionalEntity> findById(Long id){
         return repository.findById(id);
     }

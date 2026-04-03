@@ -13,17 +13,17 @@
                          immediate="true"
                          update="@form :formFiltrosProfissional"/>
         <div id="grid" class="modal-link-grid">
-            <cmp:baseAutocomplete id="dropDownProfissionalModal"
-                                  label="Profissional"
+            <cmp:baseAutocomplete id="dropDownProfessorModal"
+                                  label="Professor"
                                   value="#{profissionalDisciplinaBean.filtroProfissional}"
                                   badgeValue="#{profissionalDisciplinaBean.filtroProfissional != null ? profissionalDisciplinaBean.filtroProfissional.rm : null}"
-                                  completeMethod="#{profissionalBean.completeProfissionalBuscaGeral}"
+                                  completeMethod="#{profissionalBean.completeProfissionalProfessor}"
                                   converter="#{profissionalEntityConverter}"
                                   itemLabelProperty="nome"
                                   parentDivStyle="modal-link-item"
                                   childrenDivStyle="modal-id-inline"
                                   required="true"
-                                  requiredMessage="Profissional e obrigatorio!"
+                                  requiredMessage="Professor é obrigatorio!"
                                   fieldStyle="field-modal-autocomplete-wrap"
                                   placeholder="Busque por nome, RM ou CPF">
                 <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>

@@ -84,6 +84,10 @@ public class ProfissionalBean implements Serializable {
                 .collect(Collectors.toList());
     }
 
+    public List<ProfissionalEntity> completeProfissionalProfessor(String query) {
+        return service.findProfessoresAtivosByTermo(query);
+    }
+
     private boolean correspondeBuscaProfissional(ProfissionalEntity profissional, String termo, String termoNumerico) {
         if (profissional == null) {
             return false;

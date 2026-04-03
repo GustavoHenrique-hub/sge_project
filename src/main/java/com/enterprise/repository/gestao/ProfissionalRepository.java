@@ -53,6 +53,60 @@ public class ProfissionalRepository {
         return query.getResultList();
     }
 
+    public List<ProfissionalEntity> findProfessoresAtivosByTermo(String termo) {
+        String termoNormalizado = termo == null ? "" : termo.trim().toLowerCase();
+        String termoNumerico = termo == null ? "" : termo.replaceAll("\\D", "");
+
+        StringBuilder jpql = new StringBuilder(
+                "select distinct p from ProfissionalEntity p " +
+                        "where exists (" +
+                        "select 1 from com.enterprise.model.entity.admin.PerfilUsuarioEntity au " +
+                        "join au.usuario u " +
+                        "join au.perfil pe " +
+                        "join au.situacao s " +
+                        "where u.profissional.id = p.id " +
+                        "and u.profissional.rm = p.rm " +
+                        "and upper(s.situacao) = :situacao " +
+                        "and upper(pe.perfil) = :perfil" +
+                        ")"
+        );
+
+        boolean filtrarTexto = !termoNormalizado.isBlank();
+        boolean filtrarNumero = !termoNumerico.isBlank();
+
+        if (filtrarTexto || filtrarNumero) {
+            jpql.append(" and (");
+            boolean precisaOr = false;
+
+            if (filtrarTexto) {
+                jpql.append("lower(p.nome) like :termoTexto or lower(p.rm) like :termoTexto");
+                precisaOr = true;
+            }
+            if (filtrarNumero) {
+                if (precisaOr) {
+                    jpql.append(" or ");
+                }
+                jpql.append("p.cpf like :termoNumero");
+            }
+            jpql.append(")");
+        }
+
+        jpql.append(" order by p.nome");
+
+        TypedQuery<ProfissionalEntity> query = em.createQuery(jpql.toString(), ProfissionalEntity.class)
+                .setParameter("situacao", "ATIVO")
+                .setParameter("perfil", "PROFESSOR");
+
+        if (filtrarTexto) {
+            query.setParameter("termoTexto", "%" + termoNormalizado + "%");
+        }
+        if (filtrarNumero) {
+            query.setParameter("termoNumero", "%" + termoNumerico + "%");
+        }
+
+        return query.getResultList();
+    }
+
     public Optional<ProfissionalEntity> findById(Long id) {
         if (id == null) {
             return Optional.empty();

@@ -15,6 +15,9 @@ import java.util.List;
 @RequestScoped
 public class AlunoTurmaService {
 
+    private static final String SITUACAO_ATIVO = "ATIVO";
+    private static final String SITUACAO_INATIVO = "INATIVO";
+
     @Inject
     private AlunoTurmaRepository repository;
     @Inject
@@ -32,17 +35,41 @@ public class AlunoTurmaService {
         return repository.findByFilters(alunoId, turmaId, situacaoId).stream().map(AlunoTurmaDTO::new).toList();
     }
 
+    public boolean possuiMatriculaAtiva(Long alunoId) {
+        if (alunoId == null) {
+            return false;
+        }
+        return repository.existsAtivoByAluno(alunoId);
+    }
+
     public AlunoTurmaDTO matricular(Long alunoId, Long turmaId) {
-        validar(alunoId, turmaId);
+        validarIds(alunoId, turmaId);
 
         AlunoEntity aluno = alunoService.findById(alunoId).orElseThrow(() -> new IllegalArgumentException("Aluno nao encontrado."));
         TurmaEntity turma = turmaService.findById(turmaId).orElseThrow(() -> new IllegalArgumentException("Turma nao encontrada."));
-        SituacaoEntity situacao = situacaoService.findBySituacao("ATIVO").orElseThrow(() -> new IllegalStateException("Situacao ATIVO nao encontrada."));
+        SituacaoEntity situacaoAtiva = situacaoService.findBySituacao(SITUACAO_ATIVO)
+                .orElseThrow(() -> new IllegalStateException("Situacao ATIVO nao encontrada."));
+        SituacaoEntity situacaoInativa = situacaoService.findBySituacao(SITUACAO_INATIVO)
+                .orElseThrow(() -> new IllegalStateException("Situacao INATIVO nao encontrada."));
+
+        AlunoTurmaEntity existenteNaTurma = repository.findByAlunoAndTurma(alunoId, turmaId).orElse(null);
+        if (existenteNaTurma != null && isSituacao(existenteNaTurma.getSituacao(), SITUACAO_ATIVO)) {
+            throw new IllegalArgumentException("Aluno ja possui matricula ativa nesta turma.");
+        }
+
+        inativarOutrasMatriculasAtivas(alunoId, null, situacaoInativa);
+
+        if (existenteNaTurma != null) {
+            existenteNaTurma.setAluno(aluno);
+            existenteNaTurma.setTurma(turma);
+            existenteNaTurma.setSituacao(situacaoAtiva);
+            return new AlunoTurmaDTO(repository.update(existenteNaTurma));
+        }
 
         AlunoTurmaEntity entity = new AlunoTurmaEntity();
         entity.setAluno(aluno);
         entity.setTurma(turma);
-        entity.setSituacao(situacao);
+        entity.setSituacao(situacaoAtiva);
 
         repository.save(entity);
         return new AlunoTurmaDTO(entity);
@@ -74,15 +101,34 @@ public class AlunoTurmaService {
         entity.setTurma(turma);
         entity.setSituacao(situacao);
 
+        if (isSituacao(situacao, SITUACAO_ATIVO)) {
+            SituacaoEntity situacaoInativa = situacaoService.findBySituacao(SITUACAO_INATIVO)
+                    .orElseThrow(() -> new IllegalStateException("Situacao INATIVO nao encontrada."));
+            inativarOutrasMatriculasAtivas(alunoId, dto.getId(), situacaoInativa);
+        }
+
         return new AlunoTurmaDTO(repository.update(entity));
     }
 
-    private void validar(Long alunoId, Long turmaId) {
+    private void validarIds(Long alunoId, Long turmaId) {
         if (alunoId == null || turmaId == null) {
             throw new IllegalArgumentException("Aluno e turma sao obrigatorios.");
         }
-        if (repository.existsByAlunoAndTurma(alunoId, turmaId)) {
-            throw new IllegalArgumentException("Aluno ja matriculado nesta turma.");
+    }
+
+    private void inativarOutrasMatriculasAtivas(Long alunoId, Long matriculaPreservadaId, SituacaoEntity situacaoInativa) {
+        for (AlunoTurmaEntity matriculaAtiva : repository.findAtivosByAluno(alunoId)) {
+            if (matriculaPreservadaId != null && matriculaPreservadaId.equals(matriculaAtiva.getId())) {
+                continue;
+            }
+            matriculaAtiva.setSituacao(situacaoInativa);
+            repository.update(matriculaAtiva);
         }
+    }
+
+    private boolean isSituacao(SituacaoEntity situacao, String valor) {
+        return situacao != null
+                && situacao.getSituacao() != null
+                && situacao.getSituacao().equalsIgnoreCase(valor);
     }
 }

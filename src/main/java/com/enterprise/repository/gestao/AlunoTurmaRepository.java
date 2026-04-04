@@ -94,6 +94,50 @@ public class AlunoTurmaRepository {
         return query.getResultList();
     }
 
+    public Optional<AlunoTurmaEntity> findByAlunoAndTurma(Long alunoId, Long turmaId) {
+        return em.createQuery(
+                        "select at from AlunoTurmaEntity at " +
+                                "left join fetch at.aluno " +
+                                "left join fetch at.turma " +
+                                "left join fetch at.situacao " +
+                                "where at.aluno.id = :alunoId and at.turma.id = :turmaId " +
+                                "order by at.id desc",
+                        AlunoTurmaEntity.class
+                )
+                .setParameter("alunoId", alunoId)
+                .setParameter("turmaId", turmaId)
+                .setMaxResults(1)
+                .getResultStream()
+                .findFirst();
+    }
+
+    public List<AlunoTurmaEntity> findAtivosByAluno(Long alunoId) {
+        return em.createQuery(
+                        "select at from AlunoTurmaEntity at " +
+                                "left join fetch at.aluno " +
+                                "left join fetch at.turma " +
+                                "left join fetch at.situacao " +
+                                "where at.aluno.id = :alunoId and upper(at.situacao.situacao) = :situacao " +
+                                "order by at.id desc",
+                        AlunoTurmaEntity.class
+                )
+                .setParameter("alunoId", alunoId)
+                .setParameter("situacao", "ATIVO")
+                .getResultList();
+    }
+
+    public boolean existsAtivoByAluno(Long alunoId) {
+        Long total = em.createQuery(
+                        "select count(at) from AlunoTurmaEntity at " +
+                                "where at.aluno.id = :alunoId and upper(at.situacao.situacao) = :situacao",
+                        Long.class
+                )
+                .setParameter("alunoId", alunoId)
+                .setParameter("situacao", "ATIVO")
+                .getSingleResult();
+        return total != null && total > 0;
+    }
+
     public boolean existsByAlunoAndTurma(Long alunoId, Long turmaId) {
         Long total = em.createQuery(
                         "select count(at) from AlunoTurmaEntity at " +

@@ -46,7 +46,7 @@
                     Painel / Visao geral
                 </h:link>
 
-                <div class="nav-module #{request.servletPath eq '/pages/alunos/pageAlunos.xhtml' or request.servletPath eq '/pages/admin/pageMatriculas.xhtml' or request.servletPath eq '/pages/alunos/pageHistorico.xhtml' or request.servletPath eq '/pages/alunos/pageTurmas.xhtml' ? 'is-expanded' : ''}">
+                <div class="nav-module #{request.servletPath eq '/pages/alunos/pageAlunos.xhtml' or request.servletPath eq '/pages/admin/pageMatriculas.xhtml' or request.servletPath eq '/pages/alunos/pageTurmas.xhtml' ? 'is-expanded' : ''}">
                     <button type="button"
                             class="nav-module-toggle"
                             aria-expanded="false">
@@ -54,7 +54,7 @@
                         <i class="pi pi-chevron-down"></i>
                     </button>
                     <div class="nav-module-links">
-                        <div class="nav-module #{request.servletPath eq '/pages/alunos/pageAlunos.xhtml' or request.servletPath eq '/pages/admin/pageMatriculas.xhtml' or request.servletPath eq '/pages/alunos/pageHistorico.xhtml' ? 'is-expanded' : ''}">
+                        <div class="nav-module #{request.servletPath eq '/pages/alunos/pageAlunos.xhtml' or request.servletPath eq '/pages/admin/pageMatriculas.xhtml' ? 'is-expanded' : ''}">
                             <button type="button"
                                     class="nav-module-toggle"
                                     aria-expanded="false">
@@ -66,8 +66,6 @@
                                         styleClass="#{request.servletPath eq '/pages/alunos/pageAlunos.xhtml' ? 'active' : ''}">Cadastro</h:link>
                                 <h:link outcome="/pages/admin/pageMatriculas.xhtml"
                                         styleClass="#{request.servletPath eq '/pages/admin/pageMatriculas.xhtml' ? 'active' : ''}">Matriculas</h:link>
-                                <h:link outcome="/pages/alunos/pageHistorico.xhtml"
-                                        styleClass="#{request.servletPath eq '/pages/alunos/pageHistorico.xhtml' ? 'active' : ''}">Historico</h:link>
                             </div>
                         </div>
 
@@ -101,16 +99,22 @@
                     </div>
                 </div>
 
-                <div class="nav-module #{request.servletPath eq '/pages/alunos/pageNotaFrequencia.xhtml' ? 'is-expanded' : ''}">
+                <div class="nav-module #{request.servletPath eq '/pages/alunos/pageBoletim.xhtml' or request.servletPath eq '/pages/alunos/pageNotas.xhtml' or request.servletPath eq '/pages/alunos/pageFrequencia.xhtml' or request.servletPath eq '/pages/alunos/pageHistorico.xhtml' ? 'is-expanded' : ''}">
                     <button type="button"
                             class="nav-module-toggle"
                             aria-expanded="false">
-                        <span>Notas</span>
+                        <span>Academico</span>
                         <i class="pi pi-chevron-down"></i>
                     </button>
                     <div class="nav-module-links">
-                        <h:link outcome="/pages/alunos/pageNotaFrequencia.xhtml"
-                                styleClass="#{request.servletPath eq '/pages/alunos/pageNotaFrequencia.xhtml' ? 'active' : ''}">Lancamentos</h:link>
+                        <h:link outcome="/pages/alunos/pageBoletim.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/alunos/pageBoletim.xhtml' ? 'active' : ''}">Boletim</h:link>
+                        <h:link outcome="/pages/alunos/pageNotas.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/alunos/pageNotas.xhtml' ? 'active' : ''}">Notas</h:link>
+                        <h:link outcome="/pages/alunos/pageFrequencia.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/alunos/pageFrequencia.xhtml' ? 'active' : ''}">Frequencia</h:link>
+                        <h:link outcome="/pages/alunos/pageHistorico.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/alunos/pageHistorico.xhtml' ? 'active' : ''}">Historico</h:link>
                     </div>
                 </div>
 

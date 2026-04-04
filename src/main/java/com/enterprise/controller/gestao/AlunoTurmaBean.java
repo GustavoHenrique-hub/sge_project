@@ -144,8 +144,31 @@ public class AlunoTurmaBean implements Serializable {
         }
     }
 
+    public List<AlunoEntity> completeAlunoDisponivel(String query) {
+        String termo = query == null ? "" : query.trim().toLowerCase();
+        String termoNumerico = query == null ? "" : query.replaceAll("\\D", "");
+
+        return alunoService.findAll().stream()
+                .filter(aluno -> aluno != null && aluno.getId() != null)
+                .filter(aluno -> !service.possuiMatriculaAtiva(aluno.getId()))
+                .filter(aluno -> correspondeBuscaAluno(aluno, termo, termoNumerico))
+                .collect(Collectors.toList());
+    }
+
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));
+    }
+
+    private boolean correspondeBuscaAluno(AlunoEntity aluno, String termo, String termoNumerico) {
+        boolean buscaVazia = termo.isBlank() && termoNumerico.isBlank();
+        if (buscaVazia) {
+            return true;
+        }
+
+        boolean nome = aluno.getNome() != null && aluno.getNome().toLowerCase().contains(termo);
+        boolean rm = aluno.getRm() != null && aluno.getRm().toLowerCase().contains(termo);
+        boolean cpf = !termoNumerico.isBlank() && aluno.getCpf() != null && aluno.getCpf().contains(termoNumerico);
+        return nome || rm || cpf;
     }
 
     public void habilitarEdicaoDetalhe() {

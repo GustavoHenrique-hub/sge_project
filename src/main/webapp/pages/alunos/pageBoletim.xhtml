@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core"
+                xmlns:cmp="jakarta.faces.composite/components"
+                template="/template.xhtml">
+
+    <ui:define name="title">Boletim</ui:define>
+    <ui:define name="subtitle">Academico / Boletim</ui:define>
+
+    <ui:define name="content">
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Consulta de boletim</div>
+                    <div class="cardx-subtitle">Aluno por turma</div>
+                </div>
+            </div>
+
+            <h:form id="formFiltroBoletim">
+                <div class="filters-body">
+                    <cmp:baseAutocomplete id="dropDownTurmaBoletim"
+                                          label="Turma"
+                                          value="#{boletimBean.filtroTurma}"
+                                          badgeValue="#{boletimBean.filtroTurma != null ? boletimBean.filtroTurma.codigo : null}"
+                                          completeMethod="#{boletimBean.completeTurma}"
+                                          converter="#{turmaEntityConverter}"
+                                          itemLabelProperty="turma"
+                                          parentDivStyle="filters-body-column"
+                                          childrenDivStyle="filters-body-column-row"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"
+                                          placeholder="Busque a turma">
+                        <p:column><h:outputText value="Turma: #{item.turma}"/></p:column>
+                        <p:column><h:outputText value="Codigo: #{item.codigo}"/></p:column>
+                    </cmp:baseAutocomplete>
+
+                    <cmp:baseAutocomplete id="dropDownAlunoBoletim"
+                                          label="Aluno"
+                                          value="#{boletimBean.filtroAluno}"
+                                          badgeValue="#{boletimBean.filtroAluno != null ? boletimBean.filtroAluno.rm : null}"
+                                          completeMethod="#{boletimBean.completeAlunoDaTurma}"
+                                          converter="#{alunoEntityConverter}"
+                                          itemLabelProperty="nome"
+                                          parentDivStyle="filters-body-column"
+                                          childrenDivStyle="filters-body-column-row"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"
+                                          placeholder="Busque por nome, RM ou CPF">
+                        <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
+                        <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
+                        <p:column><h:outputText value="CPF: #{boletimBean.formatarCpf(item.cpf)}"/></p:column>
+                    </cmp:baseAutocomplete>
+
+                    <cmp:baseCommandButton value="Filtrar"
+                                           action="#{boletimBean.filtrar}"
+                                           render=":growl :formListaBoletim:listaBoletim"/>
+                </div>
+            </h:form>
+        </div>
+
+        <div class="cardx-datatable">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Boletim do aluno</div>
+                    <div class="cardx-subtitle">Notas, frequencias e resultado por disciplina</div>
+                </div>
+            </div>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <h:form id="formListaBoletim">
+                        <h:dataTable styleClass="table-modern" id="listaBoletim" var="registro"
+                                     value="#{boletimBean.linhas}">
+                            <h:column><f:facet name="header">Disciplina</f:facet><h:outputText value="#{registro.disciplina.descricao}"/></h:column>
+                            <h:column><f:facet name="header">N1</f:facet><h:outputText value="#{empty registro.nota1 ? '-' : registro.nota1}"/></h:column>
+                            <h:column><f:facet name="header">N2</f:facet><h:outputText value="#{empty registro.nota2 ? '-' : registro.nota2}"/></h:column>
+                            <h:column><f:facet name="header">N3</f:facet><h:outputText value="#{empty registro.nota3 ? '-' : registro.nota3}"/></h:column>
+                            <h:column><f:facet name="header">N4</f:facet><h:outputText value="#{empty registro.nota4 ? '-' : registro.nota4}"/></h:column>
+                            <h:column><f:facet name="header">F1 (%)</f:facet><h:outputText value="#{registro.frequencia1}"/></h:column>
+                            <h:column><f:facet name="header">F2 (%)</f:facet><h:outputText value="#{registro.frequencia2}"/></h:column>
+                            <h:column><f:facet name="header">F3 (%)</f:facet><h:outputText value="#{registro.frequencia3}"/></h:column>
+                            <h:column><f:facet name="header">F4 (%)</f:facet><h:outputText value="#{registro.frequencia4}"/></h:column>
+                            <h:column><f:facet name="header">Media Final</f:facet><h:outputText value="#{registro.mediaFinal}"/></h:column>
+                            <h:column><f:facet name="header">Sit. Nota</f:facet><h:outputText value="#{registro.situacaoNota}"/></h:column>
+                            <h:column><f:facet name="header">Presenca Final</f:facet><h:outputText value="#{registro.presencaFinal}"/></h:column>
+                            <h:column><f:facet name="header">Sit. Frequencia</f:facet><h:outputText value="#{registro.situacaoFrequencia}"/></h:column>
+                            <h:column><f:facet name="header">Resultado</f:facet><h:outputText value="#{registro.situacaoFinal}"/></h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

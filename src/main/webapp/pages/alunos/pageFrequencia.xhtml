@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core"
+                xmlns:cmp="jakarta.faces.composite/components"
+                template="/template.xhtml">
+
+    <ui:define name="title">Frequencia</ui:define>
+    <ui:define name="subtitle">Academico / Frequencia</ui:define>
+
+    <ui:define name="content">
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Lancamento de frequencia</div>
+                    <div class="cardx-subtitle">Turma e disciplina</div>
+                </div>
+            </div>
+
+            <h:form id="formFiltroFrequencia">
+                <div class="filters-body">
+                    <cmp:baseAutocomplete id="dropDownTurmaFrequencia"
+                                          label="Turma"
+                                          value="#{frequenciaBean.filtroTurma}"
+                                          badgeValue="#{frequenciaBean.filtroTurma != null ? frequenciaBean.filtroTurma.codigo : null}"
+                                          completeMethod="#{frequenciaBean.completeTurma}"
+                                          converter="#{turmaEntityConverter}"
+                                          itemLabelProperty="turma"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"/>
+
+                    <cmp:baseAutocomplete id="dropDownDisciplinaFrequencia"
+                                          label="Disciplina"
+                                          value="#{frequenciaBean.filtroDisciplina}"
+                                          badgeValue="#{frequenciaBean.filtroDisciplina != null ? frequenciaBean.filtroDisciplina.codigo : null}"
+                                          completeMethod="#{frequenciaBean.completeDisciplina}"
+                                          converter="#{disciplinaEntityConverter}"
+                                          itemLabelProperty="descricao"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"/>
+
+                    <cmp:baseCommandButton value="Filtrar"
+                                           action="#{frequenciaBean.filtrar}"
+                                           render=":growl :formListaFrequencia:listaFrequencia"/>
+                </div>
+            </h:form>
+        </div>
+
+        <div class="cardx-datatable">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Frequencia por aluno</div>
+                    <div class="cardx-subtitle">Lancamento inline sem modal</div>
+                </div>
+            </div>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <h:form id="formListaFrequencia">
+                        <h:dataTable styleClass="table-modern" id="listaFrequencia" var="registro"
+                                     value="#{frequenciaBean.lancamentos}">
+                            <h:column class="d-flex gap-2">
+                                <f:facet name="header">Acoes</f:facet>
+                                <div class="table-inline-actions">
+                                    <cmp:baseIconButton id="editarFrequencia"
+                                                        rendered="#{not registro.editando}"
+                                                        action="#{frequenciaBean.editar(registro)}"
+                                                        title="Editar frequencias"
+                                                        ajax="true"
+                                                        render="@form"
+                                                        styleClass="icon-action-btn table-inline-icon icon-edit"
+                                                        value="&#9998;"/>
+                                    <cmp:baseIconButton id="salvarFrequencia"
+                                                        rendered="#{registro.editando}"
+                                                        action="#{frequenciaBean.salvar(registro)}"
+                                                        title="Salvar frequencias"
+                                                        ajax="true"
+                                                        execute="@form"
+                                                        render="@form :growl"
+                                                        styleClass="icon-action-btn table-inline-icon icon-check"
+                                                        value="&#10003;"/>
+                                    <cmp:baseIconButton id="cancelarFrequencia"
+                                                        rendered="#{registro.editando}"
+                                                        action="#{frequenciaBean.cancelar(registro)}"
+                                                        title="Cancelar edicao"
+                                                        ajax="true"
+                                                        render="@form"
+                                                        styleClass="icon-action-btn table-inline-icon icon-ban"
+                                                        value="&#10005;"/>
+                                </div>
+                            </h:column>
+                            <h:column><f:facet name="header">Aluno</f:facet><h:outputText value="#{registro.aluno.nome}"/></h:column>
+                            <h:column><f:facet name="header">RM</f:facet><h:outputText value="#{registro.aluno.rm}"/></h:column>
+                            <h:column>
+                                <f:facet name="header">1o Bim. (%)</f:facet>
+                                <h:outputText rendered="#{not registro.editando}" value="#{registro.frequencia1}"/>
+                                <p:inputNumber rendered="#{registro.editando}" value="#{registro.frequencia1}" decimalPlaces="2" minValue="0" maxValue="100"
+                                               styleClass="datatable-inline-number" inputStyleClass="datatable-inline-number-input"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">2o Bim. (%)</f:facet>
+                                <h:outputText rendered="#{not registro.editando}" value="#{registro.frequencia2}"/>
+                                <p:inputNumber rendered="#{registro.editando}" value="#{registro.frequencia2}" decimalPlaces="2" minValue="0" maxValue="100"
+                                               styleClass="datatable-inline-number" inputStyleClass="datatable-inline-number-input"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">3o Bim. (%)</f:facet>
+                                <h:outputText rendered="#{not registro.editando}" value="#{registro.frequencia3}"/>
+                                <p:inputNumber rendered="#{registro.editando}" value="#{registro.frequencia3}" decimalPlaces="2" minValue="0" maxValue="100"
+                                               styleClass="datatable-inline-number" inputStyleClass="datatable-inline-number-input"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">4o Bim. (%)</f:facet>
+                                <h:outputText rendered="#{not registro.editando}" value="#{registro.frequencia4}"/>
+                                <p:inputNumber rendered="#{registro.editando}" value="#{registro.frequencia4}" decimalPlaces="2" minValue="0" maxValue="100"
+                                               styleClass="datatable-inline-number" inputStyleClass="datatable-inline-number-input"/>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

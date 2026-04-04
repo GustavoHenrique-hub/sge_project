@@ -7,14 +7,14 @@
                 template="/template.xhtml">
 
     <ui:define name="title">Historico</ui:define>
-    <ui:define name="subtitle">Alunos / Historico</ui:define>
+    <ui:define name="subtitle">Academico / Historico</ui:define>
 
     <ui:define name="content">
         <div class="cardx">
             <div class="cardx-header">
                 <div>
                     <div class="cardx-title">Consulta de historico</div>
-                    <div class="cardx-subtitle">Submodulo de visualizacao</div>
+                    <div class="cardx-subtitle">Visualizacao e exportacao</div>
                 </div>
             </div>
 
@@ -35,69 +35,56 @@
                                           placeholder="Busque por nome, RM ou CPF">
                         <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
                         <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
-                        <p:column><h:outputText value="CPF: #{alunoBean.formatarCpf(item.cpf)}"/></p:column>
+                        <p:column><h:outputText value="CPF: #{historicoBean.formatarCpf(item.cpf)}"/></p:column>
                     </cmp:baseAutocomplete>
-                    <cmp:baseCommandButton value="Filtrar"
-                                           action="#{historicoBean.buscar}"
-                                           render=":growl :formListaHistorico:listaHistorico"/>
+                    <cmp:baseCommandButton value="Visualizar"
+                                           action="#{historicoBean.visualizar}"
+                                           render=":growl :formResumoHistorico :formListaHistorico:listaHistorico"/>
+                    <p:commandButton value="Exportar / Imprimir"
+                                     action="#{historicoBean.exportarPdf}"
+                                     ajax="false"
+                                     icon="pi pi-print"
+                                     styleClass="btn-primaryx historico-export-btn"/>
                 </div>
             </h:form>
         </div>
 
+        <h:form id="formResumoHistorico">
+            <h:panelGroup rendered="#{not empty historicoBean.historicoSelecionado}">
+                <div class="cardx">
+                    <div class="row g-2">
+                        <div class="col-md-3"><span class="badge-pill badge-muted">Aluno: #{historicoBean.historicoSelecionado.aluno.nome}</span></div>
+                        <div class="col-md-3"><span class="badge-pill badge-muted">RM: #{historicoBean.historicoSelecionado.aluno.rm}</span></div>
+                        <div class="col-md-3"><span class="badge-pill badge-muted">CPF: #{historicoBean.formatarCpf(historicoBean.historicoSelecionado.aluno.cpf)}</span></div>
+                        <div class="col-md-3"><span class="badge-pill badge-muted">RG: #{historicoBean.historicoSelecionado.aluno.rg}</span></div>
+                    </div>
+                </div>
+            </h:panelGroup>
+        </h:form>
+
         <div class="cardx-datatable">
             <div class="cardx-header">
                 <div>
-                    <div class="cardx-title">Historico de matriculas</div>
-                    <div class="cardx-subtitle">Registros por aluno</div>
+                    <div class="cardx-title">Historico escolar</div>
+                    <div class="cardx-subtitle">Disciplinas consolidadas por turma</div>
                 </div>
             </div>
             <div class="cardx-body">
                 <div class="table-scroll">
                     <h:form id="formListaHistorico">
                         <h:dataTable styleClass="table-modern" id="listaHistorico" var="registro"
-                                     value="#{historicoBean.historico}" rowKey="#{registro.id}">
-                            <h:column class="d-flex gap-2">
-                                <f:facet name="header">Acoes</f:facet>
-                                <cmp:baseIconButton id="detalharHistorico"
-                                                    action="#{historicoBean.detalhar(registro)}"
-                                                    title="Detalhar"
-                                                    styleClass="icon-action-btn"
-                                                    ajax="true"
-                                                    render=":modalDetalhesWrapper"
-                                                    value="&#xe908;"/>
-                            </h:column>
-                            <h:column><f:facet name="header">Aluno</f:facet><h:outputText value="#{registro.aluno.nome}"/></h:column>
-                            <h:column><f:facet name="header">RM</f:facet><h:outputText value="#{registro.aluno.rm}"/></h:column>
+                                     value="#{historicoBean.historico}">
                             <h:column><f:facet name="header">Turma</f:facet><h:outputText value="#{registro.turma.turma}"/></h:column>
-                            <h:column>
-                                <f:facet name="header">Situacao</f:facet>
-                                <span class="badge-pill #{historicoBean.situacaoSeverity(registro.situacao != null ? registro.situacao.situacao : null)}">
-                                    #{registro.situacao != null ? registro.situacao.situacao : '-'}
-                                </span>
-                            </h:column>
+                            <h:column><f:facet name="header">Disciplina</f:facet><h:outputText value="#{registro.disciplina.descricao}"/></h:column>
+                            <h:column><f:facet name="header">Media Final</f:facet><h:outputText value="#{registro.mediaFinal}"/></h:column>
+                            <h:column><f:facet name="header">Sit. Nota</f:facet><h:outputText value="#{registro.situacaoNota}"/></h:column>
+                            <h:column><f:facet name="header">Presenca Final</f:facet><h:outputText value="#{registro.presencaFinal}"/></h:column>
+                            <h:column><f:facet name="header">Sit. Frequencia</f:facet><h:outputText value="#{registro.situacaoFrequencia}"/></h:column>
+                            <h:column><f:facet name="header">Resultado</f:facet><h:outputText value="#{registro.situacaoFinal}"/></h:column>
                         </h:dataTable>
                     </h:form>
                 </div>
             </div>
         </div>
-
-        <h:form id="formDetalheHistorico">
-            <h:panelGroup rendered="#{not empty historicoBean.detalheSelecionado}">
-                <div class="cardx">
-                    <div class="row g-2">
-                        <div class="col-md-4"><span class="badge-pill badge-muted">Aluno: #{historicoBean.detalheSelecionado.aluno.nome}</span></div>
-                        <div class="col-md-4"><span class="badge-pill badge-muted">CPF: #{historicoBean.detalheSelecionado.aluno.cpf}</span></div>
-                        <div class="col-md-4"><span class="badge-pill badge-muted">Turma: #{historicoBean.detalheSelecionado.turma.turma}</span></div>
-                    </div>
-                </div>
-            </h:panelGroup>
-        </h:form>
-        <h:panelGroup id="modalDetalhesWrapper" layout="block">
-            <cmp:baseModal modalId="modalDetalhes"
-                           labelledby="modalDetalhesLabel"
-                           modalTitle="#{detalheModalBean.titulo}"
-                           modalTitleId="modalDetalhesLabel"
-                           modalImport="modalDetalhes.xhtml"/>
-        </h:panelGroup>
     </ui:define>
 </ui:composition>

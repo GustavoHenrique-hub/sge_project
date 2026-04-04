@@ -1,24 +1,28 @@
 package com.enterprise.model.entity.academico;
 
-import com.enterprise.dto.admin.SituacaoDTO;
 import com.enterprise.dto.academico.BoletimDTO;
-import com.enterprise.model.entity.admin.SituacaoEntity;
-import com.enterprise.model.entity.gestao.DisciplinaEntity;
 import com.enterprise.model.entity.gestao.AlunoEntity;
+import com.enterprise.model.entity.gestao.TurmaEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @Table(
-        name = "aluno_disciplina",
+        name = "boletim",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_boletim_aluno_turma", columnNames = {"aluno_id", "aluno_rm", "turma_id", "turma_codigo"})
+        },
         indexes = {
                 @Index(name = "idx_boletim_aluno", columnList = "aluno_id, aluno_rm"),
-                @Index(name = "idx_boletim_disciplina", columnList = "disciplina_id, disciplina_codigo")
+                @Index(name = "idx_boletim_turma", columnList = "turma_id, turma_codigo")
         }
 )
 public class BoletimEntity {
@@ -34,45 +38,36 @@ public class BoletimEntity {
                     name = "aluno_rm",
                     referencedColumnName = "rm",
                     nullable = false,
-                    foreignKey = @ForeignKey(name = "fk_aluno_disciplina_aluno")
+                    foreignKey = @ForeignKey(name = "fk_boletim_aluno")
             )
     })
     private AlunoEntity aluno;
 
     @ManyToOne(optional = false)
     @JoinColumns({
-            @JoinColumn(name = "disciplina_id", referencedColumnName = "id", nullable = false),
+            @JoinColumn(name = "turma_id", referencedColumnName = "id", nullable = false),
             @JoinColumn(
-                    name = "disciplina_codigo",
+                    name = "turma_codigo",
                     referencedColumnName = "codigo",
                     nullable = false,
-                    foreignKey = @ForeignKey(name = "fk_aluno_disciplina_disciplina")
+                    foreignKey = @ForeignKey(name = "fk_boletim_turma")
             )
     })
-    private DisciplinaEntity disciplina;
+    private TurmaEntity turma;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(
-            name = "situacao_id",
-            nullable = false,
-            foreignKey = @ForeignKey(name = "fk_aluno_disciplina_situacao")
-    )
-    private SituacaoEntity situacao;
+    @OneToMany(mappedBy = "boletim", fetch = FetchType.LAZY)
+    private List<NotaEntity> notas = new ArrayList<>();
+
+    @OneToMany(mappedBy = "boletim", fetch = FetchType.LAZY)
+    private List<FrequenciaEntity> frequencias = new ArrayList<>();
 
     public BoletimEntity(BoletimDTO dto) {
         this.id = dto.getId();
         if (dto.getAluno() != null) {
             this.aluno = new AlunoEntity(dto.getAluno());
         }
-        if (dto.getDisciplina() != null) {
-            this.disciplina = new DisciplinaEntity(dto.getDisciplina());
-        }
-        if (dto.getSituacao() != null) {
-            SituacaoDTO situacaoDTO = new SituacaoDTO();
-            situacaoDTO.setId(dto.getSituacao().getId());
-            situacaoDTO.setSituacao(dto.getSituacao().getSituacao());
-            situacaoDTO.setDescricao(dto.getSituacao().getDescricao());
-            this.situacao = new SituacaoEntity(situacaoDTO);
+        if (dto.getTurma() != null) {
+            this.turma = new TurmaEntity(dto.getTurma());
         }
     }
 }

@@ -17,7 +17,7 @@
                                   label="Aluno"
                                   value="#{alunoTurmaBean.filtroAluno}"
                                   badgeValue="#{alunoTurmaBean.filtroAluno != null ? alunoTurmaBean.filtroAluno.rm : null}"
-                                  completeMethod="#{alunoBean.completeAlunoBuscaGeral}"
+                                  completeMethod="#{alunoTurmaBean.completeAlunoDisponivel}"
                                   converter="#{alunoEntityConverter}"
                                   itemLabelProperty="nome"
                                   parentDivStyle="modal-link-item"

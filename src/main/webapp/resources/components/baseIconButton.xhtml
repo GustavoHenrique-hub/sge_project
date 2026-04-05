@@ -1,0 +1,43 @@
+<!-- Componente base reutilizado para manter o padrao visual e reduzir repeticao nas telas. -->
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="jakarta.faces.facelets"
+              xmlns:h="jakarta.faces.html"
+              xmlns:f="jakarta.faces.core"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:cc="jakarta.faces.composite">
+
+    <cc:interface>
+        <cc:attribute name="id" required="true" />
+        <cc:attribute name="value" required="true" />
+        <cc:attribute name="title" required="true" />
+        <cc:attribute name="styleClass" required="false" />
+        <cc:attribute name="styleclass" required="false" />
+        <cc:attribute name="action" required="true" method-signature="java.lang.Object action()" />
+        <cc:attribute name="rendered" required="false" default="true" />
+        <cc:attribute name="ajax" required="false" default="false" />
+        <cc:attribute name="execute" required="false" default="@this" />
+        <cc:attribute name="render" required="false" default="" />
+        <cc:attribute name="update" required="false" />
+    </cc:interface>
+
+    <cc:implementation>
+        <ui:fragment rendered="#{cc.attrs.rendered and cc.attrs.ajax}">
+            <h:commandButton
+                             action="#{cc.attrs.action}"
+                             title="#{cc.attrs.title}"
+                             value="#{cc.attrs.value}"
+                             styleClass="#{empty cc.attrs.styleClass ? cc.attrs.styleclass : cc.attrs.styleClass}">
+                <f:ajax execute="#{cc.attrs.execute}"
+                        render="#{empty cc.attrs.render ? (empty cc.attrs.update ? '@none' : cc.attrs.update) : cc.attrs.render}" />
+            </h:commandButton>
+        </ui:fragment>
+
+        <ui:fragment rendered="#{cc.attrs.rendered and not cc.attrs.ajax}">
+            <h:commandButton
+                             action="#{cc.attrs.action}"
+                             title="#{cc.attrs.title}"
+                             value="#{cc.attrs.value}"
+                             styleClass="#{empty cc.attrs.styleClass ? cc.attrs.styleclass : cc.attrs.styleClass}" />
+        </ui:fragment>
+    </cc:implementation>
+</ui:component>

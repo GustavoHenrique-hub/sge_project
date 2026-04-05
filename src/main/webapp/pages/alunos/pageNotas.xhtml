@@ -1,0 +1,140 @@
+<!-- Tela principal deste modulo, com blocos visuais e componentes ligados aos beans JSF. -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core"
+                xmlns:cmp="jakarta.faces.composite/components"
+                template="/template.xhtml">
+
+    <ui:define name="title">Notas</ui:define>
+    <ui:define name="subtitle">Academico / Notas</ui:define>
+
+    <!-- Area principal da tela onde os componentes visuais e os dados do bean sao montados. -->
+    <ui:define name="content">
+        <!-- Card visual usado para separar blocos de informacao, formularios ou tabelas na tela. -->
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Lancamento de notas</div>
+                    <div class="cardx-subtitle">Turma e disciplina</div>
+                </div>
+            </div>
+
+            <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+            <h:form id="formFiltroNotas">
+                <div class="filters-body">
+                    <cmp:baseAutocomplete id="dropDownTurmaNotas"
+                                          label="Turma"
+                                          value="#{notaBean.filtroTurma}"
+                                          badgeValue="#{notaBean.filtroTurma != null ? notaBean.filtroTurma.codigo : null}"
+                                          completeMethod="#{notaBean.completeTurma}"
+                                          converter="#{turmaEntityConverter}"
+                                          itemLabelProperty="turma"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"/>
+
+                    <cmp:baseAutocomplete id="dropDownDisciplinaNotas"
+                                          label="Disciplina"
+                                          value="#{notaBean.filtroDisciplina}"
+                                          badgeValue="#{notaBean.filtroDisciplina != null ? notaBean.filtroDisciplina.codigo : null}"
+                                          completeMethod="#{notaBean.completeDisciplina}"
+                                          converter="#{disciplinaEntityConverter}"
+                                          itemLabelProperty="descricao"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"/>
+
+                    <cmp:baseCommandButton value="Filtrar"
+                                           action="#{notaBean.filtrar}"
+                                           render=":growl :formListaNotas:listaNotas"/>
+                </div>
+            </h:form>
+        </div>
+
+        <!-- Card visual usado para separar blocos de informacao, formularios ou tabelas na tela. -->
+        <div class="cardx-datatable">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Notas por aluno</div>
+                    <div class="cardx-subtitle">Lancamento inline sem modal</div>
+                </div>
+            </div>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+                    <h:form id="formListaNotas">
+                        <h:dataTable styleClass="table-modern" id="listaNotas" var="registro"
+                                     value="#{notaBean.lancamentos}">
+                            <h:column class="d-flex gap-2">
+                                <f:facet name="header">Acoes</f:facet>
+                                <div class="table-inline-actions">
+                                    <cmp:baseIconButton id="editarNota"
+                                                        rendered="#{not registro.editando}"
+                                                        action="#{notaBean.editar(registro)}"
+                                                        title="Editar notas"
+                                                        ajax="true"
+                                                        render="@form"
+                                                        styleClass="icon-action-btn table-inline-icon icon-edit"
+                                                        value="&#9998;"/>
+                                    <cmp:baseIconButton id="salvarNota"
+                                                        rendered="#{registro.editando}"
+                                                        action="#{notaBean.salvar(registro)}"
+                                                        title="Salvar notas"
+                                                        ajax="true"
+                                                        execute="@form"
+                                                        render="@form :growl"
+                                                        styleClass="icon-action-btn table-inline-icon icon-check"
+                                                        value="&#10003;"/>
+                                    <cmp:baseIconButton id="cancelarNota"
+                                                        rendered="#{registro.editando}"
+                                                        action="#{notaBean.cancelar(registro)}"
+                                                        title="Cancelar edicao"
+                                                        ajax="true"
+                                                        render="@form"
+                                                        styleClass="icon-action-btn table-inline-icon icon-ban"
+                                                        value="&#10005;"/>
+                                </div>
+                            </h:column>
+                            <h:column><f:facet name="header">Aluno</f:facet><h:outputText value="#{registro.aluno.nome}"/></h:column>
+                            <h:column><f:facet name="header">RM</f:facet><h:outputText value="#{registro.aluno.rm}"/></h:column>
+                            <h:column>
+                                <f:facet name="header">1o Bim.</f:facet>
+                                <h:outputText rendered="#{not registro.editando}" value="#{empty registro.nota1 ? '-' : registro.nota1}"/>
+                                <h:selectOneMenu rendered="#{registro.editando}" value="#{registro.nota1}" styleClass="form-select datatable-inline-select">
+                                    <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{notaBean.conceitos}"/>
+                                </h:selectOneMenu>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">2o Bim.</f:facet>
+                                <h:outputText rendered="#{not registro.editando}" value="#{empty registro.nota2 ? '-' : registro.nota2}"/>
+                                <h:selectOneMenu rendered="#{registro.editando}" value="#{registro.nota2}" styleClass="form-select datatable-inline-select">
+                                    <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{notaBean.conceitos}"/>
+                                </h:selectOneMenu>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">3o Bim.</f:facet>
+                                <h:outputText rendered="#{not registro.editando}" value="#{empty registro.nota3 ? '-' : registro.nota3}"/>
+                                <h:selectOneMenu rendered="#{registro.editando}" value="#{registro.nota3}" styleClass="form-select datatable-inline-select">
+                                    <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{notaBean.conceitos}"/>
+                                </h:selectOneMenu>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">4o Bim.</f:facet>
+                                <h:outputText rendered="#{not registro.editando}" value="#{empty registro.nota4 ? '-' : registro.nota4}"/>
+                                <h:selectOneMenu rendered="#{registro.editando}" value="#{registro.nota4}" styleClass="form-select datatable-inline-select">
+                                    <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{notaBean.conceitos}"/>
+                                </h:selectOneMenu>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

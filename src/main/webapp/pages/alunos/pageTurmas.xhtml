@@ -1,0 +1,123 @@
+<!-- Tela principal deste modulo, com blocos visuais e componentes ligados aos beans JSF. -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core"
+                xmlns:cmp="jakarta.faces.composite/components"
+                template="/template.xhtml">
+
+    <ui:define name="title">Turmas</ui:define>
+    <ui:define name="subtitle">Turmas / Cadastro</ui:define>
+
+    <!-- Area principal da tela onde os componentes visuais e os dados do bean sao montados. -->
+    <ui:define name="content">
+        <!-- Card visual usado para separar blocos de informacao, formularios ou tabelas na tela. -->
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Cadastro de turmas</div>
+                    <div class="cardx-subtitle">Filtros e consulta de turmas</div>
+                </div>
+            </div>
+
+            <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+            <h:form id="formFiltrosTurma">
+                <div class="filters-body">
+                    <cmp:baseAutocomplete
+                            id="dropDownTurma"
+                            label="Turma"
+                            value="#{turmaBean.filtroTurma}"
+                            badgeValue="#{turmaBean.filtroTurma != null ? turmaBean.filtroTurma.codigo : null}"
+                            completeMethod="#{turmaBean.completeTurma}"
+                            converter="#{turmaEntityConverter}"
+                            itemLabelProperty="turma"
+                            parentDivStyle="filters-body-column"
+                            childrenDivStyle="filters-body-column-row"
+                            showMessage="false"
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
+                    <cmp:baseCommandButton value="Filtrar"
+                                           action="#{turmaBean.filtrar}"
+                                           render=":growl :formListaTurma:listaTurmas"/>
+                    <cmp:baseButton dataBsToggle="modal"
+                                    dataBsTarget="#modalNovaTurma"
+                                    buttonLabel="Cadastrar Turma"
+                                    parentDivStyle="filters-body-button-column"/>
+                </div>
+            </h:form>
+        </div>
+
+        <!-- Card visual usado para separar blocos de informacao, formularios ou tabelas na tela. -->
+        <div class="cardx-datatable">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Lista de turmas</div>
+                    <div class="cardx-subtitle">SubmÃ³dulo de consulta</div>
+                </div>
+            </div>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+                    <h:form id="formListaTurma">
+                        <h:dataTable styleClass="table-modern" id="listaTurmas" var="turma"
+                                     value="#{turmaBean.turmas}" rowKey="#{turma.id}">
+                            <h:column class="d-flex gap-2">
+                                <f:facet name="header">Acoes</f:facet>
+                                <cmp:baseIconButton id="detalharTurma"
+                                                    action="#{turmaBean.detalhar(turma)}"
+                                                    title="Detalhar"
+                                                    styleClass="icon-action-btn"
+                                                    ajax="true"
+                                                    render=":modalDetalhesWrapper"
+                                                    value="&#xe908;"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Codigo</f:facet>
+                                <h:outputText value="#{turma.codigo}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Turma</f:facet>
+                                <h:outputText value="#{turma.turma}"/>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+        <h:form id="formDetalheTurma">
+            <h:panelGroup rendered="#{not empty turmaBean.detalheSelecionado}">
+                <div class="cardx">
+                    <div class="cardx-header">
+                        <div>
+                            <div class="cardx-title">Detalhes da turma</div>
+                            <div class="cardx-subtitle">Registro selecionado</div>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-4"><span class="badge-pill badge-muted">ID: #{turmaBean.detalheSelecionado.id}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Codigo: #{turmaBean.detalheSelecionado.codigo}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Turma: #{turmaBean.detalheSelecionado.turma}</span></div>
+                    </div>
+                </div>
+            </h:panelGroup>
+        </h:form>
+
+        <cmp:baseModal
+                modalId="modalNovaTurma"
+                labelledby="modalNovaTurmaLabel"
+                modalTitle="Cadastrar Turma"
+                modalTitleId="modalNovaTurmaLabel"
+                modalImport="modalNewTurma.xhtml" />
+        <h:panelGroup id="modalDetalhesWrapper" layout="block">
+            <cmp:baseModal
+                    modalId="modalDetalhes"
+                    labelledby="modalDetalhesLabel"
+                    modalTitle="#{detalheModalBean.titulo}"
+                    modalTitleId="modalDetalhesLabel"
+                    modalImport="modalDetalhes.xhtml"/>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

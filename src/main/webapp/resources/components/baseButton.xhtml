@@ -1,0 +1,45 @@
+<!-- Componente base reutilizado para manter o padrao visual e reduzir repeticao nas telas. -->
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="jakarta.faces.facelets"
+              xmlns:h="jakarta.faces.html"
+              xmlns:f="jakarta.faces.core"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:cc="jakarta.faces.composite">
+
+    <cc:interface>
+        <cc:attribute name="styleClass" required="false" default="btn-primaryx" />
+        <cc:attribute name="class" required="false" />
+        <cc:attribute name="buttonType" required="false" default="button" />
+        <cc:attribute name="dataBsToggle" required="false"/>
+        <cc:attribute name="dataBsTarget" required="false" />
+        <cc:attribute name="dataBsDismiss" required="false" />
+        <cc:attribute name="buttonLabel" required="true"/>
+        <cc:attribute name="onclick" required="false" />
+        <cc:attribute name="rendered" required="false" default="true" />
+        <cc:attribute name="parentDivStyle" required="false" default="filters-body-button-column"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <ui:fragment rendered="#{cc.attrs.rendered and not empty cc.attrs.parentDivStyle}">
+            <div class="#{cc.attrs.parentDivStyle}">
+                <button class="#{empty cc.attrs.styleClass ? cc.attrs['class'] : cc.attrs.styleClass}"
+                        type="button"
+                        onclick="#{cc.attrs.onclick}"
+                        data-bs-toggle="#{cc.attrs.dataBsToggle}"
+                        data-bs-target="#{cc.attrs.dataBsTarget}"
+                        data-bs-dismiss="#{cc.attrs.dataBsDismiss}">#{cc.attrs.buttonLabel}
+                </button>
+            </div>
+        </ui:fragment>
+
+        <ui:fragment rendered="#{cc.attrs.rendered and empty cc.attrs.parentDivStyle}">
+            <button class="#{empty cc.attrs.styleClass ? cc.attrs['class'] : cc.attrs.styleClass}"
+                    type="#{cc.attrs.buttonType}"
+                    onclick="#{cc.attrs.onclick}"
+                    data-bs-toggle="#{cc.attrs.dataBsToggle}"
+                    data-bs-target="#{cc.attrs.dataBsTarget}"
+                    data-bs-dismiss="#{cc.attrs.dataBsDismiss}">#{cc.attrs.buttonLabel}
+            </button>
+        </ui:fragment>
+    </cc:implementation>
+</ui:component>

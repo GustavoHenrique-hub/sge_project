@@ -1,0 +1,150 @@
+<!-- Tela principal deste modulo, com blocos visuais e componentes ligados aos beans JSF. -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core"
+                xmlns:cmp="jakarta.faces.composite/components"
+                template="/template.xhtml">
+
+    <ui:define name="title">Matriculas</ui:define>
+    <ui:define name="subtitle">Alunos / Matriculas</ui:define>
+
+    <!-- Area principal da tela onde os componentes visuais e os dados do bean sao montados. -->
+    <ui:define name="content">
+        <!-- Card visual usado para separar blocos de informacao, formularios ou tabelas na tela. -->
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Nova matricula</div>
+                    <div class="cardx-subtitle">Submodulo de cadastro</div>
+                </div>
+            </div>
+
+            <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+            <h:form id="formNovaMatricula">
+                <div class="filters-body">
+                    <cmp:baseAutocomplete id="dropDownAluno"
+                                          label="Aluno"
+                                          value="#{alunoTurmaBean.filtroAluno}"
+                                          badgeValue="#{alunoTurmaBean.filtroAluno != null ? alunoTurmaBean.filtroAluno.rm : null}"
+                                          completeMethod="#{alunoBean.completeAlunoBuscaGeral}"
+                                          converter="#{alunoEntityConverter}"
+                                          itemLabelProperty="nome"
+                                          parentDivStyle="filters-body-column"
+                                          childrenDivStyle="filters-body-column-row"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"
+                                          placeholder="Busque por nome, RM ou CPF">
+                        <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
+                        <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
+                        <p:column><h:outputText value="CPF: #{alunoBean.formatarCpf(item.cpf)}"/></p:column>
+                    </cmp:baseAutocomplete>
+
+                    <cmp:baseAutocomplete id="dropDownTurma"
+                                          label="Turma"
+                                          value="#{alunoTurmaBean.filtroTurma}"
+                                          badgeValue="#{alunoTurmaBean.filtroTurma != null ? alunoTurmaBean.filtroTurma.codigo : null}"
+                                          completeMethod="#{turmaBean.completeTurma}"
+                                          converter="#{turmaEntityConverter}"
+                                          itemLabelProperty="turma"
+                                          parentDivStyle="filters-body-column"
+                                          childrenDivStyle="filters-body-column-row"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"/>
+
+                    <cmp:baseAutocomplete id="dropDownSituacao"
+                                          label="Situacao"
+                                          value="#{alunoTurmaBean.filtroSituacao}"
+                                          badgeValue="#{alunoTurmaBean.filtroSituacao != null ? alunoTurmaBean.filtroSituacao.id : null}"
+                                          completeMethod="#{situacaoBean.completeSituacao}"
+                                          converter="#{situacaoEntityConverter}"
+                                          itemLabelProperty="situacao"
+                                          parentDivStyle="filters-body-column"
+                                          childrenDivStyle="filters-body-column-row"
+                                          showMessage="false"
+                                          required="false"
+                                          fieldStyle="field-filters-autocomplete-wrap"/>
+
+                    <cmp:baseCommandButton value="Filtrar"
+                                           action="#{alunoTurmaBean.filtrar}"
+                                           render=":growl :formMatricula:listaMatriculas"/>
+                </div>
+            </h:form>
+        </div>
+
+        <!-- Card visual usado para separar blocos de informacao, formularios ou tabelas na tela. -->
+        <div class="cardx-datatable">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Matriculas registradas</div>
+                    <div class="cardx-subtitle">Consulta rapida</div>
+                </div>
+                <div class="d-flex gap-2">
+                    <cmp:baseButton dataBsToggle="modal"
+                                    dataBsTarget="#modalMatricula"
+                                    buttonLabel="Vincular Turma"
+                                    parentDivStyle=""/>
+                </div>
+            </div>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+                    <h:form id="formMatricula">
+                        <h:dataTable styleClass="table-modern" id="listaMatriculas" var="matricula"
+                                     value="#{alunoTurmaBean.alunoTurmas}"
+                                     rowKey="#{matricula.id}">
+                            <h:column class="d-flex gap-2">
+                                <f:facet name="header">Acoes</f:facet>
+                                <cmp:baseIconButton id="detalharMatricula"
+                                                    action="#{alunoTurmaBean.detalhar(matricula)}"
+                                                    title="Detalhar"
+                                                    styleClass="icon-action-btn"
+                                                    ajax="true"
+                                                    render=":modalDetalhesWrapper"
+                                                    value="&#xe908;"/>
+                            </h:column>
+                            <h:column><f:facet name="header">Nome</f:facet><h:outputText value="#{matricula.aluno.nome}"/></h:column>
+                            <h:column><f:facet name="header">CPF</f:facet><h:outputText value="#{matricula.aluno.cpf}"/></h:column>
+                            <h:column><f:facet name="header">Turma</f:facet><h:outputText value="#{matricula.turma.turma}"/></h:column>
+                            <h:column>
+                                <f:facet name="header">Situacao</f:facet>
+                                <span class="badge-pill #{alunoTurmaBean.situacaoSeverity(matricula.situacao != null ? matricula.situacao.situacao : null)}">
+                                    #{matricula.situacao != null ? matricula.situacao.situacao : '-'}
+                                </span>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+        <h:form id="formDetalheMatricula">
+            <h:panelGroup rendered="#{not empty alunoTurmaBean.detalheSelecionado}">
+                <div class="cardx">
+                    <div class="row g-2">
+                        <div class="col-md-4"><span class="badge-pill badge-muted">ID: #{alunoTurmaBean.detalheSelecionado.id}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Aluno: #{alunoTurmaBean.detalheSelecionado.aluno.nome}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Turma: #{alunoTurmaBean.detalheSelecionado.turma.turma}</span></div>
+                    </div>
+                </div>
+            </h:panelGroup>
+        </h:form>
+
+        <cmp:baseModal modalId="modalMatricula"
+                       labelledby="modalMatriculaLabel"
+                       modalTitle="Vincular aluno a turma"
+                       modalTitleId="modalMatriculaLabel"
+                       modalImport="modalNewMatricula.xhtml"/>
+        <h:panelGroup id="modalDetalhesWrapper" layout="block">
+            <cmp:baseModal modalId="modalDetalhes"
+                           labelledby="modalDetalhesLabel"
+                           modalTitle="#{detalheModalBean.titulo}"
+                           modalTitleId="modalDetalhesLabel"
+                           modalImport="modalDetalhes.xhtml"/>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

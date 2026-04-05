@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: sge-project
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+
+    port: 8080
+
+    # Welcome file definido no web.xml
+    healthCheckPath: /pages/alunos/pageAlunos.xhtml
+
+    envVars:
+      - key: DB_URL
+        sync: false   # Opcional: URL JDBC completa
+      - key: DB_HOST
+        sync: false   # Host do PostgreSQL criado no Render
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_NAME
+        sync: false   # Nome do banco criado no Render
+      - key: DB_USER
+        sync: false   # Usuário do banco
+      - key: DB_PASSWORD
+        sync: false   # Senha — nunca colocar em texto aqui
+      - key: JWT_SECRET
+        sync: false

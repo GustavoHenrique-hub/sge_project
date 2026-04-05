@@ -1,0 +1,348 @@
+<!-- Template base compartilhado pelas paginas autenticadas, definindo estrutura, menu e area de conteudo. -->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:f="jakarta.faces.core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>
+        <ui:insert name="title">Sistema de Gestao Escolar</ui:insert>
+    </title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap"
+          rel="stylesheet"/>
+    <link rel="icon"
+          href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%232563eb'/%3E%3Cpath d='M20 22h24v6H20zm0 10h24v6H20zm0 10h16v6H20z' fill='white'/%3E%3C/svg%3E"/>
+    <h:outputStylesheet library="primeicons" name="primeicons.css"/>
+
+</h:head>
+
+<h:body styleClass="#{themeBean.bodyClass}">
+    <div class="app-shell">
+
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo"></div>
+                <div>
+                    <div class="title">Gestao Escolar</div>
+                    <div class="subtitle">
+                        <ui:insert name="subtitle">Painel</ui:insert>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="nav">
+                <h:link outcome="/pages/alunos/pageDashboard.xhtml"
+                        styleClass="#{request.servletPath eq '/pages/alunos/pageDashboard.xhtml' ? 'active' : ''}">
+                    Painel / Visao geral
+                </h:link>
+
+                <div class="nav-module #{request.servletPath eq '/pages/alunos/pageAlunos.xhtml' or request.servletPath eq '/pages/admin/pageMatriculas.xhtml' or request.servletPath eq '/pages/alunos/pageTurmas.xhtml' ? 'is-expanded' : ''}">
+                    <button type="button"
+                            class="nav-module-toggle"
+                            aria-expanded="false">
+                        <span>Gestao</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </button>
+                    <div class="nav-module-links">
+                        <div class="nav-module #{request.servletPath eq '/pages/alunos/pageAlunos.xhtml' or request.servletPath eq '/pages/admin/pageMatriculas.xhtml' ? 'is-expanded' : ''}">
+                            <button type="button"
+                                    class="nav-module-toggle"
+                                    aria-expanded="false">
+                                <span>Alunos</span>
+                                <i class="pi pi-chevron-down"></i>
+                            </button>
+                            <div class="nav-module-links">
+                                <h:link outcome="/pages/alunos/pageAlunos.xhtml"
+                                        styleClass="#{request.servletPath eq '/pages/alunos/pageAlunos.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                                <h:link outcome="/pages/admin/pageMatriculas.xhtml"
+                                        styleClass="#{request.servletPath eq '/pages/admin/pageMatriculas.xhtml' ? 'active' : ''}">Matriculas</h:link>
+                            </div>
+                        </div>
+
+                        <div class="nav-module #{request.servletPath eq '/pages/alunos/pageTurmas.xhtml' ? 'is-expanded' : ''}">
+                            <button type="button"
+                                    class="nav-module-toggle"
+                                    aria-expanded="false">
+                                <span>Turmas</span>
+                                <i class="pi pi-chevron-down"></i>
+                            </button>
+                            <div class="nav-module-links">
+                                <h:link outcome="/pages/alunos/pageTurmas.xhtml"
+                                        styleClass="#{request.servletPath eq '/pages/alunos/pageTurmas.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-module #{request.servletPath eq '/pages/profissionais/pageProfissionais.xhtml' or request.servletPath eq '/pages/profissionais/pageDisciplina.xhtml' ? 'is-expanded' : ''}">
+                    <button type="button"
+                            class="nav-module-toggle"
+                            aria-expanded="false">
+                        <span>Profissionais</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </button>
+                    <div class="nav-module-links">
+                        <h:link outcome="/pages/profissionais/pageProfissionais.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/profissionais/pageProfissionais.xhtml' ? 'active' : ''}">Cadastro</h:link>
+                        <h:link outcome="/pages/profissionais/pageDisciplina.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/profissionais/pageDisciplina.xhtml' ? 'active' : ''}">Disciplina</h:link>
+                    </div>
+                </div>
+
+                <div class="nav-module #{request.servletPath eq '/pages/alunos/pageBoletim.xhtml' or request.servletPath eq '/pages/alunos/pageNotas.xhtml' or request.servletPath eq '/pages/alunos/pageFrequencia.xhtml' or request.servletPath eq '/pages/alunos/pageHistorico.xhtml' ? 'is-expanded' : ''}">
+                    <button type="button"
+                            class="nav-module-toggle"
+                            aria-expanded="false">
+                        <span>Academico</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </button>
+                    <div class="nav-module-links">
+                        <h:link outcome="/pages/alunos/pageBoletim.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/alunos/pageBoletim.xhtml' ? 'active' : ''}">Boletim</h:link>
+                        <h:link outcome="/pages/alunos/pageNotas.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/alunos/pageNotas.xhtml' ? 'active' : ''}">Notas</h:link>
+                        <h:link outcome="/pages/alunos/pageFrequencia.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/alunos/pageFrequencia.xhtml' ? 'active' : ''}">Frequencia</h:link>
+                        <h:link outcome="/pages/alunos/pageHistorico.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/alunos/pageHistorico.xhtml' ? 'active' : ''}">Historico</h:link>
+                    </div>
+                </div>
+
+                <div class="nav-module #{request.servletPath eq '/pages/admin/pageAdmin.xhtml' ? 'is-expanded' : ''}">
+                    <button type="button"
+                            class="nav-module-toggle"
+                            aria-expanded="false">
+                        <span>Administracao</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </button>
+                    <div class="nav-module-links">
+                        <h:link outcome="/pages/admin/pageAdmin.xhtml"
+                                styleClass="#{request.servletPath eq '/pages/admin/pageAdmin.xhtml' ? 'active' : ''}">Usuarios e Perfis</h:link>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main">
+            <div class="topbar">
+                <div class="search">
+                    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+                    <h:form>
+                        <h:inputText value="#{layoutBean.search}"
+                                     styleClass=""
+                                     pt:placeholder="Buscar aluno, turma, profissional..."
+                                     xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"/>
+                    </h:form>
+                </div>
+
+                <div class="topbar-right">
+                    <span class="badge-pill badge-muted">Notificacoes</span>
+                    <div class="profile-inline">
+                        <div class="profile-inline-info">
+                            <span class="badge-pill badge-muted">#{authBean.nomeUsuarioLogado}</span>
+                            <span class="badge-pill badge-muted">#{authBean.perfilUsuarioLogado}</span>
+                            <span class="badge-pill badge-muted"
+                                  id="sessionTimerBadge"
+                                  data-session-seconds="#{authBean.tempoSessaoRestanteSegundos}">
+                                #{authBean.tempoSessaoRestanteFormatado}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="profile-inline">
+                            <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+                            <h:form styleClass="d-inline">
+                                <div class="profile-inline-info">
+                                <p:commandButton action="#{authBean.logout}"
+                                                 ajax="false"
+                                                 icon="pi pi-sign-out"
+                                                 title="Sair"
+                                                 pt:aria-label="Sair"
+                                                 styleClass="icon-action-btn profile-logout ui-button-icon-only ui-button-outlined rounded-button"
+                                                 data-no-loader="true"/>
+                                <p:commandButton action="#{themeBean.toggleTheme}"
+                                                 rendered="#{themeBean.darkTheme}"
+                                                 ajax="false"
+                                                 icon="pi pi-sun"
+                                                 title="Trocar para tema claro"
+                                                 styleClass="btn-ghostx theme-toggle rounded-button ui-button-outlined"/>
+                                <p:commandButton action="#{themeBean.toggleTheme}"
+                                                 rendered="#{!themeBean.darkTheme}"
+                                                 ajax="false"
+                                                 icon="pi pi-moon"
+                                                 title="Trocar para tema escuro"
+                                                 styleClass="btn-ghostx theme-toggle rounded-button ui-button-outlined"/>
+                                </div>
+                            </h:form>
+                    </div>
+                </div>
+            </div>
+
+            <ui:insert name="content"/>
+        </main>
+
+    </div>
+
+    <p:growl id="growl"
+             globalOnly="true"
+             showSummary="true"
+             showDetail="true"
+             life="3200"
+             sticky="false"/>
+
+    <h:panelGroup id="msgs" layout="block" styleClass="jsf-msgs-hidden">
+        <h:messages globalOnly="true" layout="list"
+                    showSummary="true"
+                    showDetail="true"
+                    infoClass="jsf-msg jsf-info"
+                    warnClass="jsf-msg jsf-warn"
+                    errorClass="jsf-msg jsf-error"
+                    fatalClass="jsf-msg jsf-fatal"/>
+    </h:panelGroup>
+
+    <div id="pageLoader" class="app-loader-backdrop" aria-hidden="true">
+        <div class="app-loader-card">
+            <i class="pi pi-spin pi-spinner app-loader-icon"/>
+            <span>Carregando...</span>
+        </div>
+    </div>
+
+    <p:ajaxStatus onstart="window.AppLoader &amp;&amp; AppLoader.show()"
+                  onsuccess="window.AppLoader &amp;&amp; AppLoader.hide()"
+                  onerror="window.AppLoader &amp;&amp; AppLoader.hide()"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"/>
+    <!-- Script pequeno usado apenas para ajustar comportamento visual da tela sem alterar a regra de negocio. -->
+    <script>
+        //<![CDATA[
+        (function () {
+            // Controla o loader global usado em requisicoes e trocas de pagina para dar feedback visual ao usuario.
+            var loaderEl = null;
+            var visible = false;
+
+            function ensureEl() {
+                if (!loaderEl) {
+                    loaderEl = document.getElementById("pageLoader");
+                }
+                return loaderEl;
+            }
+
+            function showLoader() {
+                var el = ensureEl();
+                if (!el) {
+                    return;
+                }
+                if (!visible) {
+                    visible = true;
+                    el.classList.add("is-visible");
+                }
+            }
+
+            function hideLoader() {
+                var el = ensureEl();
+                if (!el) {
+                    return;
+                }
+                visible = false;
+                el.classList.remove("is-visible");
+            }
+
+            function shouldIgnoreTrigger(target) {
+                if (!target) {
+                    return true;
+                }
+                if (target.closest("[data-bs-dismiss='modal'], [data-bs-toggle='modal'], [data-no-loader='true']")) {
+                    return true;
+                }
+                if (target.tagName === "A") {
+                    var href = target.getAttribute("href");
+                    if (!href || href === "#" || href.startsWith("javascript:") || target.target === "_blank" || target.hasAttribute("download")) {
+                        return true;
+                    }
+                }
+                if (target.tagName === "BUTTON") {
+                    var type = (target.getAttribute("type") || "submit").toLowerCase();
+                    if (type === "button") {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            window.AppLoader = {
+                show: showLoader,
+                hide: hideLoader
+            };
+
+            window.addEventListener("beforeunload", showLoader);
+            window.addEventListener("pageshow", function () {
+                visible = false;
+                hideLoader();
+            });
+        })();
+
+        (function () {
+            // Abre e fecha os grupos do menu lateral mantendo o comportamento de accordion simples.
+            var modules = document.querySelectorAll(".nav-module");
+
+            modules.forEach(function (module) {
+                var toggle = module.querySelector(".nav-module-toggle");
+                if (!toggle) {
+                    return;
+                }
+
+                var expanded = module.classList.contains("is-expanded");
+                toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+
+                toggle.addEventListener("click", function () {
+                    module.classList.toggle("is-expanded");
+                    toggle.setAttribute("aria-expanded",
+                        module.classList.contains("is-expanded") ? "true" : "false");
+                });
+            });
+        })();
+
+        (function () {
+            // Atualiza o contador visual da sessao sem depender de novas requisicoes ao servidor.
+            var timerBadge = document.getElementById("sessionTimerBadge");
+            if (!timerBadge) {
+                return;
+            }
+
+            var remaining = parseInt(timerBadge.getAttribute("data-session-seconds") || "0", 10);
+            if (!Number.isFinite(remaining) || remaining < 0) {
+                remaining = 0;
+            }
+
+            function render() {
+                var minutes = Math.floor(remaining / 60);
+                var seconds = remaining % 60;
+                timerBadge.textContent =
+                    String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+            }
+
+            render();
+            window.setInterval(function () {
+                if (remaining > 0) {
+                    remaining -= 1;
+                    render();
+                }
+            }, 1000);
+        })();
+        //]]>
+    </script>
+
+    <h:outputStylesheet library="css" name="app-v2.css" target="body"/>
+</h:body>
+</html>
+

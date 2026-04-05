@@ -1,0 +1,68 @@
+<!-- Componente modal reutilizavel para cadastro, edicao ou visualizacao de detalhes. -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:cmp="jakarta.faces.composite/components"
+                xmlns:p="http://primefaces.org/ui">
+
+    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+    <h:form id="formNewMateria">
+        <p:remoteCommand name="rcLimparNovaMateria"
+                         action="#{profissionalDisciplinaBean.limparFormulario}"
+                         process="@this"
+                         immediate="true"
+                         update="@form :formFiltrosProfissional"/>
+        <div id="grid" class="modal-link-grid">
+            <cmp:baseAutocomplete id="dropDownProfessorModal"
+                                  label="Professor"
+                                  value="#{profissionalDisciplinaBean.filtroProfissional}"
+                                  badgeValue="#{profissionalDisciplinaBean.filtroProfissional != null ? profissionalDisciplinaBean.filtroProfissional.rm : null}"
+                                  completeMethod="#{profissionalBean.completeProfissionalProfessor}"
+                                  converter="#{profissionalEntityConverter}"
+                                  itemLabelProperty="nome"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
+                                  requiredMessage="Professor Ã© obrigatorio!"
+                                  fieldStyle="field-modal-autocomplete-wrap"
+                                  placeholder="Busque por nome, RM ou CPF">
+                <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
+                <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
+                <p:column><h:outputText value="CPF: #{profissionalBean.formatarCpf(item.cpf)}"/></p:column>
+            </cmp:baseAutocomplete>
+
+            <cmp:baseAutocomplete id="dropDownDisciplinaModal"
+                                  label="Disciplina"
+                                  value="#{profissionalDisciplinaBean.filtroDisciplina}"
+                                  badgeValue="#{profissionalDisciplinaBean.filtroDisciplina != null ? profissionalDisciplinaBean.filtroDisciplina.codigo : null}"
+                                  completeMethod="#{disciplinaBean.completeDisciplina}"
+                                  converter="#{disciplinaEntityConverter}"
+                                  itemLabelProperty="descricao"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
+                                  requiredMessage="Disciplina e obrigatoria!"
+                                  fieldStyle="field-modal-autocomplete-wrap"/>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
+            <cmp:baseButton styleClass="btn-ghostx"
+                            onclick="rcLimparNovaMateria()"
+                            dataBsDismiss="modal"
+                            buttonLabel="Cancelar"
+                            parentDivStyle=""/>
+
+            <p:commandButton value="Salvar"
+                             styleClass="btn-primaryx ui-button-outlined"
+                             style="border-radius: 10px"
+                             action="#{profissionalDisciplinaBean.confirmarPelosFiltros}"
+                             process="@form"
+                             update=":growl :formListaProfissional:listaProfissionais :formFiltrosProfissional @form"
+                             oncomplete="if(!args.validationFailed){rcLimparNovaMateria();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovaMateria')).hide();}"/>
+        </div>
+
+    </h:form>
+
+</ui:composition>

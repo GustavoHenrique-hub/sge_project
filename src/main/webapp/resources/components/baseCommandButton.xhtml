@@ -1,0 +1,38 @@
+<!-- Componente base reutilizado para manter o padrao visual e reduzir repeticao nas telas. -->
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="jakarta.faces.facelets"
+              xmlns:h="jakarta.faces.html"
+              xmlns:f="jakarta.faces.core"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:cc="jakarta.faces.composite">
+
+    <cc:interface>
+        <cc:attribute name="value" required="true" />
+        <cc:attribute name="action" required="true" method-signature="java.lang.Object action()" />
+        <cc:attribute name="styleClass" required="false" default="btn-ghostx" />
+        <cc:attribute name="execute" required="false" default="@form" />
+        <cc:attribute name="render" required="false" default="@none" />
+        <cc:attribute name="rendered" required="false" default="true" />
+        <cc:attribute name="parentDivStyle" required="false" default="filters-body-button-column" />
+    </cc:interface>
+
+    <cc:implementation>
+        <ui:fragment rendered="#{cc.attrs.rendered and not empty cc.attrs.parentDivStyle}">
+            <div class="#{cc.attrs.parentDivStyle}">
+                <h:commandButton value="#{cc.attrs.value}"
+                                 styleClass="#{cc.attrs.styleClass}"
+                                 action="#{cc.attrs.action}">
+                    <f:ajax execute="#{cc.attrs.execute}" render="#{cc.attrs.render}"/>
+                </h:commandButton>
+            </div>
+        </ui:fragment>
+
+        <ui:fragment rendered="#{cc.attrs.rendered and empty cc.attrs.parentDivStyle}">
+            <h:commandButton value="#{cc.attrs.value}"
+                             styleClass="#{cc.attrs.styleClass}"
+                             action="#{cc.attrs.action}">
+                <f:ajax execute="#{cc.attrs.execute}" render="#{cc.attrs.render}"/>
+            </h:commandButton>
+        </ui:fragment>
+    </cc:implementation>
+</ui:component>

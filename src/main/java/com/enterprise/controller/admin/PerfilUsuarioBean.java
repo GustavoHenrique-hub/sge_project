@@ -1,0 +1,237 @@
+package com.enterprise.controller.admin;
+
+import com.enterprise.dto.admin.PerfilDTO;
+import com.enterprise.dto.admin.PerfilUsuarioDTO;
+import com.enterprise.dto.admin.SituacaoDTO;
+import com.enterprise.dto.admin.UsuarioDTO;
+import com.enterprise.model.entity.admin.PerfilEntity;
+import com.enterprise.model.entity.admin.PerfilUsuarioEntity;
+import com.enterprise.model.entity.admin.SituacaoEntity;
+import com.enterprise.model.entity.admin.UsuarioEntity;
+import com.enterprise.model.entity.gestao.ProfissionalEntity;
+import com.enterprise.service.admin.PerfilService;
+import com.enterprise.service.admin.PerfilUsuarioService;
+import com.enterprise.service.admin.SituacaoService;
+import com.enterprise.service.admin.UsuarioService;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import lombok.Getter;
+import lombok.Setter;
+import org.primefaces.PrimeFaces;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+/**
+ * Bean JSF que concentra as acoes da tela de PerfilUsuarioBean e conversa com a camada de servico.
+ */
+
+@Named("perfilUsuarioBean")
+@ViewScoped
+@Getter
+@Setter
+public class PerfilUsuarioBean implements Serializable {
+
+    @Inject
+    private PerfilUsuarioService service;
+    @Inject
+    private PerfilService perfilService;
+    @Inject
+    private SituacaoService situacaoService;
+    @Inject
+    private UsuarioService usuarioService;
+    private PerfilUsuarioDTO perfilUsuarioDTO = new PerfilUsuarioDTO();
+    private List<PerfilUsuarioDTO> perfilUsuarios = new ArrayList<>();
+    private Long perfilId;
+    private Long usuarioId;
+    private Long situacaoId;
+    private UsuarioEntity usuarioSelecionado;
+    private PerfilEntity perfilSelecionado;
+    private SituacaoEntity situacaoSelecionada;
+    private ProfissionalEntity filtroProfissional;
+    private PerfilEntity filtroPerfil;
+    private SituacaoEntity filtroSituacao;
+    private List<String> situacao = new ArrayList<>();
+    /**
+     * Inicializa o estado da tela ou da classe assim que a instancia fica disponivel.
+     */
+
+
+    @PostConstruct
+    public void init() {
+        recarregarLista();
+    }
+    /**
+     * Recarrega a lista exibida na interface para refletir o estado atual dos dados.
+     */
+
+    private void recarregarLista() {
+        perfilUsuarios = service.listarDTO();
+        PrimeFaces current = PrimeFaces.current();
+        if (current != null) {
+            current.ajax().update(":formLista", ":growl");
+        }
+    }
+    /**
+     * Limpa os campos do formulario para preparar um novo cadastro ou nova consulta.
+     */
+
+    public void limparFormulario() {
+        perfilUsuarioDTO = new PerfilUsuarioDTO();
+        perfilId = null;
+        usuarioId = null;
+        situacaoId = null;
+        usuarioSelecionado = null;
+        perfilSelecionado = null;
+        situacaoSelecionada = null;
+    }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
+
+    public String situacaoSeverity(String situacao) {
+        if (situacao == null) {
+            return "info";
+        }
+        return switch (situacao.toUpperCase()) {
+            case "ATIVO" -> "badge-success";
+            case "INATIVO" -> "badge-danger";
+            default -> "warning";
+        };
+    }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
+
+    public void vincular(){
+        try{
+            if(perfilUsuarioDTO.getId() == null){
+                usuarioId = usuarioSelecionado == null ? null : usuarioSelecionado.getId();
+                perfilId = perfilSelecionado == null ? null : perfilSelecionado.getId();
+                situacaoId = situacaoSelecionada == null ? null : situacaoSelecionada.getId();
+
+                if (usuarioId != null) {
+                    UsuarioDTO usuario = new UsuarioDTO();
+                    usuario.setId(usuarioId);
+                    perfilUsuarioDTO.setUsuario(usuario);
+                } else {
+                    perfilUsuarioDTO.setUsuario(null);
+                }
+                if (perfilId != null) {
+                    PerfilEntity perfil = perfilService.findById(perfilId)
+                            .orElseThrow(() -> new IllegalArgumentException("Perfil invÃƒÂ¡lido."));
+                    perfilUsuarioDTO.setPerfil(new PerfilDTO(perfil));
+                } else {
+                    perfilUsuarioDTO.setPerfil(null);
+                }
+                if (situacaoId != null){
+                    SituacaoEntity situacao = situacaoService.findById(situacaoId)
+                            .orElseThrow(() -> new IllegalArgumentException("Situacao invÃƒÂ¡lida."));
+                    perfilUsuarioDTO.setSituacao(new SituacaoDTO(situacao));
+                } else {
+                    perfilUsuarioDTO.setSituacao(null);
+                }
+                service.vincular(perfilUsuarioDTO);
+                addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "UsuÃƒÂ¡rio criado.");
+            }
+            recarregarLista();
+            limparFormulario();
+        }catch (Exception e){
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
+        }
+    }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
+
+    public void login(String login, String password) {
+        try{
+            service.autenticar(login, password);
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Seja bem-vindo!");
+        }catch (Exception e){
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
+        }
+    }
+    /**
+     * Aplica os filtros preenchidos na tela e atualiza a lista com o resultado encontrado.
+     */
+
+    public void filtrar() {
+        try {
+            Long profissionalId = filtroProfissional == null ? null : filtroProfissional.getId();
+            Long perfilId = filtroPerfil == null ? null : filtroPerfil.getId();
+            Long situacaoId = filtroSituacao == null ? null : filtroSituacao.getId();
+            boolean filtroVazio = profissionalId == null
+                    && perfilId == null
+                    && situacaoId == null;
+            if (filtroVazio) {
+                perfilUsuarios = service.listarDTO();
+            } else {
+                perfilUsuarios = service.listarPorFiltros(profissionalId, perfilId, situacaoId);
+            }
+            int total = perfilUsuarios == null ? 0 : perfilUsuarios.size();
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Filtro aplicado. Registros: " + total + ".");
+        } catch (Exception e) {
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao filtrar. " + e.getMessage());
+        }
+    }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
+
+    public void ativarVinculo(PerfilUsuarioDTO dto) {
+        try {
+            service.ativarVinculo(dto.getId());
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "VÃƒÂ­nculo ativado.");
+            recarregarLista();
+        } catch (Exception e) {
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
+        }
+    }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
+
+    public void inativarVinculo(PerfilUsuarioDTO dto) {
+        try {
+            service.inativarVinculo(dto.getId());
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "VÃƒÂ­nculo inativado.");
+            recarregarLista();
+        } catch (Exception e) {
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
+        }
+    }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
+
+    public void excluirVinculo(PerfilUsuarioDTO dto) {
+        try {
+            service.excluirVinculoSeInativo(dto.getId());
+            addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "VÃƒÂ­nculo excluÃƒÂ­do.");
+            recarregarLista();
+        } catch (Exception e) {
+            addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
+        }
+    }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
+
+    public boolean isSituacaoInativa(PerfilUsuarioDTO dto) {
+        String situacao = dto == null || dto.getSituacao() == null ? null : dto.getSituacao().getSituacao();
+        return situacao != null && situacao.equalsIgnoreCase("INATIVO");
+    }
+    /**
+     * Adiciona uma mensagem de retorno para orientar o usuario sobre o resultado da acao.
+     */
+
+    private void addMsg(FacesMessage.Severity severity, String title, String detail) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));
+    }
+
+}

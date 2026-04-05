@@ -1,0 +1,45 @@
+<!-- Componente modal reutilizavel para cadastro, edicao ou visualizacao de detalhes. -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:cmp="jakarta.faces.composite/components"
+                xmlns:p="http://primefaces.org/ui">
+
+    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+    <h:form id="formNovaTurma">
+        <p:remoteCommand name="rcLimparNovaTurma"
+                         action="#{turmaBean.limparFormulario}"
+                         process="@this"
+                         immediate="true"
+                         update="@form"/>
+        <div class="field-group">
+            <h:panelGrid id="grid" columns="1" cellpadding="7">
+                <cmp:baseInput id="inputTurma"
+                               value="#{turmaBean.turmaDTO.turma}"
+                               styleClass="form-control"
+                               style="text-transform: uppercase;"
+                               required="true"
+                               requiredMessage="Nome da turma Ã© obrigatÃ³ria!"
+                               label="Nome da Turma"/>
+            </h:panelGrid>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
+            <cmp:baseButton styleClass="btn-ghostx"
+                            onclick="rcLimparNovaTurma()"
+                            dataBsDismiss="modal"
+                            buttonLabel="Cancelar"
+                            parentDivStyle=""/>
+
+            <p:commandButton value="Salvar"
+                             styleClass="btn-primaryx ui-button-outlined"
+                             style="border-radius: 10px"
+                             action="#{turmaBean.salvar}"
+                             process="@form"
+                             update=":growl :formListaTurma:listaTurmas @form grid"
+                             oncomplete="if(!args.validationFailed){rcLimparNovaTurma();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovaTurma')).hide();}" />
+        </div>
+    </h:form>
+</ui:composition>

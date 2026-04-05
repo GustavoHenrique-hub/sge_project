@@ -1,0 +1,42 @@
+<!-- Componente base reutilizado para manter o padrao visual e reduzir repeticao nas telas. -->
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="jakarta.faces.facelets"
+              xmlns:h="jakarta.faces.html"
+              xmlns:f="jakarta.faces.core"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:cc="jakarta.faces.composite">
+
+    <cc:interface>
+        <cc:attribute name="modalId" required="true" />
+        <cc:attribute name="labelledby" required="true" />
+        <cc:attribute name="modalTitle" required="true" />
+        <cc:attribute name="modalTitleId" required="true" />
+        <cc:attribute name="modalImport" required="true" />
+    </cc:interface>
+
+    <cc:implementation>
+        <div class="modal fade modal-modern"
+             id="#{cc.attrs.modalId}"
+             tabindex="-1"
+             aria-labelledby="#{cc.attrs.labelledby}"
+             aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered modal-reference-size modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="#{cc.attrs.modalTitleId}">
+                            #{cc.attrs.modalTitle}
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"/>
+                    </div>
+
+                    <div class="modal-body">
+                        <ui:include src="/components/modal/#{cc.attrs.modalImport}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </cc:implementation>
+</ui:component>

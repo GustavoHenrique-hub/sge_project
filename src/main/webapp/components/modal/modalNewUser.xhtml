@@ -1,0 +1,87 @@
+<!-- Componente modal reutilizavel para cadastro, edicao ou visualizacao de detalhes. -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:cmp="jakarta.faces.composite/components"
+                xmlns:p="http://primefaces.org/ui">
+
+    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+    <h:form id="formNewUser">
+        <p:remoteCommand name="rcLimparNovoUsuario"
+                         action="#{usuarioBean.limparFormulario}"
+                         process="@this"
+                         immediate="true"
+                         update="@form"/>
+        <div class="field-group">
+            <h:panelGrid id="grid" columns="1" cellpadding="7">
+                <cmp:baseAutocomplete
+                        id="dropDownProfissionalUsuario"
+                        label="Profissional"
+                        value="#{usuarioBean.profissionalSelecionado}"
+                        badgeValue="#{usuarioBean.profissionalSelecionado != null ? usuarioBean.profissionalSelecionado.rm : null}"
+                        completeMethod="#{usuarioBean.completeProfissionalUsuario}"
+                        converter="#{profissionalEntityConverter}"
+                        itemLabelProperty="nome"
+                        parentDivStyle="modal-link-item"
+                        childrenDivStyle="modal-id-inline"
+                        update="@form"
+                        required="true"
+                        requiredMessage="Profissional e obrigatorio!"
+                        fieldStyle="field-modal-autocomplete-wrap"
+                        placeholder="Busque por nome, RM ou CPF">
+                    <p:column>
+                        <h:outputText value="Nome: #{item.nome}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="RM: #{item.rm}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="CPF: #{item.cpf}"/>
+                    </p:column>
+                </cmp:baseAutocomplete>
+
+                <h:panelGroup id="credenciaisPanel" layout="block">
+                    <cmp:baseInput id="inputLogin"
+                                   value="#{usuarioBean.loginGerado}"
+                                   styleClass="form-control"
+                                   readonly="true"
+                                   label="Login"/>
+
+                    <cmp:baseInput id="inputSenha"
+                                   value="#{usuarioBean.senhaGerada}"
+                                   styleClass="form-control"
+                                   readonly="true"
+                                   label="Senha padrÃ£o"/>
+                </h:panelGroup>
+
+                <cmp:baseInput id="inputSessionTimeout"
+                               value="#{usuarioBean.form.sessionTimeout}"
+                               styleClass="form-control"
+                               required="true"
+                               requiredMessage="Tempo de sessao e obrigatorio!"
+                               converterMessage="Tempo de sessao deve ser um numero inteiro!"
+                               label="Tempo de Sessao"/>
+            </h:panelGrid>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
+            <cmp:baseButton styleClass="btn-ghostx"
+                            onclick="rcLimparNovoUsuario()"
+                            dataBsDismiss="modal"
+                            buttonLabel="Cancelar"
+                            parentDivStyle=""/>
+
+            <p:commandButton value="Salvar"
+                             styleClass="btn-primaryx ui-button-outlined"
+                             style="border-radius: 10px"
+                             action="#{usuarioBean.salvar}"
+                             process="@form"
+                             update=":growl :formLista:listaUsers @form grid"
+                             oncomplete="if(!args.validationFailed){rcLimparNovoUsuario();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNewUser')).hide();}"/>
+        </div>
+
+    </h:form>
+
+</ui:composition>

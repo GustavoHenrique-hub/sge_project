@@ -1,0 +1,68 @@
+<!-- Componente modal reutilizavel para cadastro, edicao ou visualizacao de detalhes. -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:cmp="jakarta.faces.composite/components">
+
+    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+    <h:form id="formAlunoTurma">
+        <p:remoteCommand name="rcLimparNovaMatricula"
+                         action="#{alunoTurmaBean.limparFormulario}"
+                         process="@this"
+                         immediate="true"
+                         update="@form"/>
+        <div id="grid" class="modal-link-grid">
+            <cmp:baseAutocomplete id="dropDownAlunoModal"
+                                  label="Aluno"
+                                  value="#{alunoTurmaBean.filtroAluno}"
+                                  badgeValue="#{alunoTurmaBean.filtroAluno != null ? alunoTurmaBean.filtroAluno.rm : null}"
+                                  completeMethod="#{alunoTurmaBean.completeAlunoDisponivel}"
+                                  converter="#{alunoEntityConverter}"
+                                  itemLabelProperty="nome"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
+                                  requiredMessage="Aluno e obrigatorio!"
+                                  fieldStyle="field-modal-autocomplete-wrap"
+                                  placeholder="Busque por nome, RM ou CPF">
+                <p:column><h:outputText value="Nome: #{item.nome}"/></p:column>
+                <p:column><h:outputText value="RM: #{item.rm}"/></p:column>
+                <p:column><h:outputText value="CPF: #{alunoBean.formatarCpf(item.cpf)}"/></p:column>
+            </cmp:baseAutocomplete>
+
+            <cmp:baseAutocomplete id="dropDownTurmaModal"
+                                  label="Turma"
+                                  value="#{alunoTurmaBean.filtroTurma}"
+                                  badgeValue="#{alunoTurmaBean.filtroTurma != null ? alunoTurmaBean.filtroTurma.codigo : null}"
+                                  completeMethod="#{turmaBean.completeTurma}"
+                                  converter="#{turmaEntityConverter}"
+                                  itemLabelProperty="turma"
+                                  parentDivStyle="modal-link-item"
+                                  childrenDivStyle="modal-id-inline"
+                                  required="true"
+                                  requiredMessage="Turma e obrigatoria!"
+                                  fieldStyle="field-modal-autocomplete-wrap"/>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
+            <cmp:baseButton styleClass="btn-ghostx"
+                            onclick="rcLimparNovaMatricula()"
+                            dataBsDismiss="modal"
+                            buttonLabel="Cancelar"
+                            parentDivStyle=""/>
+
+            <p:commandButton value="Salvar"
+                             styleClass="btn-primaryx ui-button-outlined"
+                             style="border-radius: 10px"
+                             action="#{alunoTurmaBean.confirmarPelosFiltros}"
+                             process="@form"
+                             update=":growl :formMatricula:listaMatriculas @form"
+                             oncomplete="if(!args.validationFailed){rcLimparNovaMatricula();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalMatricula')).hide();}"/>
+        </div>
+
+    </h:form>
+
+</ui:composition>

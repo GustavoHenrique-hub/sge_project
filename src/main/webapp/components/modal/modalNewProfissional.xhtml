@@ -1,0 +1,174 @@
+<!-- Componente modal reutilizavel para cadastro, edicao ou visualizacao de detalhes. -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:cmp="jakarta.faces.composite/components"
+                xmlns:p="http://primefaces.org/ui">
+
+    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+    <h:form id="formNovoProfissional">
+        <p:remoteCommand name="rcLimparNovoProfissional"
+                         action="#{profissionalBean.limparFormulario}"
+                         process="@this"
+                         immediate="true"
+                         update="@form"/>
+        <div class="field-group">
+            <h:panelGrid id="grid" columns="1" cellpadding="7">
+                <cmp:baseInput id="inputNome"
+                               value="#{profissionalBean.profissionalDTO.nome}"
+                               required="true"
+                               requiredMessage="Nome Ã© obrigatÃ³rio!"
+                               style="text-transform: uppercase;"
+                               styleClass="form-control"
+                               label="Nome Completo"/>
+
+                <cmp:baseInput id="inputCpf"
+                               value="#{profissionalBean.profissionalDTO.cpf}"
+                               required="true"
+                               requiredMessage="CPF Ã© obrigatÃ³rio!"
+                               style="text-transform: uppercase;"
+                               styleClass="form-control"
+                               label="CPF"
+                               maxLength="14"
+                               inputMode="numeric"
+                               onInput="this.value = formatarCpf(this.value);"/>
+
+                <cmp:baseInput id="inputRg"
+                               value="#{profissionalBean.profissionalDTO.rg}"
+                               required="true"
+                               requiredMessage="RG Ã© obrigatÃ³rio!"
+                               style="text-transform: uppercase;"
+                               styleClass="form-control"
+                               label="RG"
+                               maxLength="12"
+                               inputMode="text"
+                               onInput="this.value = formatarRg(this.value);"/>
+
+                <cmp:baseInput id="inputDataNascimento"
+                               value="#{profissionalBean.profissionalDTO.dtNasc}"
+                               type="date"
+                               required="true"
+                               requiredMessage="Data de nascimento Ã© obrigatÃ³ria!"
+                               converterPattern="yyyy-MM-dd"
+                               converterMessage="Data invalida. Use o formato yyyy-MM-dd."
+                               styleClass="form-control"
+                               style=""
+                               label="Data de Nascimento"/>
+
+                <cmp:baseInput id="inputEmail"
+                               value="#{profissionalBean.profissionalDTO.email}"
+                               type="email"
+                               styleClass="form-control"
+                               style=""
+                               label="Email"/>
+
+                <cmp:baseInput id="inputTelefone"
+                               value="#{profissionalBean.profissionalDTO.telefone}"
+                               style="text-transform: uppercase;"
+                               styleClass="form-control"
+                               label="Telefone"
+                               maxLength="14"
+                               inputMode="numeric"
+                               onInput="this.value = formatarTelefone(this.value);"/>
+            </h:panelGrid>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2" style="margin-top: 18px;">
+            <cmp:baseButton styleClass="btn-ghostx"
+                            onclick="rcLimparNovoProfissional()"
+                            dataBsDismiss="modal"
+                            buttonLabel="Cancelar"
+                            parentDivStyle=""/>
+
+            <p:commandButton value="Salvar"
+                             styleClass="btn-primaryx ui-button-outlined"
+                             style="border-radius: 10px"
+                             action="#{profissionalBean.salvar}"
+                             process="@form"
+                             update=":growl :formListaProfissional:listaProfissionais @form grid"
+                             oncomplete="if(!args.validationFailed){rcLimparNovoProfissional();bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNovoProfissional')).hide();}" />
+        </div>
+
+    </h:form>
+
+    <h:outputScript target="body">
+        function somenteNumeros(value) {
+        return (value || '').replace(/\D/g, '');
+        }
+
+        function formatarCpf(value) {
+        const digits = somenteNumeros(value).slice(0, 11);
+        let formatted = digits;
+
+        if (digits.length > 3) {
+        formatted = digits.slice(0, 3) + '.' + digits.slice(3);
+        }
+        if (digits.length > 6) {
+        formatted = formatted.slice(0, 7) + '.' + formatted.slice(7);
+        }
+        if (digits.length > 9) {
+        formatted = formatted.slice(0, 11) + '-' + formatted.slice(11);
+        }
+
+        return formatted;
+        }
+
+        function formatarRg(value) {
+        const chars = (value || '').replace(/[^0-9a-zA-Z]/g, '').toUpperCase().slice(0, 9);
+        let formatted = chars;
+
+        if (chars.length > 2) {
+        formatted = chars.slice(0, 2) + '.' + chars.slice(2);
+        }
+        if (chars.length > 5) {
+        formatted = formatted.slice(0, 6) + '.' + formatted.slice(6);
+        }
+        if (chars.length > 8) {
+        formatted = formatted.slice(0, 10) + '-' + formatted.slice(10);
+        }
+
+        return formatted;
+        }
+
+        function formatarTel(value){
+        const digits = somenteNumeros(values).slice(0, 11);
+        let formatted = digits;
+
+        if (digits.length > 1) {
+        formatted = digits.slice(0, 3) + '(' + digits.slice(0) + digits.slice(1) + ')';
+        }
+        if (digits.length > 5) {
+        formatted = formatted.slice(0, 6) + '.' + formatted.slice(6);
+        }
+        if (digits.length > 8) {
+        formatted = formatted.slice(0, 10) + '-' + formatted.slice(10);
+        }
+
+        return formatted;
+        }
+
+        function formatarTelefone(value) {
+        const digits = somenteNumeros(value).slice(0, 11);
+        let formatted = digits;
+
+        if (digits.length > 0) {
+        formatted = '(' + digits.slice(0, 2);
+        }
+        if (digits.length >= 2) {
+        formatted += ')';
+        }
+        if (digits.length > 2) {
+        formatted += digits.slice(2, 7);
+        }
+        if (digits.length > 7) {
+        formatted += '-' + digits.slice(7);
+        }
+
+        return formatted;
+        }
+    </h:outputScript>
+
+</ui:composition>
+

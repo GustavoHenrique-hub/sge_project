@@ -1,0 +1,136 @@
+<!-- Tela principal deste modulo, com blocos visuais e componentes ligados aos beans JSF. -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="jakarta.faces.core"
+                xmlns:cmp="jakarta.faces.composite/components"
+                template="/template.xhtml">
+
+    <ui:define name="title">Notas e Frequencia</ui:define>
+    <ui:define name="subtitle">Notas / Lancamentos</ui:define>
+
+    <!-- Area principal da tela onde os componentes visuais e os dados do bean sao montados. -->
+    <ui:define name="content">
+        <!-- Card visual usado para separar blocos de informacao, formularios ou tabelas na tela. -->
+        <div class="cardx">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">LanÃ§amentos por turma</div>
+                    <div class="cardx-subtitle">SubmÃ³dulo de notas e frequÃªncia</div>
+                </div>
+            </div>
+
+            <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+            <h:form id="formFiltroLancamento">
+                <div class="filters-body">
+                    <cmp:baseAutocomplete
+                            id="dropDownTurmaLancamento"
+                            label="Turma"
+                            value="#{lancamentoBean.filtroTurma}"
+                            badgeValue="#{lancamentoBean.filtroTurma != null ? lancamentoBean.filtroTurma.id : null}"
+                            completeMethod="#{lancamentoBean.completeTurma}"
+                            converter="#{turmaEntityConverter}"
+                            itemLabelProperty="turma"
+                            showMessage="false"
+                            required="false"
+                            fieldStyle="field-filters-autocomplete-wrap"/>
+                    <div class="filters-body-column">
+                        <label class="form-label cardx-title">Bimestre</label>
+                        <h:selectOneMenu value="#{lancamentoBean.bimestre}" styleClass="form-select">
+                            <f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="1o" itemValue="1"/>
+                            <f:selectItem itemLabel="2o" itemValue="2"/>
+                            <f:selectItem itemLabel="3o" itemValue="3"/>
+                            <f:selectItem itemLabel="4o" itemValue="4"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <cmp:baseCommandButton value="Carregar"
+                                           action="#{lancamentoBean.carregar}"
+                                           render=":growl :formListaLancamento:listaLancamentos"/>
+                </div>
+            </h:form>
+        </div>
+
+        <!-- Card visual usado para separar blocos de informacao, formularios ou tabelas na tela. -->
+        <div class="cardx-datatable">
+            <div class="cardx-header">
+                <div>
+                    <div class="cardx-title">Lista de lanÃ§amentos</div>
+                    <div class="cardx-subtitle">Registros por matrÃ­cula</div>
+                </div>
+                <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+                <h:form>
+                    <cmp:baseCommandButton value="Salvar tudo"
+                                           styleClass="btn-primaryx"
+                                           action="#{lancamentoBean.salvar}"
+                                           render=":growl"
+                                           parentDivStyle=""/>
+                </h:form>
+            </div>
+            <div class="cardx-body">
+                <div class="table-scroll">
+                    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+                    <h:form id="formListaLancamento">
+                        <h:dataTable styleClass="table-modern" id="listaLancamentos" var="registro"
+                                     value="#{lancamentoBean.lancamentos}" rowKey="#{registro.id}">
+                            <h:column class="d-flex gap-2">
+                                <f:facet name="header">Acoes</f:facet>
+                                <cmp:baseIconButton id="detalharLancamento"
+                                                    action="#{lancamentoBean.detalhar(registro)}"
+                                                    title="Detalhar"
+                                                    styleClass="icon-action-btn"
+                                                    ajax="true"
+                                                    render=":modalDetalhesWrapper"
+                                                    value="&#xe908;"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Aluno</f:facet>
+                                <h:outputText value="#{registro.aluno.nome}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Turma</f:facet>
+                                <h:outputText value="#{registro.turma.turma}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Nota</f:facet>
+                                <h:outputText value="-" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Frequencia (%)</f:facet>
+                                <h:outputText value="-" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Situacao</f:facet>
+                                <span class="badge-pill #{lancamentoBean.situacaoSeverity(registro.situacao != null ? registro.situacao.situacao : null)}">
+                                    #{registro.situacao != null ? registro.situacao.situacao : '-'}
+                                </span>
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
+        <h:form id="formDetalheLancamento">
+            <h:panelGroup rendered="#{not empty lancamentoBean.detalheSelecionado}">
+                <div class="cardx">
+                    <div class="row g-2">
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Aluno: #{lancamentoBean.detalheSelecionado.aluno.nome}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Turma: #{lancamentoBean.detalheSelecionado.turma.turma}</span></div>
+                        <div class="col-md-4"><span class="badge-pill badge-muted">Situacao: #{lancamentoBean.detalheSelecionado.situacao != null ? lancamentoBean.detalheSelecionado.situacao.situacao : '-'}</span></div>
+                    </div>
+                </div>
+            </h:panelGroup>
+        </h:form>
+        <h:panelGroup id="modalDetalhesWrapper" layout="block">
+            <cmp:baseModal
+                    modalId="modalDetalhes"
+                    labelledby="modalDetalhesLabel"
+                    modalTitle="#{detalheModalBean.titulo}"
+                    modalTitleId="modalDetalhesLabel"
+                    modalImport="modalDetalhes.xhtml"/>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

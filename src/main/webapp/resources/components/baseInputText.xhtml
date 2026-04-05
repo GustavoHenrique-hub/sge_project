@@ -1,0 +1,38 @@
+<!-- Componente base reutilizado para manter o padrao visual e reduzir repeticao nas telas. -->
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="jakarta.faces.facelets"
+              xmlns:h="jakarta.faces.html"
+              xmlns:f="jakarta.faces.core"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+              xmlns:cc="jakarta.faces.composite">
+
+    <cc:interface>
+        <cc:attribute name="id" required="true" />
+        <cc:attribute name="label" required="true" />
+        <cc:attribute name="value" required="true" />
+        <cc:attribute name="styleClass" required="true" />
+        <cc:attribute name="style" required="false" default="text-transform: uppercase;" />
+        <cc:attribute name="maxLength" required="false" />
+        <cc:attribute name="inputMode" required="false" />
+        <cc:attribute name="onInput" required="false" />
+        <cc:attribute name="required" required="true" />
+        <cc:attribute name="requiredMessage" required="true"/>
+    </cc:interface>
+
+    <cc:implementation>
+            <div class="field-group">
+                <label class="form-label">#{cc.attrs.label}</label>
+                <h:inputText value="#{cc.attrs.value}"
+                             styleClass="#{cc.attrs.styleClass}"
+                             style="#{cc.attrs.style}"
+                             pt:maxlength="#{cc.attrs.maxLength}"
+                             pt:inputmode="#{cc.attrs.inputMode}"
+                             pt:oninput="#{cc.attrs.onInput}"
+                             required="#{cc.attrs.required}"
+                             requiredMessage="#{cc.attrs.requiredMessage}"
+                />
+                <p:message for="@previous"/>
+            </div>
+    </cc:implementation>
+</ui:component>

@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+/**
+ * DTO usado para transportar dados de FrequenciaDTO entre a tela, servicos e entidades.
+ */
 
 @Getter
 @Setter
@@ -20,6 +23,9 @@ public class FrequenciaDTO {
     private BigDecimal frequencia2;
     private BigDecimal frequencia3;
     private BigDecimal frequencia4;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public FrequenciaDTO(FrequenciaEntity entity) {
         this.id = entity.getId();

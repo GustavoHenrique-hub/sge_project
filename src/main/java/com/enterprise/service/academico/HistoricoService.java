@@ -21,6 +21,9 @@ import jakarta.inject.Inject;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * Service responsavel pelas regras de negocio e pelos fluxos principais de HistoricoService.
+ */
 
 @RequestScoped
 public class HistoricoService {
@@ -31,6 +34,9 @@ public class HistoricoService {
     private BoletimService boletimService;
     @Inject
     private AlunoService alunoService;
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public HistoricoDTO gerarHistorico(Long alunoId) {
         if (alunoId == null) {
@@ -60,6 +66,9 @@ public class HistoricoService {
         historico.setDisciplinas(disciplinas);
         return new HistoricoDTO(historico);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public byte[] gerarPdf(Long alunoId) {
         HistoricoDTO historico = gerarHistorico(alunoId);
@@ -107,12 +116,18 @@ public class HistoricoService {
             throw new IllegalStateException("Falha ao montar o historico em PDF.", ex);
         }
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private void adicionarCabecalho(PdfPTable table, String valor) {
         PdfPCell cell = new PdfPCell(new Phrase(valor));
         cell.setPadding(6f);
         table.addCell(cell);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private String valor(String valor) {
         return valor == null || valor.isBlank() ? "-" : valor;

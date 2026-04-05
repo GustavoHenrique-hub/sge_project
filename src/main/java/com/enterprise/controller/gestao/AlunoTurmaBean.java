@@ -24,6 +24,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+/**
+ * Bean JSF que concentra as acoes da tela de AlunoTurmaBean e conversa com a camada de servico.
+ */
 
 @Named("alunoTurmaBean")
 @ViewScoped
@@ -57,6 +60,9 @@ public class AlunoTurmaBean implements Serializable {
     private SituacaoEntity detalheSituacaoSelecionada;
     private boolean editandoDetalhe;
     private List<AlunoTurmaDTO> alunoTurmas = new ArrayList<>();
+    /**
+     * Inicializa o estado da tela ou da classe assim que a instancia fica disponivel.
+     */
 
     @PostConstruct
     public void init() {
@@ -64,10 +70,16 @@ public class AlunoTurmaBean implements Serializable {
         turmas = turmaService.findAll();
         recarregarLista();
     }
+    /**
+     * Recarrega a lista exibida na interface para refletir o estado atual dos dados.
+     */
 
     private void recarregarLista() {
         alunoTurmas = service.listarDTO();
     }
+    /**
+     * Limpa os campos do formulario para preparar um novo cadastro ou nova consulta.
+     */
 
     public void limparFormulario() {
         alunoId = null;
@@ -77,6 +89,9 @@ public class AlunoTurmaBean implements Serializable {
         filtroSituacao = null;
         detalheSelecionado = null;
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public String situacaoSeverity(String situacao) {
         if (situacao == null) {
@@ -88,6 +103,9 @@ public class AlunoTurmaBean implements Serializable {
             default -> "warning";
         };
     }
+    /**
+     * Prepara os dados do registro selecionado e abre o componente de detalhes correspondente.
+     */
 
     public void detalhar(AlunoTurmaDTO dto) {
         if (dto == null) {
@@ -105,6 +123,9 @@ public class AlunoTurmaBean implements Serializable {
         editandoDetalhe = false;
         detalheModalBean.abrir("Detalhes da matricula", "/components/modal/details/matriculaDetalhes.xhtml");
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public void confirmar() {
         try {
@@ -118,12 +139,18 @@ public class AlunoTurmaBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public void confirmarPelosFiltros() {
         alunoId = filtroAluno == null ? null : filtroAluno.getId();
         turmaId = filtroTurma == null ? null : filtroTurma.getId();
         confirmar();
     }
+    /**
+     * Aplica os filtros preenchidos na tela e atualiza a lista com o resultado encontrado.
+     */
 
     public void filtrar() {
         try {
@@ -143,6 +170,9 @@ public class AlunoTurmaBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao filtrar. " + e.getMessage());
         }
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<AlunoEntity> completeAlunoDisponivel(String query) {
         String termo = query == null ? "" : query.trim().toLowerCase();
@@ -154,10 +184,16 @@ public class AlunoTurmaBean implements Serializable {
                 .filter(aluno -> correspondeBuscaAluno(aluno, termo, termoNumerico))
                 .collect(Collectors.toList());
     }
+    /**
+     * Adiciona uma mensagem de retorno para orientar o usuario sobre o resultado da acao.
+     */
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));
     }
+    /**
+     * Centraliza a validacao usada para decidir se o registro atende ao filtro informado.
+     */
 
     private boolean correspondeBuscaAluno(AlunoEntity aluno, String termo, String termoNumerico) {
         boolean buscaVazia = termo.isBlank() && termoNumerico.isBlank();
@@ -170,6 +206,9 @@ public class AlunoTurmaBean implements Serializable {
         boolean cpf = !termoNumerico.isBlank() && aluno.getCpf() != null && aluno.getCpf().contains(termoNumerico);
         return nome || rm || cpf;
     }
+    /**
+     * Ativa o modo de edicao da area de detalhes preservando o valor original para cancelamento.
+     */
 
     public void habilitarEdicaoDetalhe() {
         if (detalheSelecionado == null) {
@@ -179,12 +218,18 @@ public class AlunoTurmaBean implements Serializable {
         sincronizarSeletoresDetalhe();
         editandoDetalhe = true;
     }
+    /**
+     * Descarta a edicao em andamento e restaura os dados atualmente confirmados.
+     */
 
     public void cancelarEdicaoDetalhe() {
         detalheEdicao = copiar(detalheSelecionado);
         sincronizarSeletoresDetalhe();
         editandoDetalhe = false;
     }
+    /**
+     * Persiste as alteracoes feitas na visualizacao de detalhes e sincroniza a tela com o valor salvo.
+     */
 
     public void salvarDetalhe() {
         try {
@@ -199,6 +244,9 @@ public class AlunoTurmaBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     private void preencherDtoDetalhe() {
         if (detalheAlunoSelecionado == null || detalheTurmaSelecionada == null || detalheSituacaoSelecionada == null) {
@@ -211,6 +259,9 @@ public class AlunoTurmaBean implements Serializable {
         detalheEdicao.setTurma(turmaDTO);
         detalheEdicao.setSituacao(situacaoDTO);
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     private void sincronizarSeletoresDetalhe() {
         detalheAlunoSelecionado = detalheEdicao != null && detalheEdicao.getAluno() != null && detalheEdicao.getAluno().getId() != null
@@ -223,6 +274,9 @@ public class AlunoTurmaBean implements Serializable {
                 ? situacaoService.findById(detalheEdicao.getSituacao().getId()).orElse(null)
                 : null;
     }
+    /**
+     * Cria uma copia simples do objeto para evitar alteracoes involuntarias na referencia original.
+     */
 
     private AlunoTurmaDTO copiar(AlunoTurmaDTO origem) {
         AlunoTurmaDTO copia = new AlunoTurmaDTO();

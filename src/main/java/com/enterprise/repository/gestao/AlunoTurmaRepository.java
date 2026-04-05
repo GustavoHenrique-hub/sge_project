@@ -12,12 +12,18 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 import java.util.Optional;
+/**
+ * Repository que centraliza consultas e operacoes de persistencia relacionadas a AlunoTurmaRepository.
+ */
 
 @RequestScoped
 public class AlunoTurmaRepository {
 
     @Inject
     private EntityManager em;
+    /**
+     * Persiste um novo registro no banco dentro do controle transacional da aplicacao.
+     */
 
     public AlunoTurmaEntity save(AlunoTurmaEntity entity) {
         return JpaTransaction.execute(em, () -> {
@@ -26,6 +32,9 @@ public class AlunoTurmaRepository {
             return entity;
         });
     }
+    /**
+     * Mescla e salva as alteracoes de um registro ja existente no banco de dados.
+     */
 
     public AlunoTurmaEntity update(AlunoTurmaEntity entity) {
         return JpaTransaction.execute(em, () -> {
@@ -33,10 +42,16 @@ public class AlunoTurmaRepository {
             return em.merge(entity);
         });
     }
+    /**
+     * Busca um unico registro pelo identificador informado, quando ele existir.
+     */
 
     public Optional<AlunoTurmaEntity> findById(Long id) {
         return Optional.ofNullable(em.find(AlunoTurmaEntity.class, id));
     }
+    /**
+     * Busca todos os registros dessa entidade no criterio padrao adotado pela aplicacao.
+     */
 
     public List<AlunoTurmaEntity> findAll() {
         return em.createQuery(
@@ -48,6 +63,9 @@ public class AlunoTurmaRepository {
                 AlunoTurmaEntity.class
         ).getResultList();
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     public List<AlunoTurmaEntity> findRecent(int limit) {
         return em.createQuery(
@@ -61,6 +79,9 @@ public class AlunoTurmaRepository {
                 .setMaxResults(Math.max(1, limit))
                 .getResultList();
     }
+    /**
+     * Executa uma consulta filtrada usando os parametros recebidos pelo fluxo atual.
+     */
 
     public List<AlunoTurmaEntity> findByFilters(Long alunoId, Long turmaId, Long situacaoId) {
         StringBuilder jpql = new StringBuilder(
@@ -93,6 +114,9 @@ public class AlunoTurmaRepository {
         }
         return query.getResultList();
     }
+    /**
+     * Executa uma consulta filtrada usando os parametros recebidos pelo fluxo atual.
+     */
 
     public Optional<AlunoTurmaEntity> findByAlunoAndTurma(Long alunoId, Long turmaId) {
         return em.createQuery(
@@ -110,6 +134,9 @@ public class AlunoTurmaRepository {
                 .getResultStream()
                 .findFirst();
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     public List<AlunoTurmaEntity> findAtivosByAluno(Long alunoId) {
         return em.createQuery(
@@ -125,6 +152,9 @@ public class AlunoTurmaRepository {
                 .setParameter("situacao", "ATIVO")
                 .getResultList();
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     public boolean existsAtivoByAluno(Long alunoId) {
         Long total = em.createQuery(
@@ -137,6 +167,9 @@ public class AlunoTurmaRepository {
                 .getSingleResult();
         return total != null && total > 0;
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     public boolean existsByAlunoAndTurma(Long alunoId, Long turmaId) {
         Long total = em.createQuery(
@@ -149,6 +182,9 @@ public class AlunoTurmaRepository {
                 .getSingleResult();
         return total != null && total > 0;
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     public boolean existsByAlunoAndTurmaExcludingId(Long alunoId, Long turmaId, Long id) {
         Long total = em.createQuery(
@@ -162,6 +198,9 @@ public class AlunoTurmaRepository {
                 .getSingleResult();
         return total != null && total > 0;
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     private void attachReferences(AlunoTurmaEntity entity) {
         if (entity.getAluno() != null && entity.getAluno().getId() != null) {

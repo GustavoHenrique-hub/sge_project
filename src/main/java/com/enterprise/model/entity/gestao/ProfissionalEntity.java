@@ -9,6 +9,9 @@ import lombok.Setter;
 
 import java.security.SecureRandom;
 import java.util.Date;
+/**
+ * Entidade JPA que representa os dados persistidos de ProfissionalEntity no banco.
+ */
 
 @Getter
 @Setter
@@ -44,6 +47,9 @@ public class ProfissionalEntity {
 
     @Column(name = "telefone", length = 20)
     private String telefone;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public ProfissionalEntity(ProfissionalDTO profissional) {
         this.id = profissional.getId();
@@ -55,6 +61,9 @@ public class ProfissionalEntity {
         this.email = profissional.getEmail();
         this.telefone = profissional.getTelefone();
     }
+    /**
+     * Normaliza os campos necessarios antes de atualizar o registro persistido.
+     */
 
     @PreUpdate
     public void preUpdate() {
@@ -68,6 +77,9 @@ public class ProfissionalEntity {
             this.rg = this.rg.toUpperCase();
         }
     }
+    /**
+     * Prepara valores obrigatorios e padroes antes de inserir o registro no banco.
+     */
 
     @PrePersist
     private void prePersist() {
@@ -87,6 +99,9 @@ public class ProfissionalEntity {
             this.rg = this.rg.toUpperCase();
         }
     }
+    /**
+     * Gera um identificador positivo para novos registros quando esse valor ainda nao foi definido.
+     */
 
     private Long generateId() {
         long generated;

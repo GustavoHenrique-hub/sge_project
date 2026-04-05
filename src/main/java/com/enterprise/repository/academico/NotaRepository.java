@@ -10,12 +10,18 @@ import jakarta.persistence.EntityManager;
 
 import java.util.List;
 import java.util.Optional;
+/**
+ * Repository que centraliza consultas e operacoes de persistencia relacionadas a NotaRepository.
+ */
 
 @RequestScoped
 public class NotaRepository {
 
     @Inject
     private EntityManager em;
+    /**
+     * Persiste um novo registro no banco dentro do controle transacional da aplicacao.
+     */
 
     public NotaEntity save(NotaEntity entity) {
         return JpaTransaction.execute(em, () -> {
@@ -24,6 +30,9 @@ public class NotaRepository {
             return entity;
         });
     }
+    /**
+     * Mescla e salva as alteracoes de um registro ja existente no banco de dados.
+     */
 
     public NotaEntity update(NotaEntity entity) {
         return JpaTransaction.execute(em, () -> {
@@ -31,10 +40,16 @@ public class NotaRepository {
             return em.merge(entity);
         });
     }
+    /**
+     * Busca um unico registro pelo identificador informado, quando ele existir.
+     */
 
     public Optional<NotaEntity> findById(Long id) {
         return Optional.ofNullable(em.find(NotaEntity.class, id));
     }
+    /**
+     * Executa uma consulta filtrada usando os parametros recebidos pelo fluxo atual.
+     */
 
     public Optional<NotaEntity> findByBoletimAndDisciplina(Long boletimId, Long disciplinaId) {
         return em.createQuery(
@@ -53,6 +68,9 @@ public class NotaRepository {
                 .getResultStream()
                 .findFirst();
     }
+    /**
+     * Executa uma consulta filtrada usando os parametros recebidos pelo fluxo atual.
+     */
 
     public List<NotaEntity> findByBoletim(Long boletimId) {
         return em.createQuery(
@@ -65,6 +83,9 @@ public class NotaRepository {
                 .setParameter("boletimId", boletimId)
                 .getResultList();
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     private void attachReferences(NotaEntity entity) {
         if (entity.getBoletim() != null && entity.getBoletim().getId() != null) {

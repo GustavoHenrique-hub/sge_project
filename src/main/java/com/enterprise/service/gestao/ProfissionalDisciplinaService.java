@@ -11,6 +11,9 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
+/**
+ * Service responsavel pelas regras de negocio e pelos fluxos principais de ProfissionalDisciplinaService.
+ */
 
 @RequestScoped
 public class ProfissionalDisciplinaService {
@@ -23,14 +26,23 @@ public class ProfissionalDisciplinaService {
     private DisciplinaService disciplinaService;
     @Inject
     private SituacaoService situacaoService;
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public List<ProfissionalDisciplinaDTO> listarDTO() {
         return repository.findAll().stream().map(ProfissionalDisciplinaDTO::new).toList();
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public List<ProfissionalDisciplinaDTO> listarPorFiltros(Long profissionalId, Long disciplinaId, Long situacaoId) {
         return repository.findByFilters(profissionalId, disciplinaId, situacaoId).stream().map(ProfissionalDisciplinaDTO::new).toList();
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public ProfissionalDisciplinaDTO vincular(Long profissionalId, Long disciplinaId) {
         validar(profissionalId, disciplinaId);
@@ -47,6 +59,9 @@ public class ProfissionalDisciplinaService {
         repository.save(entity);
         return new ProfissionalDisciplinaDTO(entity);
     }
+    /**
+     * Atualiza o registro existente aplicando as regras de negocio desta camada.
+     */
 
     public ProfissionalDisciplinaDTO atualizar(ProfissionalDisciplinaDTO dto) {
         if (dto == null || dto.getId() == null || dto.getProfissional() == null || dto.getDisciplina() == null || dto.getSituacao() == null) {
@@ -76,10 +91,13 @@ public class ProfissionalDisciplinaService {
 
         return new ProfissionalDisciplinaDTO(repository.update(entity));
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private void validar(Long profissionalId, Long disciplinaId) {
         if (profissionalId == null || disciplinaId == null) {
-            throw new IllegalArgumentException("Profissional e disciplina sÃ£o obrigatorios.");
+            throw new IllegalArgumentException("Profissional e disciplina sÃƒÂ£o obrigatorios.");
         }
         if (repository.existsByProfissionalAndDisciplina(profissionalId, disciplinaId)) {
             throw new IllegalArgumentException("Profissional ja matriculado nesta disciplina.");

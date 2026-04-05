@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+/**
+ * Entidade JPA que representa os dados persistidos de PerfilUsuarioEntity no banco.
+ */
 
 @Getter
 @Setter
@@ -28,6 +31,9 @@ public class PerfilUsuarioEntity {
     @ManyToOne
     @JoinColumn(name = "situacao_id")
     private SituacaoEntity situacao;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public PerfilUsuarioEntity(PerfilUsuarioDTO perfilUsuarioDTO){
         this.id = perfilUsuarioDTO.getId();

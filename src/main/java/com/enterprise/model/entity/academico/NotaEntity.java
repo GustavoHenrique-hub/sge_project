@@ -22,6 +22,9 @@ import lombok.Setter;
                 @Index(name = "idx_nota_disciplina", columnList = "disciplina_id, disciplina_codigo")
         }
 )
+/**
+ * Entidade JPA que representa os dados persistidos de NotaEntity no banco.
+ */
 public class NotaEntity {
 
     @Id
@@ -59,6 +62,9 @@ public class NotaEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "nota_4")
     private ConceitoNota nota4;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public NotaEntity(NotaDTO dto) {
         this.id = dto.getId();

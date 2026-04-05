@@ -1,3 +1,4 @@
+<!-- Tela principal deste modulo, com blocos visuais e componentes ligados aos beans JSF. -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
@@ -9,7 +10,9 @@
     <ui:define name="title">Historico</ui:define>
     <ui:define name="subtitle">Academico / Historico</ui:define>
 
+    <!-- Area principal da tela onde os componentes visuais e os dados do bean sao montados. -->
     <ui:define name="content">
+        <!-- Card visual usado para separar blocos de informacao, formularios ou tabelas na tela. -->
         <div class="cardx">
             <div class="cardx-header">
                 <div>
@@ -18,6 +21,7 @@
                 </div>
             </div>
 
+            <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
             <h:form id="formFiltrosHistorico">
                 <div class="filters-body">
                     <cmp:baseAutocomplete id="dropDownAlunoHistorico"
@@ -49,6 +53,7 @@
             </h:form>
         </div>
 
+        <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
         <h:form id="formResumoHistorico">
             <h:panelGroup rendered="#{not empty historicoBean.historicoSelecionado}">
                 <div class="cardx">
@@ -62,6 +67,7 @@
             </h:panelGroup>
         </h:form>
 
+        <!-- Card visual usado para separar blocos de informacao, formularios ou tabelas na tela. -->
         <div class="cardx-datatable">
             <div class="cardx-header">
                 <div>
@@ -71,6 +77,7 @@
             </div>
             <div class="cardx-body">
                 <div class="table-scroll">
+                    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
                     <h:form id="formListaHistorico">
                         <h:dataTable styleClass="table-modern" id="listaHistorico" var="registro"
                                      value="#{historicoBean.historico}">

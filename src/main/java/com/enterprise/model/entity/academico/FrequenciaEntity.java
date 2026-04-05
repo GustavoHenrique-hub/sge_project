@@ -23,6 +23,9 @@ import java.math.BigDecimal;
                 @Index(name = "idx_frequencia_disciplina", columnList = "disciplina_id, disciplina_codigo")
         }
 )
+/**
+ * Entidade JPA que representa os dados persistidos de FrequenciaEntity no banco.
+ */
 public class FrequenciaEntity {
 
     @Id
@@ -56,6 +59,9 @@ public class FrequenciaEntity {
 
     @Column(name = "frequencia_4", precision = 5, scale = 2)
     private BigDecimal frequencia4;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public FrequenciaEntity(FrequenciaDTO dto) {
         this.id = dto.getId();

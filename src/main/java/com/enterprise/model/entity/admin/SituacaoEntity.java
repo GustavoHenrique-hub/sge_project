@@ -9,6 +9,9 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+/**
+ * Entidade JPA que representa os dados persistidos de SituacaoEntity no banco.
+ */
 
 @Getter
 @Setter
@@ -23,6 +26,9 @@ public class SituacaoEntity {
 
     private String situacao;
     private String descricao;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public SituacaoEntity(SituacaoDTO situacao){
         this.id = situacao.getId();

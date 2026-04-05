@@ -17,6 +17,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+/**
+ * Service responsavel pelas regras de negocio e pelos fluxos principais de FrequenciaService.
+ */
 
 @RequestScoped
 public class FrequenciaService {
@@ -29,6 +32,9 @@ public class FrequenciaService {
     private AlunoTurmaService alunoTurmaService;
     @Inject
     private BoletimService boletimService;
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public List<FrequenciaLancamentoDTO> listarPorTurmaEDisciplina(Long turmaId, Long disciplinaId) {
         if (turmaId == null || disciplinaId == null) {
@@ -61,6 +67,9 @@ public class FrequenciaService {
         linhas.sort(Comparator.comparing(item -> item.getAluno().getNome(), String.CASE_INSENSITIVE_ORDER));
         return linhas;
     }
+    /**
+     * Salva os dados atuais do fluxo e atualiza os elementos que dependem desse resultado.
+     */
 
     public FrequenciaDTO salvar(FrequenciaLancamentoDTO dto) {
         validar(dto);
@@ -83,6 +92,9 @@ public class FrequenciaService {
         FrequenciaEntity persisted = entity.getId() == null ? frequenciaRepository.save(entity) : frequenciaRepository.update(entity);
         return new FrequenciaDTO(persisted);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private void validar(FrequenciaLancamentoDTO dto) {
         if (dto == null || dto.getBoletimId() == null || dto.getDisciplina() == null || dto.getDisciplina().getId() == null) {
@@ -93,6 +105,9 @@ public class FrequenciaService {
         validarPercentual(dto.getFrequencia3());
         validarPercentual(dto.getFrequencia4());
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private void validarPercentual(BigDecimal valor) {
         if (valor == null) {

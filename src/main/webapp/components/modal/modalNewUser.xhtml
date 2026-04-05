@@ -1,3 +1,4 @@
+<!-- Componente modal reutilizavel para cadastro, edicao ou visualizacao de detalhes. -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
@@ -6,6 +7,7 @@
                 xmlns:cmp="jakarta.faces.composite/components"
                 xmlns:p="http://primefaces.org/ui">
 
+    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
     <h:form id="formNewUser">
         <p:remoteCommand name="rcLimparNovoUsuario"
                          action="#{usuarioBean.limparFormulario}"
@@ -51,7 +53,7 @@
                                    value="#{usuarioBean.senhaGerada}"
                                    styleClass="form-control"
                                    readonly="true"
-                                   label="Senha padrão"/>
+                                   label="Senha padrÃ£o"/>
                 </h:panelGroup>
 
                 <cmp:baseInput id="inputSessionTimeout"

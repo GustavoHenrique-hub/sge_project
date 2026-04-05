@@ -12,12 +12,18 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 import java.util.Optional;
+/**
+ * Repository que centraliza consultas e operacoes de persistencia relacionadas a ProfissionalDisciplinaRepository.
+ */
 
 @RequestScoped
 public class ProfissionalDisciplinaRepository {
 
     @Inject
     private EntityManager em;
+    /**
+     * Persiste um novo registro no banco dentro do controle transacional da aplicacao.
+     */
 
     public ProfissionalDisciplinaEntity save(ProfissionalDisciplinaEntity entity) {
         return JpaTransaction.execute(em, () -> {
@@ -26,6 +32,9 @@ public class ProfissionalDisciplinaRepository {
             return entity;
         });
     }
+    /**
+     * Mescla e salva as alteracoes de um registro ja existente no banco de dados.
+     */
 
     public ProfissionalDisciplinaEntity update(ProfissionalDisciplinaEntity entity) {
         return JpaTransaction.execute(em, () -> {
@@ -33,10 +42,16 @@ public class ProfissionalDisciplinaRepository {
             return em.merge(entity);
         });
     }
+    /**
+     * Busca um unico registro pelo identificador informado, quando ele existir.
+     */
 
     public Optional<ProfissionalDisciplinaEntity> findById(Long id) {
         return Optional.ofNullable(em.find(ProfissionalDisciplinaEntity.class, id));
     }
+    /**
+     * Busca todos os registros dessa entidade no criterio padrao adotado pela aplicacao.
+     */
 
     public List<ProfissionalDisciplinaEntity> findAll() {
         return em.createQuery(
@@ -48,6 +63,9 @@ public class ProfissionalDisciplinaRepository {
                 ProfissionalDisciplinaEntity.class
         ).getResultList();
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     public List<ProfissionalDisciplinaEntity> findRecent(int limit) {
         return em.createQuery(
@@ -61,6 +79,9 @@ public class ProfissionalDisciplinaRepository {
                 .setMaxResults(Math.max(1, limit))
                 .getResultList();
     }
+    /**
+     * Executa uma consulta filtrada usando os parametros recebidos pelo fluxo atual.
+     */
 
     public List<ProfissionalDisciplinaEntity> findByFilters(Long profissionalId, Long disciplinaId, Long situacaoId) {
         StringBuilder jpql = new StringBuilder(
@@ -93,6 +114,9 @@ public class ProfissionalDisciplinaRepository {
         }
         return query.getResultList();
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     public boolean existsByProfissionalAndDisciplina(Long profissionalId, Long disciplinaId) {
         Long total = em.createQuery(
@@ -105,6 +129,9 @@ public class ProfissionalDisciplinaRepository {
                 .getSingleResult();
         return total != null && total > 0;
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     public boolean existsByProfissionalAndDisciplinaExcludingId(Long profissionalId, Long disciplinaId, Long id) {
         Long total = em.createQuery(
@@ -118,6 +145,9 @@ public class ProfissionalDisciplinaRepository {
                 .getSingleResult();
         return total != null && total > 0;
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     private void attachReferences(ProfissionalDisciplinaEntity entity) {
         if (entity.getProfissional() != null && entity.getProfissional().getId() != null) {

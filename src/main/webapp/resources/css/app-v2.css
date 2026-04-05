@@ -11,6 +11,7 @@
     --radius: 16px;
 }
 
+/* Folha de estilos principal da aplicacao, com blocos separados para facilitar manutencao visual. */
 /* ==========================================================================
    Theme Variables
    Used by: theme toggle in template.xhtml and login.xhtml

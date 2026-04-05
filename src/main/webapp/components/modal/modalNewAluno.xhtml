@@ -1,3 +1,4 @@
+<!-- Componente modal reutilizavel para cadastro, edicao ou visualizacao de detalhes. -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
@@ -6,6 +7,7 @@
                 xmlns:cmp="jakarta.faces.composite/components"
                 xmlns:p="http://primefaces.org/ui">
 
+    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
     <h:form id="formNovoAluno">
         <p:remoteCommand name="rcLimparNovoAluno"
                          action="#{alunoBean.limparFormulario}"
@@ -17,7 +19,7 @@
                 <cmp:baseInput id="inputNome"
                                value="#{alunoBean.alunoDTO.nome}"
                                required="true"
-                               requiredMessage="Nome é obrigatório!"
+                               requiredMessage="Nome Ã© obrigatÃ³rio!"
                                style="text-transform: uppercase;"
                                styleClass="form-control"
                                label="Nome Completo"/>
@@ -25,7 +27,7 @@
                 <cmp:baseInput id="inputCpf"
                                value="#{alunoBean.alunoDTO.cpf}"
                                required="true"
-                               requiredMessage="CPF é obrigatório!"
+                               requiredMessage="CPF Ã© obrigatÃ³rio!"
                                style="text-transform: uppercase;"
                                styleClass="form-control"
                                label="CPF"
@@ -36,7 +38,7 @@
                 <cmp:baseInput id="inputRg"
                                value="#{alunoBean.alunoDTO.rg}"
                                required="true"
-                               requiredMessage="RG é obrigatório!"
+                               requiredMessage="RG Ã© obrigatÃ³rio!"
                                style="text-transform: uppercase;"
                                styleClass="form-control"
                                label="RG"
@@ -48,7 +50,7 @@
                                value="#{alunoBean.alunoDTO.dtNasc}"
                                type="date"
                                required="true"
-                               requiredMessage="Data de nascimento é obrigatória!"
+                               requiredMessage="Data de nascimento Ã© obrigatÃ³ria!"
                                converterPattern="yyyy-MM-dd"
                                converterMessage="Data invalida. Use o formato yyyy-MM-dd."
                                styleClass="form-control"
@@ -92,10 +94,12 @@
     </h:form>
 
     <h:outputScript target="body">
+        // Remove tudo o que nao for numero para reaproveitar nas mascaras de CPF, RG e telefone.
         function somenteNumeros(value) {
         return (value || '').replace(/\D/g, '');
         }
 
+        // Monta a mascara visual do CPF enquanto o usuario digita.
         function formatarCpf(value) {
         const digits = somenteNumeros(value).slice(0, 11);
         let formatted = digits;
@@ -113,6 +117,7 @@
         return formatted;
         }
 
+        // Monta a mascara visual do RG aceitando numeros e o digito X.
         function formatarRg(value) {
         const chars = (value || '').replace(/[^0-9a-zA-Z]/g, '').toUpperCase().slice(0, 9);
         let formatted = chars;
@@ -130,6 +135,7 @@
         return formatted;
         }
 
+        // Mantida para compatibilidade, mas o fluxo da tela usa a funcao formatarTelefone.
         function formatarTel(value){
         const digits = somenteNumeros(values).slice(0, 11);
         let formatted = digits;
@@ -147,6 +153,7 @@
         return formatted;
         }
 
+        // Aplica a mascara do telefone com DDD para facilitar o preenchimento do cadastro.
         function formatarTelefone(value) {
         const digits = somenteNumeros(value).slice(0, 11);
         let formatted = digits;

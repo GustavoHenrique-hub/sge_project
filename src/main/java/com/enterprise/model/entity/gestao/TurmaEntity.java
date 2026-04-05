@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.security.SecureRandom;
+/**
+ * Entidade JPA que representa os dados persistidos de TurmaEntity no banco.
+ */
 
 @Getter
 @Setter
@@ -26,17 +29,26 @@ public class TurmaEntity {
 
     @Column(name = "turma", nullable = false, length = 80)
     private String turma;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public TurmaEntity(TurmaDTO dto) {
         this.id = dto.getId();
         this.codigo = dto.getCodigo();
         this.turma = dto.getTurma();
     }
+    /**
+     * Normaliza os campos necessarios antes de atualizar o registro persistido.
+     */
 
     @PreUpdate
     public void preUpdate() {
         this.turma = this.turma.toUpperCase();
     }
+    /**
+     * Prepara valores obrigatorios e padroes antes de inserir o registro no banco.
+     */
 
     @PrePersist
     private void prePersist() {
@@ -50,6 +62,9 @@ public class TurmaEntity {
             turma = turma.toUpperCase();
         }
     }
+    /**
+     * Gera um identificador positivo para novos registros quando esse valor ainda nao foi definido.
+     */
 
     private Long generateId() {
         long generated;

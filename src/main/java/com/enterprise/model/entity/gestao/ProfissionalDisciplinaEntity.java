@@ -20,6 +20,9 @@ import lombok.Setter;
                 @Index(name = "idx_profissional_disciplina_disciplina", columnList = "disciplina_id, disciplina_codigo")
         }
 )
+/**
+ * Entidade JPA que representa os dados persistidos de ProfissionalDisciplinaEntity no banco.
+ */
 public class ProfissionalDisciplinaEntity {
 
     @Id
@@ -57,6 +60,9 @@ public class ProfissionalDisciplinaEntity {
             foreignKey = @ForeignKey(name = "fk_profissional_disciplina_situacao")
     )
     private SituacaoEntity situacao;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public ProfissionalDisciplinaEntity(ProfissionalDisciplinaDTO dto) {
         this.id = dto.getId();

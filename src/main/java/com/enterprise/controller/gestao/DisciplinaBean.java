@@ -16,6 +16,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+/**
+ * Bean JSF que concentra as acoes da tela de DisciplinaBean e conversa com a camada de servico.
+ */
 
 @Named("disciplinaBean")
 @ViewScoped
@@ -30,15 +33,24 @@ public class DisciplinaBean implements Serializable {
     private List<DisciplinaEntity> disciplinas = new ArrayList<>();
     private DisciplinaEntity detalheSelecionado;
     private DisciplinaDTO disciplinaDTO = new DisciplinaDTO();
+    /**
+     * Inicializa o estado da tela ou da classe assim que a instancia fica disponivel.
+     */
 
     @PostConstruct
     public void init() {
         recarregarLista();
     }
+    /**
+     * Recarrega a lista exibida na interface para refletir o estado atual dos dados.
+     */
 
     private void recarregarLista() {
         disciplinas = service.findAll();
     }
+    /**
+     * Aplica os filtros preenchidos na tela e atualiza a lista com o resultado encontrado.
+     */
 
     public void filtrar() {
         try {
@@ -55,6 +67,9 @@ public class DisciplinaBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao filtrar. " + e.getMessage());
         }
     }
+    /**
+     * Salva os dados atuais do fluxo e atualiza os elementos que dependem desse resultado.
+     */
 
     public void salvar() {
         try {
@@ -68,14 +83,23 @@ public class DisciplinaBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Limpa os campos do formulario para preparar um novo cadastro ou nova consulta.
+     */
 
     public void limparFormulario() {
         disciplinaDTO = new DisciplinaDTO();
     }
+    /**
+     * Prepara os dados do registro selecionado e abre o componente de detalhes correspondente.
+     */
 
     public void detalhar(DisciplinaEntity disciplina) {
         detalheSelecionado = disciplina;
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<DisciplinaEntity> completeDisciplina(String query) {
         String formatDisciplina = query == null ? "" : query.toLowerCase();
@@ -85,6 +109,9 @@ public class DisciplinaBean implements Serializable {
                         && disciplina.getDescricao().toLowerCase().startsWith(formatDisciplina))
                 .collect(Collectors.toList());
     }
+    /**
+     * Adiciona uma mensagem de retorno para orientar o usuario sobre o resultado da acao.
+     */
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));

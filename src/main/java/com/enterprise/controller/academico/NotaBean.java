@@ -19,6 +19,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+/**
+ * Bean JSF que concentra as acoes da tela de NotaBean e conversa com a camada de servico.
+ */
 
 @Named("notaBean")
 @ViewScoped
@@ -37,6 +40,9 @@ public class NotaBean implements Serializable {
     private DisciplinaEntity filtroDisciplina;
     private List<NotaLancamentoDTO> lancamentos = new ArrayList<>();
     private NotaLancamentoDTO backupEdicao;
+    /**
+     * Aplica os filtros preenchidos na tela e atualiza a lista com o resultado encontrado.
+     */
 
     public void filtrar() {
         try {
@@ -48,11 +54,17 @@ public class NotaBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public void editar(NotaLancamentoDTO registro) {
         backupEdicao = copiar(registro);
         registro.setEditando(true);
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public void cancelar(NotaLancamentoDTO registro) {
         if (backupEdicao != null && registro.getBoletimId().equals(backupEdicao.getBoletimId())) {
@@ -64,6 +76,9 @@ public class NotaBean implements Serializable {
         }
         registro.setEditando(false);
     }
+    /**
+     * Salva os dados atuais do fluxo e atualiza os elementos que dependem desse resultado.
+     */
 
     public void salvar(NotaLancamentoDTO registro) {
         try {
@@ -79,6 +94,9 @@ public class NotaBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<TurmaEntity> completeTurma(String query) {
         String termo = query == null ? "" : query.toLowerCase();
@@ -86,6 +104,9 @@ public class NotaBean implements Serializable {
                 .filter(turma -> turma.getTurma() != null && turma.getTurma().toLowerCase().contains(termo))
                 .collect(Collectors.toList());
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<DisciplinaEntity> completeDisciplina(String query) {
         String termo = query == null ? "" : query.toLowerCase();
@@ -93,10 +114,16 @@ public class NotaBean implements Serializable {
                 .filter(disciplina -> disciplina.getDescricao() != null && disciplina.getDescricao().toLowerCase().contains(termo))
                 .collect(Collectors.toList());
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public List<String> getConceitos() {
         return notaService.listarConceitos();
     }
+    /**
+     * Cria uma copia simples do objeto para evitar alteracoes involuntarias na referencia original.
+     */
 
     private NotaLancamentoDTO copiar(NotaLancamentoDTO origem) {
         NotaLancamentoDTO copia = new NotaLancamentoDTO();
@@ -108,6 +135,9 @@ public class NotaBean implements Serializable {
         copia.setNota4(origem.getNota4());
         return copia;
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     private void validarFiltros() {
         if (filtroTurma == null || filtroTurma.getId() == null) {
@@ -117,6 +147,9 @@ public class NotaBean implements Serializable {
             throw new IllegalArgumentException("Selecione uma disciplina.");
         }
     }
+    /**
+     * Adiciona uma mensagem de retorno para orientar o usuario sobre o resultado da acao.
+     */
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));

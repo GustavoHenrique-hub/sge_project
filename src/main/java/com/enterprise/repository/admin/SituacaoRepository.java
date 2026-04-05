@@ -9,12 +9,18 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 import java.util.Optional;
+/**
+ * Repository que centraliza consultas e operacoes de persistencia relacionadas a SituacaoRepository.
+ */
 
 @RequestScoped
 public class SituacaoRepository {
 
     @Inject
     private EntityManager em;
+    /**
+     * Persiste um novo registro no banco dentro do controle transacional da aplicacao.
+     */
 
     public SituacaoEntity save(SituacaoEntity entity) {
         return JpaTransaction.execute(em, () -> {
@@ -22,15 +28,24 @@ public class SituacaoRepository {
             return entity;
         });
     }
+    /**
+     * Busca um unico registro pelo identificador informado, quando ele existir.
+     */
 
     public Optional<SituacaoEntity> findById(Long id) {
         return Optional.ofNullable(em.find(SituacaoEntity.class, id));
     }
+    /**
+     * Busca todos os registros dessa entidade no criterio padrao adotado pela aplicacao.
+     */
 
     public List<SituacaoEntity> findAll() {
         return em.createQuery("select s from SituacaoEntity s order by s.id", SituacaoEntity.class)
                 .getResultList();
     }
+    /**
+     * Executa uma consulta filtrada usando os parametros recebidos pelo fluxo atual.
+     */
 
     public List<SituacaoEntity> findByFilters(String situacao) {
         StringBuilder jpql = new StringBuilder("select s from SituacaoEntity s where 1=1");
@@ -45,6 +60,9 @@ public class SituacaoRepository {
         }
         return query.getResultList();
     }
+    /**
+     * Executa uma consulta filtrada usando os parametros recebidos pelo fluxo atual.
+     */
 
     public Optional<SituacaoEntity> findBySituacao(String situacao) {
         if (situacao == null || situacao.isBlank()) {

@@ -20,6 +20,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+/**
+ * Bean JSF que concentra as acoes da tela de FrequenciaBean e conversa com a camada de servico.
+ */
 
 @Named("frequenciaBean")
 @ViewScoped
@@ -38,6 +41,9 @@ public class FrequenciaBean implements Serializable {
     private DisciplinaEntity filtroDisciplina;
     private List<FrequenciaLancamentoDTO> lancamentos = new ArrayList<>();
     private FrequenciaLancamentoDTO backupEdicao;
+    /**
+     * Aplica os filtros preenchidos na tela e atualiza a lista com o resultado encontrado.
+     */
 
     public void filtrar() {
         try {
@@ -49,11 +55,17 @@ public class FrequenciaBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public void editar(FrequenciaLancamentoDTO registro) {
         backupEdicao = copiar(registro);
         registro.setEditando(true);
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public void cancelar(FrequenciaLancamentoDTO registro) {
         if (backupEdicao != null && registro.getBoletimId().equals(backupEdicao.getBoletimId())) {
@@ -65,6 +77,9 @@ public class FrequenciaBean implements Serializable {
         }
         registro.setEditando(false);
     }
+    /**
+     * Salva os dados atuais do fluxo e atualiza os elementos que dependem desse resultado.
+     */
 
     public void salvar(FrequenciaLancamentoDTO registro) {
         try {
@@ -80,6 +95,9 @@ public class FrequenciaBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<TurmaEntity> completeTurma(String query) {
         String termo = query == null ? "" : query.toLowerCase();
@@ -87,6 +105,9 @@ public class FrequenciaBean implements Serializable {
                 .filter(turma -> turma.getTurma() != null && turma.getTurma().toLowerCase().contains(termo))
                 .collect(Collectors.toList());
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<DisciplinaEntity> completeDisciplina(String query) {
         String termo = query == null ? "" : query.toLowerCase();
@@ -94,6 +115,9 @@ public class FrequenciaBean implements Serializable {
                 .filter(disciplina -> disciplina.getDescricao() != null && disciplina.getDescricao().toLowerCase().contains(termo))
                 .collect(Collectors.toList());
     }
+    /**
+     * Cria uma copia simples do objeto para evitar alteracoes involuntarias na referencia original.
+     */
 
     private FrequenciaLancamentoDTO copiar(FrequenciaLancamentoDTO origem) {
         FrequenciaLancamentoDTO copia = new FrequenciaLancamentoDTO();
@@ -105,6 +129,9 @@ public class FrequenciaBean implements Serializable {
         copia.setFrequencia4(origem.getFrequencia4());
         return copia;
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     private void validarFiltros() {
         if (filtroTurma == null || filtroTurma.getId() == null) {
@@ -114,6 +141,9 @@ public class FrequenciaBean implements Serializable {
             throw new IllegalArgumentException("Selecione uma disciplina.");
         }
     }
+    /**
+     * Adiciona uma mensagem de retorno para orientar o usuario sobre o resultado da acao.
+     */
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));

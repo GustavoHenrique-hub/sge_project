@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+/**
+ * Entidade JPA que representa os dados persistidos de PerfilEntity no banco.
+ */
 
 @Getter
 @Setter
@@ -19,6 +22,9 @@ public class PerfilEntity {
 
     private String perfil;
     private String descricao;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public PerfilEntity(PerfilDTO perfil) {
         this.id = perfil.getId();

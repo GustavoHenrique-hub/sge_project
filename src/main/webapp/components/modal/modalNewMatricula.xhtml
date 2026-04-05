@@ -1,3 +1,4 @@
+<!-- Componente modal reutilizavel para cadastro, edicao ou visualizacao de detalhes. -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
@@ -6,6 +7,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:cmp="jakarta.faces.composite/components">
 
+    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
     <h:form id="formAlunoTurma">
         <p:remoteCommand name="rcLimparNovaMatricula"
                          action="#{alunoTurmaBean.limparFormulario}"

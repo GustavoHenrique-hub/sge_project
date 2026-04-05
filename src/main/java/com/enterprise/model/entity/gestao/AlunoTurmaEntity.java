@@ -28,6 +28,9 @@ import lombok.Setter;
                 @Index(name = "idx_aluno_turma_turma", columnList = "turma_id, turma_codigo")
         }
 )
+/**
+ * Entidade JPA que representa os dados persistidos de AlunoTurmaEntity no banco.
+ */
 public class AlunoTurmaEntity {
 
     @Id
@@ -65,6 +68,9 @@ public class AlunoTurmaEntity {
             foreignKey = @ForeignKey(name = "fk_aluno_turma_situacao")
     )
     private SituacaoEntity situacao;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public AlunoTurmaEntity(AlunoTurmaDTO dto) {
         this.id = dto.getId();

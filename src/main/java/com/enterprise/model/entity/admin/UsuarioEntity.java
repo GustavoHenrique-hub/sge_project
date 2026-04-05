@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+/**
+ * Entidade JPA que representa os dados persistidos de UsuarioEntity no banco.
+ */
 
 @Getter
 @Setter
@@ -33,6 +36,9 @@ public class UsuarioEntity {
 
     @Column(name = "session_timeout")
     private Integer sessionTimeout;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public UsuarioEntity(UsuarioDTO user) {
         this.id = user.getId();
@@ -44,28 +50,46 @@ public class UsuarioEntity {
         this.sessionTimeout = user.getSessionTimeout();
         aplicarCredenciaisPadrao();
     }
+    /**
+     * Normaliza os campos necessarios antes de atualizar o registro persistido.
+     */
 
     @PreUpdate
     public void preUpdate() {
         aplicarCredenciaisPadrao();
     }
+    /**
+     * Prepara valores obrigatorios e padroes antes de inserir o registro no banco.
+     */
 
     @PrePersist
     public void prePersist() {
         aplicarCredenciaisPadrao();
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public String getNomeProfissional() {
         return profissional == null ? null : profissional.getNome();
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public String getRmProfissional() {
         return profissional == null ? null : profissional.getRm();
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public String getCpfProfissional() {
         return profissional == null ? null : profissional.getCpf();
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     private void aplicarCredenciaisPadrao() {
         String cpfSemPontuacao = profissional == null || profissional.getCpf() == null

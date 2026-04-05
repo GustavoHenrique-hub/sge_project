@@ -5,6 +5,9 @@ import com.enterprise.model.entity.academico.NotaEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+/**
+ * DTO usado para transportar dados de NotaDTO entre a tela, servicos e entidades.
+ */
 
 @Getter
 @Setter
@@ -18,6 +21,9 @@ public class NotaDTO {
     private String nota2;
     private String nota3;
     private String nota4;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public NotaDTO(NotaEntity entity) {
         this.id = entity.getId();

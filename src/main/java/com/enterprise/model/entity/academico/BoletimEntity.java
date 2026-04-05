@@ -25,6 +25,9 @@ import java.util.List;
                 @Index(name = "idx_boletim_turma", columnList = "turma_id, turma_codigo")
         }
 )
+/**
+ * Entidade JPA que representa os dados persistidos de BoletimEntity no banco.
+ */
 public class BoletimEntity {
 
     @Id
@@ -60,6 +63,9 @@ public class BoletimEntity {
 
     @OneToMany(mappedBy = "boletim", fetch = FetchType.LAZY)
     private List<FrequenciaEntity> frequencias = new ArrayList<>();
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public BoletimEntity(BoletimDTO dto) {
         this.id = dto.getId();

@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+/**
+ * Bean JSF que concentra as acoes da tela de BoletimBean e conversa com a camada de servico.
+ */
 
 @Named("boletimBean")
 @ViewScoped
@@ -40,6 +43,9 @@ public class BoletimBean implements Serializable {
     private TurmaEntity filtroTurma;
     private AlunoEntity filtroAluno;
     private List<BoletimDisciplinaDTO> linhas = new ArrayList<>();
+    /**
+     * Aplica os filtros preenchidos na tela e atualiza a lista com o resultado encontrado.
+     */
 
     public void filtrar() {
         try {
@@ -51,6 +57,9 @@ public class BoletimBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<TurmaEntity> completeTurma(String query) {
         String termo = query == null ? "" : query.toLowerCase();
@@ -58,6 +67,9 @@ public class BoletimBean implements Serializable {
                 .filter(turma -> turma.getTurma() != null && turma.getTurma().toLowerCase().contains(termo))
                 .collect(Collectors.toList());
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<AlunoEntity> completeAlunoDaTurma(String query) {
         if (filtroTurma == null || filtroTurma.getId() == null) {
@@ -77,6 +89,9 @@ public class BoletimBean implements Serializable {
                 .filter(aluno -> correspondeBusca(aluno, termo, termoNumerico))
                 .collect(Collectors.toList());
     }
+    /**
+     * Formata o valor recebido para apresentar ou salvar os dados em um padrao consistente.
+     */
 
     public String formatarCpf(String cpf) {
         if (cpf == null) {
@@ -88,6 +103,9 @@ public class BoletimBean implements Serializable {
         }
         return digitos.replaceFirst("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
     }
+    /**
+     * Centraliza a validacao usada para decidir se o registro atende ao filtro informado.
+     */
 
     private boolean correspondeBusca(AlunoEntity aluno, String termo, String termoNumerico) {
         boolean buscaVazia = termo.isBlank() && termoNumerico.isBlank();
@@ -99,6 +117,9 @@ public class BoletimBean implements Serializable {
         boolean cpf = !termoNumerico.isBlank() && aluno.getCpf() != null && aluno.getCpf().contains(termoNumerico);
         return nome || rm || cpf;
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     private void validarFiltros() {
         if (filtroTurma == null || filtroTurma.getId() == null) {
@@ -108,6 +129,9 @@ public class BoletimBean implements Serializable {
             throw new IllegalArgumentException("Selecione um aluno.");
         }
     }
+    /**
+     * Adiciona uma mensagem de retorno para orientar o usuario sobre o resultado da acao.
+     */
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));

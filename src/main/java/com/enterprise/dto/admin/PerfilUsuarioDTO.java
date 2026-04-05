@@ -5,6 +5,9 @@ import com.enterprise.model.entity.admin.SituacaoEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+/**
+ * DTO usado para transportar dados de PerfilUsuarioDTO entre a tela, servicos e entidades.
+ */
 
 @Getter
 @Setter
@@ -15,6 +18,9 @@ public class PerfilUsuarioDTO {
     private PerfilDTO perfil;
     private UsuarioDTO usuario;
     private SituacaoDTO situacao;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public PerfilUsuarioDTO(PerfilUsuarioEntity perfilUsuario){
         this.id = perfilUsuario.getId();

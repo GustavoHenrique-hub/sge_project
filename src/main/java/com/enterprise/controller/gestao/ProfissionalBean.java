@@ -17,6 +17,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+/**
+ * Bean JSF que concentra as acoes da tela de ProfissionalBean e conversa com a camada de servico.
+ */
 
 @Named("profissionalBean")
 @ViewScoped
@@ -35,11 +38,17 @@ public class ProfissionalBean implements Serializable {
     private ProfissionalDTO detalheEdicao = new ProfissionalDTO();
     private boolean editandoDetalhe;
     private List<ProfissionalEntity> profissionais = new ArrayList<>();
+    /**
+     * Inicializa o estado da tela ou da classe assim que a instancia fica disponivel.
+     */
 
     @PostConstruct
     public void init() {
         recarregarLista();
     }
+    /**
+     * Salva os dados atuais do fluxo e atualiza os elementos que dependem desse resultado.
+     */
 
     public void salvar() {
         try {
@@ -53,18 +62,30 @@ public class ProfissionalBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Recarrega a lista exibida na interface para refletir o estado atual dos dados.
+     */
 
     private void recarregarLista() {
         profissionais = service.findAll();
     }
+    /**
+     * Limpa os campos do formulario para preparar um novo cadastro ou nova consulta.
+     */
 
     public void limparFormulario() {
         profissionalDTO = new ProfissionalDTO();
     }
+    /**
+     * Adiciona uma mensagem de retorno para orientar o usuario sobre o resultado da acao.
+     */
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));
     }
+    /**
+     * Retorna sugestoes para o autocomplete filtrando os registros pelo texto digitado.
+     */
 
     public List<ProfissionalEntity> completeNomeProfissional(String query) {
         String formatProfissional = query == null ? "" : query.toLowerCase();
@@ -74,6 +95,9 @@ public class ProfissionalBean implements Serializable {
                         && profissional.getNome().toLowerCase().startsWith(formatProfissional))
                 .collect(Collectors.toList());
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<ProfissionalEntity> completeProfissionalBuscaGeral(String query) {
         String termo = query == null ? "" : query.trim().toLowerCase();
@@ -83,10 +107,16 @@ public class ProfissionalBean implements Serializable {
                 .filter(profissional -> correspondeBuscaProfissional(profissional, termo, termoNumerico))
                 .collect(Collectors.toList());
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<ProfissionalEntity> completeProfissionalProfessor(String query) {
         return service.findProfessoresAtivosByTermo(query);
     }
+    /**
+     * Centraliza a validacao usada para decidir se o registro atende ao filtro informado.
+     */
 
     private boolean correspondeBuscaProfissional(ProfissionalEntity profissional, String termo, String termoNumerico) {
         if (profissional == null) {
@@ -107,6 +137,9 @@ public class ProfissionalBean implements Serializable {
 
         return nomeCorresponde || rmCorresponde || cpfCorresponde;
     }
+    /**
+     * Aplica os filtros preenchidos na tela e atualiza a lista com o resultado encontrado.
+     */
 
     public void filtrar() {
         try {
@@ -125,6 +158,9 @@ public class ProfissionalBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao filtrar. " + e.getMessage());
         }
     }
+    /**
+     * Prepara os dados do registro selecionado e abre o componente de detalhes correspondente.
+     */
 
     public void detalhar(ProfissionalEntity entity) {
         if (entity == null) {
@@ -138,6 +174,9 @@ public class ProfissionalBean implements Serializable {
         editandoDetalhe = false;
         detalheModalBean.abrir("Detalhes do profissional", "/components/modal/details/profissionalDetalhes.xhtml");
     }
+    /**
+     * Ativa o modo de edicao da area de detalhes preservando o valor original para cancelamento.
+     */
 
     public void habilitarEdicaoDetalhe() {
         if (detalheProfissional == null) {
@@ -146,11 +185,17 @@ public class ProfissionalBean implements Serializable {
         detalheEdicao = copiar(detalheProfissional);
         editandoDetalhe = true;
     }
+    /**
+     * Descarta a edicao em andamento e restaura os dados atualmente confirmados.
+     */
 
     public void cancelarEdicaoDetalhe() {
         detalheEdicao = copiar(detalheProfissional);
         editandoDetalhe = false;
     }
+    /**
+     * Persiste as alteracoes feitas na visualizacao de detalhes e sincroniza a tela com o valor salvo.
+     */
 
     public void salvarDetalhe() {
         try {
@@ -163,6 +208,9 @@ public class ProfissionalBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Cria uma copia simples do objeto para evitar alteracoes involuntarias na referencia original.
+     */
 
     private ProfissionalDTO copiar(ProfissionalDTO origem) {
         ProfissionalDTO copia = new ProfissionalDTO();
@@ -176,6 +224,9 @@ public class ProfissionalBean implements Serializable {
         copia.setTelefone(origem.getTelefone());
         return copia;
     }
+    /**
+     * Formata o valor recebido para apresentar ou salvar os dados em um padrao consistente.
+     */
 
     public String formatarCpf(String cpf) {
         if (cpf == null) {

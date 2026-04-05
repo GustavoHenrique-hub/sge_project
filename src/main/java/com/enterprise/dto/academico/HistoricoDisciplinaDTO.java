@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+/**
+ * DTO usado para transportar dados de HistoricoDisciplinaDTO entre a tela, servicos e entidades.
+ */
 
 @Getter
 @Setter

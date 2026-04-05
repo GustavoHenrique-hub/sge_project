@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+/**
+ * Bean JSF que concentra as acoes da tela de AuthBean e conversa com a camada de servico.
+ */
 
 @Named("authBean")
 @SessionScoped
@@ -34,6 +37,9 @@ public class AuthBean implements Serializable {
     private String password;
     private PerfilUsuarioEntity acessoAtual;
     private String ultimoAcessoFormatado;
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public String login() {
         if (username == null || username.isBlank()) {
@@ -65,12 +71,18 @@ public class AuthBean implements Serializable {
         username = usuario == null ? null : usuario.getLogin();
         return "/pages/alunos/pageDashboard.xhtml?faces-redirect=true";
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public String logout() {
         invalidateSession();
         limparEstado();
         return "/login.xhtml?faces-redirect=true";
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public void redirectToLogin() throws IOException {
         invalidateSession();
@@ -78,12 +90,18 @@ public class AuthBean implements Serializable {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         externalContext.redirect(externalContext.getRequestContextPath() + "/login.xhtml");
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public boolean isAutenticado() {
         return acessoAtual != null
                 && acessoAtual.getUsuario() != null
                 && acessoAtual.getPerfil() != null;
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public String getNomeUsuarioLogado() {
         if (!isAutenticado()) {
@@ -92,6 +110,9 @@ public class AuthBean implements Serializable {
         String nome = acessoAtual.getUsuario().getNomeProfissional();
         return nome == null || nome.isBlank() ? "Visitante" : nome;
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public String getPerfilUsuarioLogado() {
         if (!isAutenticado() || acessoAtual.getPerfil() == null) {
@@ -99,6 +120,9 @@ public class AuthBean implements Serializable {
         }
         return acessoAtual.getPerfil().getPerfil();
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public String getMensagemBoasVindas() {
         if (!isAutenticado()) {
@@ -106,6 +130,9 @@ public class AuthBean implements Serializable {
         }
         return "Seja Bem Vindo " + getNomeUsuarioLogado() + "!";
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public int getTempoSessaoMinutos() {
         if (!isAutenticado() || acessoAtual.getUsuario() == null || acessoAtual.getUsuario().getSessionTimeout() == null) {
@@ -113,6 +140,9 @@ public class AuthBean implements Serializable {
         }
         return acessoAtual.getUsuario().getSessionTimeout();
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public int getTempoSessaoRestanteSegundos() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -135,6 +165,9 @@ public class AuthBean implements Serializable {
         long remainingSeconds = Math.max(0L, maxInactiveInterval - elapsedSeconds);
         return (int) remainingSeconds;
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public String getTempoSessaoRestanteFormatado() {
         int totalSeconds = getTempoSessaoRestanteSegundos();
@@ -142,10 +175,16 @@ public class AuthBean implements Serializable {
         int seconds = totalSeconds % 60;
         return String.format("%02d:%02d", minutes, seconds);
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     private void addMensagem(FacesMessage.Severity severity, String titulo, String detalhe) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, titulo, detalhe));
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     private void invalidateSession() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -158,6 +197,9 @@ public class AuthBean implements Serializable {
             session.invalidate();
         }
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     private void limparEstado() {
         username = null;

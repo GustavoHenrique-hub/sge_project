@@ -11,6 +11,9 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
+/**
+ * Service responsavel pelas regras de negocio e pelos fluxos principais de AlunoTurmaService.
+ */
 
 @RequestScoped
 public class AlunoTurmaService {
@@ -26,14 +29,23 @@ public class AlunoTurmaService {
     private TurmaService turmaService;
     @Inject
     private SituacaoService situacaoService;
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public List<AlunoTurmaDTO> listarDTO() {
         return repository.findAll().stream().map(AlunoTurmaDTO::new).toList();
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public List<AlunoTurmaDTO> listarPorFiltros(Long alunoId, Long turmaId, Long situacaoId) {
         return repository.findByFilters(alunoId, turmaId, situacaoId).stream().map(AlunoTurmaDTO::new).toList();
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public boolean possuiMatriculaAtiva(Long alunoId) {
         if (alunoId == null) {
@@ -41,6 +53,9 @@ public class AlunoTurmaService {
         }
         return repository.existsAtivoByAluno(alunoId);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public AlunoTurmaDTO matricular(Long alunoId, Long turmaId) {
         validarIds(alunoId, turmaId);
@@ -74,6 +89,9 @@ public class AlunoTurmaService {
         repository.save(entity);
         return new AlunoTurmaDTO(entity);
     }
+    /**
+     * Atualiza o registro existente aplicando as regras de negocio desta camada.
+     */
 
     public AlunoTurmaDTO atualizar(AlunoTurmaDTO dto) {
         if (dto == null || dto.getId() == null || dto.getAluno() == null || dto.getTurma() == null || dto.getSituacao() == null) {
@@ -109,12 +127,18 @@ public class AlunoTurmaService {
 
         return new AlunoTurmaDTO(repository.update(entity));
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private void validarIds(Long alunoId, Long turmaId) {
         if (alunoId == null || turmaId == null) {
             throw new IllegalArgumentException("Aluno e turma sao obrigatorios.");
         }
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private void inativarOutrasMatriculasAtivas(Long alunoId, Long matriculaPreservadaId, SituacaoEntity situacaoInativa) {
         for (AlunoTurmaEntity matriculaAtiva : repository.findAtivosByAluno(alunoId)) {
@@ -125,6 +149,9 @@ public class AlunoTurmaService {
             repository.update(matriculaAtiva);
         }
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private boolean isSituacao(SituacaoEntity situacao, String valor) {
         return situacao != null

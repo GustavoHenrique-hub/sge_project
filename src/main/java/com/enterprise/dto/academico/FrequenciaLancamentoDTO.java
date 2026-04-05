@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+/**
+ * DTO usado para transportar dados de FrequenciaLancamentoDTO entre a tela, servicos e entidades.
+ */
 
 @Getter
 @Setter

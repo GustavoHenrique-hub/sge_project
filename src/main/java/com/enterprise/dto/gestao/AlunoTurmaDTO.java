@@ -5,6 +5,9 @@ import com.enterprise.model.entity.gestao.AlunoTurmaEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+/**
+ * DTO usado para transportar dados de AlunoTurmaDTO entre a tela, servicos e entidades.
+ */
 
 @Getter
 @Setter
@@ -15,6 +18,9 @@ public class AlunoTurmaDTO {
     private AlunoDTO aluno;
     private TurmaDTO turma;
     private SituacaoDTO situacao;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public AlunoTurmaDTO(AlunoTurmaEntity alunoTurma) {
         this.id = alunoTurma.getId();

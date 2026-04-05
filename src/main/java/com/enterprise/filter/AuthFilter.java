@@ -13,9 +13,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+/**
+ * Filtro responsavel por controlar acesso e preparar regras globais da requisicao.
+ */
 
 @WebFilter("*.xhtml")
 public class AuthFilter implements Filter {
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

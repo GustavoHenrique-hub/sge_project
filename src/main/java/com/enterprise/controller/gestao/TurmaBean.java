@@ -17,6 +17,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+/**
+ * Bean JSF que concentra as acoes da tela de TurmaBean e conversa com a camada de servico.
+ */
 
 @Named("turmaBean")
 @ViewScoped
@@ -35,15 +38,24 @@ public class TurmaBean implements Serializable {
     private TurmaDTO turmaDTO = new TurmaDTO();
     private TurmaDTO detalheEdicao = new TurmaDTO();
     private boolean editandoDetalhe;
+    /**
+     * Inicializa o estado da tela ou da classe assim que a instancia fica disponivel.
+     */
 
     @PostConstruct
     public void init() {
         recarregarLista();
     }
+    /**
+     * Recarrega a lista exibida na interface para refletir o estado atual dos dados.
+     */
 
     private void recarregarLista() {
         turmas = service.findAll();
     }
+    /**
+     * Aplica os filtros preenchidos na tela e atualiza a lista com o resultado encontrado.
+     */
 
     public void filtrar() {
         try {
@@ -60,6 +72,9 @@ public class TurmaBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao filtrar. " + e.getMessage());
         }
     }
+    /**
+     * Salva os dados atuais do fluxo e atualiza os elementos que dependem desse resultado.
+     */
 
     public void salvar() {
         try {
@@ -73,10 +88,16 @@ public class TurmaBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Limpa os campos do formulario para preparar um novo cadastro ou nova consulta.
+     */
 
     public void limparFormulario() {
         turmaDTO = new TurmaDTO();
     }
+    /**
+     * Prepara os dados do registro selecionado e abre o componente de detalhes correspondente.
+     */
 
     public void detalhar(TurmaEntity turma) {
         detalheSelecionado = turma;
@@ -86,6 +107,9 @@ public class TurmaBean implements Serializable {
             detalheModalBean.abrir("Detalhes da turma", "/components/modal/details/turmaDetalhes.xhtml");
         }
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<TurmaEntity> completeTurma(String query) {
         String formatTurma = query == null ? "" : query.toLowerCase();
@@ -95,10 +119,16 @@ public class TurmaBean implements Serializable {
                         && turma.getTurma().toLowerCase().startsWith(formatTurma))
                 .collect(Collectors.toList());
     }
+    /**
+     * Adiciona uma mensagem de retorno para orientar o usuario sobre o resultado da acao.
+     */
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));
     }
+    /**
+     * Ativa o modo de edicao da area de detalhes preservando o valor original para cancelamento.
+     */
 
     public void habilitarEdicaoDetalhe() {
         if (detalheSelecionado == null) {
@@ -107,11 +137,17 @@ public class TurmaBean implements Serializable {
         detalheEdicao = new TurmaDTO(detalheSelecionado);
         editandoDetalhe = true;
     }
+    /**
+     * Descarta a edicao em andamento e restaura os dados atualmente confirmados.
+     */
 
     public void cancelarEdicaoDetalhe() {
         detalheEdicao = detalheSelecionado == null ? new TurmaDTO() : new TurmaDTO(detalheSelecionado);
         editandoDetalhe = false;
     }
+    /**
+     * Persiste as alteracoes feitas na visualizacao de detalhes e sincroniza a tela com o valor salvo.
+     */
 
     public void salvarDetalhe() {
         try {

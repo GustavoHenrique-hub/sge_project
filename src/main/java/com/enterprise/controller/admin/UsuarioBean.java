@@ -19,6 +19,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+/**
+ * Bean JSF que concentra as acoes da tela de UsuarioBean e conversa com a camada de servico.
+ */
 
 @Named("usuarioBean")
 @ViewScoped
@@ -34,11 +37,17 @@ public class UsuarioBean implements Serializable {
     private UsuarioDTO form = new UsuarioDTO();
     private List<UsuarioEntity> usuarios = new ArrayList<>();
     private ProfissionalEntity profissionalSelecionado;
+    /**
+     * Inicializa o estado da tela ou da classe assim que a instancia fica disponivel.
+     */
 
     @PostConstruct
     public void init() {
         recarregarLista();
     }
+    /**
+     * Salva os dados atuais do fluxo e atualiza os elementos que dependem desse resultado.
+     */
 
     public void salvar() {
         try {
@@ -56,6 +65,9 @@ public class UsuarioBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public void editar(UsuarioEntity usuario) {
         form.setId(usuario.getId());
@@ -65,6 +77,9 @@ public class UsuarioBean implements Serializable {
                 : profissionalService.findById(usuario.getProfissional().getId()).orElse(null);
         sincronizarCredenciaisComProfissional();
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public void remover(Long id) {
         try {
@@ -75,11 +90,17 @@ public class UsuarioBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Limpa os campos do formulario para preparar um novo cadastro ou nova consulta.
+     */
 
     public void limparFormulario() {
         form = new UsuarioDTO();
         profissionalSelecionado = null;
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public void sincronizarCredenciaisComProfissional() {
         if (profissionalSelecionado == null) {
@@ -96,19 +117,31 @@ public class UsuarioBean implements Serializable {
         form.setLogin(cpfSemPontuacao);
         form.setSenha(cpfSemPontuacao == null || cpfSemPontuacao.isBlank() ? null : cpfSemPontuacao + "_@ABC");
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public String getLoginGerado() {
         return cpfSemPontuacaoSelecionado();
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public String getSenhaGerada() {
         String cpfSemPontuacao = cpfSemPontuacaoSelecionado();
         return cpfSemPontuacao == null || cpfSemPontuacao.isBlank() ? null : cpfSemPontuacao + "_@ABC";
     }
+    /**
+     * Recarrega a lista exibida na interface para refletir o estado atual dos dados.
+     */
 
     private void recarregarLista() {
         usuarios = service.listar();
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<UsuarioEntity> completeUsuario(String query) {
         String termo = query == null ? "" : query.toLowerCase();
@@ -118,6 +151,9 @@ public class UsuarioBean implements Serializable {
                 .filter(usuario -> correspondeBuscaUsuario(usuario, termo, termoNumerico))
                 .collect(Collectors.toList());
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<ProfissionalEntity> completeProfissionalUsuario(String query) {
         String termo = query == null ? "" : query.trim().toLowerCase();
@@ -127,6 +163,9 @@ public class UsuarioBean implements Serializable {
                 .filter(profissional -> correspondeBuscaProfissional(profissional, termo, termoNumerico))
                 .collect(Collectors.toList());
     }
+    /**
+     * Centraliza a validacao usada para decidir se o registro atende ao filtro informado.
+     */
 
     private boolean correspondeBuscaUsuario(UsuarioEntity usuario, String termo, String termoNumerico) {
         if (usuario == null) {
@@ -145,6 +184,9 @@ public class UsuarioBean implements Serializable {
                 && usuario.getCpfProfissional().contains(termoNumerico);
         return loginCorresponde || nomeCorresponde || rmCorresponde || cpfCorresponde;
     }
+    /**
+     * Centraliza a validacao usada para decidir se o registro atende ao filtro informado.
+     */
 
     private boolean correspondeBuscaProfissional(ProfissionalEntity profissional, String termo, String termoNumerico) {
         if (profissional == null) {
@@ -162,6 +204,9 @@ public class UsuarioBean implements Serializable {
                 && profissional.getCpf().contains(termoNumerico);
         return nomeCorresponde || rmCorresponde || cpfCorresponde;
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     private String cpfSemPontuacaoSelecionado() {
         if (profissionalSelecionado == null || profissionalSelecionado.getCpf() == null) {
@@ -169,6 +214,9 @@ public class UsuarioBean implements Serializable {
         }
         return profissionalSelecionado.getCpf().replaceAll("\\D", "");
     }
+    /**
+     * Adiciona uma mensagem de retorno para orientar o usuario sobre o resultado da acao.
+     */
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));

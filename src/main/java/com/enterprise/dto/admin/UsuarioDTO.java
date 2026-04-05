@@ -5,6 +5,9 @@ import com.enterprise.dto.gestao.ProfissionalDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+/**
+ * DTO usado para transportar dados de UsuarioDTO entre a tela, servicos e entidades.
+ */
 
 @Getter
 @Setter
@@ -15,6 +18,9 @@ public class UsuarioDTO {
     private String login;
     private String senha;
     private Integer sessionTimeout;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public UsuarioDTO(UsuarioEntity usuario){
         this.id = usuario.getId();

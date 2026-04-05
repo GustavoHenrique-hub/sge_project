@@ -9,12 +9,18 @@ import jakarta.inject.Inject;
 
 import java.util.List;
 import java.util.Optional;
+/**
+ * Service responsavel pelas regras de negocio e pelos fluxos principais de UsuarioService.
+ */
 
 @RequestScoped
 public class UsuarioService {
 
     @Inject
     private UsuarioRepository repository;
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public UsuarioDTO criar(UsuarioDTO dto) {
         validar(dto);
@@ -28,6 +34,9 @@ public class UsuarioService {
         repository.save(entity);
         return new UsuarioDTO(entity);
     }
+    /**
+     * Atualiza o registro existente aplicando as regras de negocio desta camada.
+     */
 
     public UsuarioDTO atualizar(UsuarioDTO dto) {
         if (dto.getId() == null) {
@@ -45,22 +54,37 @@ public class UsuarioService {
         UsuarioEntity merged = repository.update(entity);
         return new UsuarioDTO(merged);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public List<UsuarioEntity> listar() {
         return repository.findAll();
     }
+    /**
+     * Busca um unico registro pelo identificador informado, quando ele existir.
+     */
 
     public Optional<UsuarioEntity> findById(Long id) {
         return repository.findById(id);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public void remover(Long id) {
         repository.removeById(id);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public UsuarioEntity login(String login, String senha) {
         return repository.findByLoginAndSenha(login, senha).orElse(null);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private void validar(UsuarioDTO dto) {
         if (dto == null) {

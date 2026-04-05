@@ -12,6 +12,9 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * DTO usado para transportar dados de BoletimDTO entre a tela, servicos e entidades.
+ */
 
 @Getter
 @Setter
@@ -23,6 +26,9 @@ public class BoletimDTO {
     private TurmaDTO turma;
     private List<NotaDTO> notas = new ArrayList<>();
     private List<FrequenciaDTO> frequencias = new ArrayList<>();
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public BoletimDTO(BoletimEntity boletim) {
         this.id = boletim.getId();

@@ -10,12 +10,18 @@ import jakarta.persistence.EntityManager;
 
 import java.util.List;
 import java.util.Optional;
+/**
+ * Repository que centraliza consultas e operacoes de persistencia relacionadas a BoletimRepository.
+ */
 
 @RequestScoped
 public class BoletimRepository {
 
     @Inject
     private EntityManager em;
+    /**
+     * Persiste um novo registro no banco dentro do controle transacional da aplicacao.
+     */
 
     public BoletimEntity save(BoletimEntity entity) {
         return JpaTransaction.execute(em, () -> {
@@ -24,6 +30,9 @@ public class BoletimRepository {
             return entity;
         });
     }
+    /**
+     * Mescla e salva as alteracoes de um registro ja existente no banco de dados.
+     */
 
     public BoletimEntity update(BoletimEntity entity) {
         return JpaTransaction.execute(em, () -> {
@@ -31,10 +40,16 @@ public class BoletimRepository {
             return em.merge(entity);
         });
     }
+    /**
+     * Busca um unico registro pelo identificador informado, quando ele existir.
+     */
 
     public Optional<BoletimEntity> findById(Long id) {
         return Optional.ofNullable(em.find(BoletimEntity.class, id));
     }
+    /**
+     * Executa uma consulta filtrada usando os parametros recebidos pelo fluxo atual.
+     */
 
     public Optional<BoletimEntity> findByAlunoAndTurma(Long alunoId, Long turmaId) {
         return em.createQuery(
@@ -49,6 +64,9 @@ public class BoletimRepository {
                 .getResultStream()
                 .findFirst();
     }
+    /**
+     * Executa uma consulta filtrada usando os parametros recebidos pelo fluxo atual.
+     */
 
     public List<BoletimEntity> findByAluno(Long alunoId) {
         return em.createQuery(
@@ -62,6 +80,9 @@ public class BoletimRepository {
                 .setParameter("alunoId", alunoId)
                 .getResultList();
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     private void attachReferences(BoletimEntity entity) {
         if (entity.getAluno() != null && entity.getAluno().getId() != null) {

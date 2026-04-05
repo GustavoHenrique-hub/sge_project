@@ -23,6 +23,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+/**
+ * Bean JSF que concentra as acoes da tela de LancamentoBean e conversa com a camada de servico.
+ */
 
 @Named("lancamentoBean")
 @ViewScoped
@@ -51,6 +54,9 @@ public class LancamentoBean implements Serializable {
     private SituacaoEntity detalheSituacaoSelecionada;
     private boolean editandoDetalhe;
     private List<AlunoTurmaDTO> lancamentos = new ArrayList<>();
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public void carregar() {
         try {
@@ -67,10 +73,16 @@ public class LancamentoBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao carregar. " + e.getMessage());
         }
     }
+    /**
+     * Salva os dados atuais do fluxo e atualiza os elementos que dependem desse resultado.
+     */
 
     public void salvar() {
         addMsg(FacesMessage.SEVERITY_INFO, "Sucesso", "Lancamentos salvos.");
     }
+    /**
+     * Prepara os dados do registro selecionado e abre o componente de detalhes correspondente.
+     */
 
     public void detalhar(AlunoTurmaDTO dto) {
         if (dto == null) {
@@ -88,6 +100,9 @@ public class LancamentoBean implements Serializable {
         editandoDetalhe = false;
         detalheModalBean.abrir("Detalhes do lancamento", "/components/modal/details/lancamentoDetalhes.xhtml");
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<TurmaEntity> completeTurma(String query) {
         String format = query == null ? "" : query.toLowerCase();
@@ -96,6 +111,9 @@ public class LancamentoBean implements Serializable {
                 .filter(turma -> turma.getTurma() != null && turma.getTurma().toLowerCase().startsWith(format))
                 .collect(Collectors.toList());
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public String situacaoSeverity(String situacao) {
         if (situacao == null) {
@@ -107,10 +125,16 @@ public class LancamentoBean implements Serializable {
             default -> "warning";
         };
     }
+    /**
+     * Adiciona uma mensagem de retorno para orientar o usuario sobre o resultado da acao.
+     */
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));
     }
+    /**
+     * Ativa o modo de edicao da area de detalhes preservando o valor original para cancelamento.
+     */
 
     public void habilitarEdicaoDetalhe() {
         if (detalheSelecionado == null) {
@@ -120,12 +144,18 @@ public class LancamentoBean implements Serializable {
         sincronizarSeletoresDetalhe();
         editandoDetalhe = true;
     }
+    /**
+     * Descarta a edicao em andamento e restaura os dados atualmente confirmados.
+     */
 
     public void cancelarEdicaoDetalhe() {
         detalheEdicao = copiar(detalheSelecionado);
         sincronizarSeletoresDetalhe();
         editandoDetalhe = false;
     }
+    /**
+     * Persiste as alteracoes feitas na visualizacao de detalhes e sincroniza a tela com o valor salvo.
+     */
 
     public void salvarDetalhe() {
         try {
@@ -140,6 +170,9 @@ public class LancamentoBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     private void preencherDtoDetalhe() {
         if (detalheAlunoSelecionado == null || detalheTurmaSelecionada == null || detalheSituacaoSelecionada == null) {
@@ -149,6 +182,9 @@ public class LancamentoBean implements Serializable {
         detalheEdicao.setTurma(new com.enterprise.dto.gestao.TurmaDTO(detalheTurmaSelecionada));
         detalheEdicao.setSituacao(new SituacaoDTO(detalheSituacaoSelecionada));
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     private void sincronizarSeletoresDetalhe() {
         detalheAlunoSelecionado = detalheEdicao != null && detalheEdicao.getAluno() != null && detalheEdicao.getAluno().getId() != null
@@ -161,6 +197,9 @@ public class LancamentoBean implements Serializable {
                 ? situacaoService.findById(detalheEdicao.getSituacao().getId()).orElse(null)
                 : null;
     }
+    /**
+     * Cria uma copia simples do objeto para evitar alteracoes involuntarias na referencia original.
+     */
 
     private AlunoTurmaDTO copiar(AlunoTurmaDTO origem) {
         AlunoTurmaDTO copia = new AlunoTurmaDTO();

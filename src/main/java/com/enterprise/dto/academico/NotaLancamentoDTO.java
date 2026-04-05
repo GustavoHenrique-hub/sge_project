@@ -6,6 +6,9 @@ import com.enterprise.dto.gestao.TurmaDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+/**
+ * DTO usado para transportar dados de NotaLancamentoDTO entre a tela, servicos e entidades.
+ */
 
 @Getter
 @Setter

@@ -8,6 +8,9 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+/**
+ * Converter JSF usado para transformar valores da interface em objetos de SituacaoEntityConverter e vice-versa.
+ */
 
 @Named("situacaoEntityConverter")
 @RequestScoped
@@ -15,6 +18,9 @@ public class SituacaoEntityConverter implements Converter<SituacaoEntity> {
 
     @Inject
     private SituacaoService situacaoService;
+    /**
+     * Converte o valor textual enviado pela interface para o objeto correspondente usado no backend.
+     */
 
     @Override
     public SituacaoEntity getAsObject(FacesContext context, UIComponent component, String value) {
@@ -28,6 +34,9 @@ public class SituacaoEntityConverter implements Converter<SituacaoEntity> {
             return null;
         }
     }
+    /**
+     * Converte o objeto selecionado em texto para que o componente JSF consiga renderizar o valor.
+     */
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, SituacaoEntity value) {

@@ -11,10 +11,16 @@ import jakarta.persistence.Persistence;
 
 import java.util.HashMap;
 import java.util.Map;
+/**
+ * Classe de configuracao e suporte para infraestrutura usada pela aplicacao.
+ */
 
 @ApplicationScoped
 public class JPAProducer {
     private EntityManagerFactory emf;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     private EntityManagerFactory getEmf() {
         if (emf == null) {
@@ -22,18 +28,27 @@ public class JPAProducer {
         }
         return emf;
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     @Produces
     @RequestScoped
     public EntityManager em() {
         return getEmf().createEntityManager();
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public void close(@Disposes EntityManager em) {
         if (em.isOpen()) {
             em.close();
         }
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     @PreDestroy
     public void destroy() {
@@ -41,6 +56,9 @@ public class JPAProducer {
             emf.close();
         }
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     private Map<String, Object> buildOverrides() {
         Map<String, Object> properties = new HashMap<>();
@@ -59,6 +77,9 @@ public class JPAProducer {
 
         return properties;
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     private String buildJdbcUrl() {
         String host = readConfig("DB_HOST");
@@ -69,6 +90,9 @@ public class JPAProducer {
         }
         return "jdbc:postgresql://" + host + ":" + (port == null ? "5432" : port) + "/" + database;
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     private String readConfig(String key) {
         String systemValue = System.getProperty(key);
@@ -82,6 +106,9 @@ public class JPAProducer {
         }
         return null;
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     private void putIfPresent(Map<String, Object> properties, String key, String value) {
         if (value != null && !value.isBlank()) {

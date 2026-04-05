@@ -17,6 +17,9 @@ import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+/**
+ * Service responsavel pelas regras de negocio e pelos fluxos principais de NotaService.
+ */
 
 @RequestScoped
 public class NotaService {
@@ -29,6 +32,9 @@ public class NotaService {
     private AlunoTurmaService alunoTurmaService;
     @Inject
     private BoletimService boletimService;
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public List<NotaLancamentoDTO> listarPorTurmaEDisciplina(Long turmaId, Long disciplinaId) {
         if (turmaId == null || disciplinaId == null) {
@@ -61,6 +67,9 @@ public class NotaService {
         linhas.sort(Comparator.comparing(item -> item.getAluno().getNome(), String.CASE_INSENSITIVE_ORDER));
         return linhas;
     }
+    /**
+     * Salva os dados atuais do fluxo e atualiza os elementos que dependem desse resultado.
+     */
 
     public NotaDTO salvar(NotaLancamentoDTO dto) {
         validar(dto);
@@ -83,10 +92,16 @@ public class NotaService {
         NotaEntity persisted = entity.getId() == null ? notaRepository.save(entity) : notaRepository.update(entity);
         return new NotaDTO(persisted);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public List<String> listarConceitos() {
         return List.of("I", "R", "B", "MB");
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private void validar(NotaLancamentoDTO dto) {
         if (dto == null || dto.getBoletimId() == null || dto.getDisciplina() == null || dto.getDisciplina().getId() == null) {

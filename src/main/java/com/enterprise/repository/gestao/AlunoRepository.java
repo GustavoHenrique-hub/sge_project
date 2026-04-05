@@ -9,12 +9,18 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 import java.util.Optional;
+/**
+ * Repository que centraliza consultas e operacoes de persistencia relacionadas a AlunoRepository.
+ */
 
 @RequestScoped
 public class AlunoRepository {
 
     @Inject
     private EntityManager em;
+    /**
+     * Persiste um novo registro no banco dentro do controle transacional da aplicacao.
+     */
 
     public AlunoEntity save(AlunoEntity entity) {
         return JpaTransaction.execute(em, () -> {
@@ -22,15 +28,24 @@ public class AlunoRepository {
             return entity;
         });
     }
+    /**
+     * Mescla e salva as alteracoes de um registro ja existente no banco de dados.
+     */
 
     public AlunoEntity update(AlunoEntity entity) {
         return JpaTransaction.execute(em, () -> em.merge(entity));
     }
+    /**
+     * Busca todos os registros dessa entidade no criterio padrao adotado pela aplicacao.
+     */
 
     public List<AlunoEntity> findAll() {
         return em.createQuery("select p from AlunoEntity p order by p.nome", AlunoEntity.class)
                 .getResultList();
     }
+    /**
+     * Executa uma consulta filtrada usando os parametros recebidos pelo fluxo atual.
+     */
 
     public List<AlunoEntity> findByFilters(String nome, String cpf) {
         StringBuilder jpql = new StringBuilder("select a from AlunoEntity a where 1=1");
@@ -51,6 +66,9 @@ public class AlunoRepository {
         }
         return query.getResultList();
     }
+    /**
+     * Busca um unico registro pelo identificador informado, quando ele existir.
+     */
 
     public Optional<AlunoEntity> findById(Long id) {
         if (id == null) {
@@ -65,6 +83,9 @@ public class AlunoRepository {
                 .getResultStream()
                 .findFirst();
     }
+    /**
+     * Remove variacoes de formato para padronizar a comparacao ou o armazenamento do valor.
+     */
 
     private String normalizeCpf(String cpf) {
         return cpf == null ? null : cpf.replaceAll("[^0-9]", "");

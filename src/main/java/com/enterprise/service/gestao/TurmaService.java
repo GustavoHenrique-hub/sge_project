@@ -8,6 +8,9 @@ import jakarta.inject.Inject;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
+/**
+ * Service responsavel pelas regras de negocio e pelos fluxos principais de TurmaService.
+ */
 
 @RequestScoped
 public class TurmaService {
@@ -16,6 +19,9 @@ public class TurmaService {
     private TurmaRepository repository;
 
     private static final SecureRandom RANDOM = new SecureRandom();
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public TurmaDTO criar(TurmaDTO dto) {
         validar(dto);
@@ -23,6 +29,9 @@ public class TurmaService {
         repository.save(entity);
         return new TurmaDTO(entity);
     }
+    /**
+     * Atualiza o registro existente aplicando as regras de negocio desta camada.
+     */
 
     public TurmaDTO atualizar(TurmaDTO dto) {
         validar(dto);
@@ -35,6 +44,9 @@ public class TurmaService {
         TurmaEntity merged = repository.update(existente);
         return new TurmaDTO(merged);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public void validar(TurmaDTO dto){
         if (dto == null) {
@@ -47,10 +59,16 @@ public class TurmaService {
             dto.setCodigo(String.format("%06d", RANDOM.nextInt(1_000_000)));
         }
     }
+    /**
+     * Busca todos os registros dessa entidade no criterio padrao adotado pela aplicacao.
+     */
 
     public List<TurmaEntity> findAll() {
         return repository.findAll();
     }
+    /**
+     * Busca um unico registro pelo identificador informado, quando ele existir.
+     */
 
     public Optional<TurmaEntity> findById(Long id) {
         return repository.findById(id);

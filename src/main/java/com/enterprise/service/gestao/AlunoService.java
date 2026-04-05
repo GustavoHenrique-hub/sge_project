@@ -11,6 +11,9 @@ import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+/**
+ * Service responsavel pelas regras de negocio e pelos fluxos principais de AlunoService.
+ */
 
 
 @RequestScoped
@@ -21,6 +24,9 @@ public class AlunoService {
 
     @Inject
     private AlunoRepository repository;
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public AlunoDTO criar(AlunoDTO dto) {
         validar(dto);
@@ -28,6 +34,9 @@ public class AlunoService {
         repository.save(entity);
         return new AlunoDTO(entity);
     }
+    /**
+     * Atualiza o registro existente aplicando as regras de negocio desta camada.
+     */
 
     public AlunoDTO atualizar(AlunoDTO dto) {
         validar(dto);
@@ -45,18 +54,30 @@ public class AlunoService {
         AlunoEntity merged = repository.update(existente);
         return new AlunoDTO(merged);
     }
+    /**
+     * Busca todos os registros dessa entidade no criterio padrao adotado pela aplicacao.
+     */
 
     public List<AlunoEntity> findAll() {
         return repository.findAll();
     }
+    /**
+     * Executa uma consulta filtrada usando os parametros recebidos pelo fluxo atual.
+     */
 
     public List<AlunoEntity> findByFilters(String nome, String cpf) {
         return repository.findByFilters(nome, cpf);
     }
+    /**
+     * Busca um unico registro pelo identificador informado, quando ele existir.
+     */
 
     public Optional<AlunoEntity> findById(Long id){
         return repository.findById(id);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private void validar(AlunoDTO dto) {
         if (dto == null) {
@@ -69,10 +90,10 @@ public class AlunoService {
 
         boolean validacaoCPF = validator.cpfValidation(dto.getCpf());
         if (dto.getCpf() == null || dto.getCpf().isBlank()) {
-            throw new IllegalArgumentException("CPF Ã© obrigatÃ³rio.");
+            throw new IllegalArgumentException("CPF ÃƒÂ© obrigatÃƒÂ³rio.");
         }else {
             if (validacaoCPF != true) {
-                throw new IllegalArgumentException("CPF Ã© invÃ¡lido!");
+                throw new IllegalArgumentException("CPF ÃƒÂ© invÃƒÂ¡lido!");
             }
         }
         if (dto.getCpf() == null || dto.getCpf().isBlank()) {
@@ -81,10 +102,10 @@ public class AlunoService {
 
         boolean validacaoRG = validator.rgValidation(dto.getRg());
         if (dto.getRg() == null || dto.getRg().isBlank()) {
-            throw new IllegalArgumentException("RG Ã© obrigatÃ³rio.");
+            throw new IllegalArgumentException("RG ÃƒÂ© obrigatÃƒÂ³rio.");
         }else{
             if (validacaoRG != true) {
-                throw new IllegalArgumentException("RG Ã© invÃ¡lido!");
+                throw new IllegalArgumentException("RG ÃƒÂ© invÃƒÂ¡lido!");
             }
         }
         if (dto.getRg() == null || dto.getRg().isBlank()) {
@@ -100,6 +121,9 @@ public class AlunoService {
             dto.setRm(String.format("%05d", RANDOM.nextInt(100000)));
         }
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private String normalizarRg(String valor) {
         return valor == null ? null : valor.replaceAll("[^0-9A-Za-z]", "").toUpperCase();

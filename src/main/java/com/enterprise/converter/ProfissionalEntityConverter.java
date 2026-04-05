@@ -10,6 +10,9 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+/**
+ * Converter JSF usado para transformar valores da interface em objetos de ProfissionalEntityConverter e vice-versa.
+ */
 
 @Named("profissionalEntityConverter")
 @RequestScoped
@@ -17,6 +20,9 @@ public class ProfissionalEntityConverter implements Converter<ProfissionalEntity
 
     @Inject
     private ProfissionalService profissionalService;
+    /**
+     * Converte o valor textual enviado pela interface para o objeto correspondente usado no backend.
+     */
 
     @Override
     public ProfissionalEntity getAsObject(FacesContext context, UIComponent component, String value) {
@@ -30,6 +36,9 @@ public class ProfissionalEntityConverter implements Converter<ProfissionalEntity
             return null;
         }
     }
+    /**
+     * Converte o objeto selecionado em texto para que o componente JSF consiga renderizar o valor.
+     */
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, ProfissionalEntity value) {

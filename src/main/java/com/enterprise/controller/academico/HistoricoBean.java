@@ -20,6 +20,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+/**
+ * Bean JSF que concentra as acoes da tela de HistoricoBean e conversa com a camada de servico.
+ */
 
 @Named("historicoBean")
 @ViewScoped
@@ -35,6 +38,9 @@ public class HistoricoBean implements Serializable {
     private AlunoEntity filtroAluno;
     private HistoricoDTO historicoSelecionado;
     private List<HistoricoDisciplinaDTO> historico = new ArrayList<>();
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public void visualizar() {
         try {
@@ -48,6 +54,9 @@ public class HistoricoBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     public void exportarPdf() throws IOException {
         try {
@@ -69,6 +78,9 @@ public class HistoricoBean implements Serializable {
             addMsg(FacesMessage.SEVERITY_ERROR, "Erro", e.getMessage());
         }
     }
+    /**
+     * Monta a lista de sugestoes do autocomplete com base no termo informado pela tela.
+     */
 
     public List<AlunoEntity> completeAluno(String query) {
         String termo = query == null ? "" : query.trim().toLowerCase();
@@ -77,6 +89,9 @@ public class HistoricoBean implements Serializable {
                 .filter(aluno -> correspondeBusca(aluno, termo, termoNumerico))
                 .collect(Collectors.toList());
     }
+    /**
+     * Formata o valor recebido para apresentar ou salvar os dados em um padrao consistente.
+     */
 
     public String formatarCpf(String cpf) {
         if (cpf == null) {
@@ -88,6 +103,9 @@ public class HistoricoBean implements Serializable {
         }
         return digitos.replaceFirst("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
     }
+    /**
+     * Centraliza a validacao usada para decidir se o registro atende ao filtro informado.
+     */
 
     private boolean correspondeBusca(AlunoEntity aluno, String termo, String termoNumerico) {
         boolean buscaVazia = termo.isBlank() && termoNumerico.isBlank();
@@ -99,12 +117,18 @@ public class HistoricoBean implements Serializable {
         boolean cpf = !termoNumerico.isBlank() && aluno.getCpf() != null && aluno.getCpf().contains(termoNumerico);
         return nome || rm || cpf;
     }
+    /**
+     * Executa uma acao da tela e prepara os dados consumidos pelos componentes JSF.
+     */
 
     private void validarAluno() {
         if (filtroAluno == null || filtroAluno.getId() == null) {
             throw new IllegalArgumentException("Selecione um aluno.");
         }
     }
+    /**
+     * Adiciona uma mensagem de retorno para orientar o usuario sobre o resultado da acao.
+     */
 
     private void addMsg(FacesMessage.Severity severity, String title, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, detail));

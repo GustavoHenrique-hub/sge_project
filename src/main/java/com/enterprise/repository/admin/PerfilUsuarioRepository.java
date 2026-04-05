@@ -12,16 +12,25 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 import java.util.Optional;
+/**
+ * Repository que centraliza consultas e operacoes de persistencia relacionadas a PerfilUsuarioRepository.
+ */
 
 @RequestScoped
 public class PerfilUsuarioRepository {
 
     @Inject
     private EntityManager em;
+    /**
+     * Busca um unico registro pelo identificador informado, quando ele existir.
+     */
 
     public Optional<PerfilUsuarioEntity> findById(Long id) {
         return Optional.ofNullable(em.find(PerfilUsuarioEntity.class, id));
     }
+    /**
+     * Busca todos os registros dessa entidade no criterio padrao adotado pela aplicacao.
+     */
 
     public List<PerfilUsuarioEntity> findAll() {
         return em.createQuery(
@@ -32,6 +41,9 @@ public class PerfilUsuarioRepository {
                 PerfilUsuarioEntity.class
         ).getResultList();
     }
+    /**
+     * Executa uma consulta filtrada usando os parametros recebidos pelo fluxo atual.
+     */
 
     public List<PerfilUsuarioEntity> findByFilters(Long profissionalId, Long perfilId, Long situacaoId) {
         StringBuilder jpql = new StringBuilder(
@@ -65,6 +77,9 @@ public class PerfilUsuarioRepository {
         }
         return query.getResultList();
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     public Optional<PerfilUsuarioEntity> findAtivoByLoginAndSenha(String login, String senha) {
         if (login == null || login.isBlank() || senha == null || senha.isBlank()) {
@@ -90,6 +105,9 @@ public class PerfilUsuarioRepository {
                 .getResultStream()
                 .findFirst();
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     public PerfilUsuarioEntity vincular(PerfilUsuarioEntity entity) {
         return JpaTransaction.execute(em, () -> {
@@ -98,6 +116,9 @@ public class PerfilUsuarioRepository {
             return entity;
         });
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     public PerfilUsuarioEntity atualizarSituacao(Long id, SituacaoEntity situacao) {
         return JpaTransaction.execute(em, () -> {
@@ -109,10 +130,16 @@ public class PerfilUsuarioRepository {
             return entity;
         });
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     public void excluir(PerfilUsuarioEntity entity) {
         JpaTransaction.run(em, () -> em.remove(em.contains(entity) ? entity : em.merge(entity)));
     }
+    /**
+     * Executa uma operacao de persistencia ou consulta usada pelo restante do modulo.
+     */
 
     private void attachReferences(PerfilUsuarioEntity entity) {
         if (entity.getPerfil() != null && entity.getPerfil().getId() != null) {

@@ -4,11 +4,20 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
 import java.util.function.Supplier;
+/**
+ * Classe de configuracao e suporte para infraestrutura usada pela aplicacao.
+ */
 
 public final class JpaTransaction {
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     private JpaTransaction() {
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public static <T> T execute(EntityManager em, Supplier<T> action) {
         EntityTransaction transaction = em.getTransaction();
@@ -36,6 +45,9 @@ public final class JpaTransaction {
             throw enrich(ex);
         }
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public static void run(EntityManager em, Runnable action) {
         execute(em, () -> {
@@ -43,6 +55,9 @@ public final class JpaTransaction {
             return null;
         });
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     private static RuntimeException enrich(RuntimeException ex) {
         String detail = rootMessage(ex);
@@ -54,6 +69,9 @@ public final class JpaTransaction {
         }
         return new IllegalStateException(detail, ex);
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     private static String rootMessage(Throwable throwable) {
         Throwable current = throwable;

@@ -1,6 +1,9 @@
 package com.enterprise.model.enums.academico;
 
 import java.util.Arrays;
+/**
+ * Enum que organiza valores padrao usados nas regras de negocio desta area.
+ */
 
 public enum ConceitoNota {
 
@@ -11,19 +14,31 @@ public enum ConceitoNota {
 
     private final String descricao;
     private final int peso;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     ConceitoNota(String descricao, int peso) {
         this.descricao = descricao;
         this.peso = peso;
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public String getDescricao() {
         return descricao;
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public int getPeso() {
         return peso;
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public static ConceitoNota fromValue(String value) {
         if (value == null || value.isBlank()) {
@@ -34,6 +49,9 @@ public enum ConceitoNota {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Conceito de nota invalido: " + value));
     }
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public static ConceitoNota fromAverage(Double media) {
         if (media == null) {

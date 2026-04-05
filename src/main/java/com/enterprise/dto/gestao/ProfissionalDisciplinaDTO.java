@@ -6,6 +6,9 @@ import com.enterprise.model.entity.gestao.ProfissionalDisciplinaEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+/**
+ * DTO usado para transportar dados de ProfissionalDisciplinaDTO entre a tela, servicos e entidades.
+ */
 
 @Getter
 @Setter
@@ -16,6 +19,9 @@ public class ProfissionalDisciplinaDTO {
     private ProfissionalDTO profissional;
     private DisciplinaDTO disciplina;
     private SituacaoDTO situacao;
+    /**
+     * Executa a responsabilidade principal deste metodo dentro da classe.
+     */
 
     public ProfissionalDisciplinaDTO(ProfissionalDisciplinaEntity profissionalDisciplina) {
         this.id = profissionalDisciplina.getId();

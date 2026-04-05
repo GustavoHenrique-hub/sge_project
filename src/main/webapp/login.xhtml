@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+<!-- Tela de autenticacao com a estrutura e os componentes necessarios para entrada no sistema. -->
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:p="http://primefaces.org/ui"
@@ -21,6 +22,7 @@
 
 <h:body styleClass="#{themeBean.bodyClass}">
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+        <!-- Card visual usado para separar blocos de informacao, formularios ou tabelas na tela. -->
         <div class="cardx" style="max-width: 460px; width: 100%;">
             <div class="cardx-header">
                 <div>
@@ -29,6 +31,7 @@
                 </div>
                 <div class="d-flex align-items-center gap-2">
                     <span class="badge-pill badge-muted">v1</span>
+                    <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
                     <h:form styleClass="d-inline">
                         <p:commandButton action="#{themeBean.toggleTheme}"
                                          rendered="#{themeBean.darkTheme}"
@@ -46,6 +49,7 @@
                 </div>
             </div>
 
+            <!-- Formulario JSF que agrupa os campos enviados ao backend nesta parte da pagina. -->
             <h:form id="formLogin">
                 <p:growl id="growl"
                          showSummary="true"
@@ -103,6 +107,7 @@
                   onsuccess="window.AppLoader &amp;&amp; AppLoader.hide()"
                   onerror="window.AppLoader &amp;&amp; AppLoader.hide()"/>
 
+    <!-- Script pequeno usado apenas para ajustar comportamento visual da tela sem alterar a regra de negocio. -->
     <script>
         //<![CDATA[
         (function () {

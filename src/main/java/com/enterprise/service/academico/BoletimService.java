@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+/**
+ * Service responsavel pelas regras de negocio e pelos fluxos principais de BoletimService.
+ */
 
 @RequestScoped
 public class BoletimService {
@@ -44,6 +47,9 @@ public class BoletimService {
     private TurmaService turmaService;
     @Inject
     private AlunoTurmaService alunoTurmaService;
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public BoletimDTO obterOuCriar(Long alunoId, Long turmaId) {
         validarAlunoTurma(alunoId, turmaId);
@@ -52,6 +58,9 @@ public class BoletimService {
         carregarColecoes(entity);
         return new BoletimDTO(entity);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public List<BoletimDisciplinaDTO> montarBoletim(Long alunoId, Long turmaId) {
         BoletimDTO boletim = obterOuCriar(alunoId, turmaId);
@@ -88,6 +97,9 @@ public class BoletimService {
         linhas.sort(Comparator.comparing(item -> item.getDisciplina() == null ? "" : item.getDisciplina().getDescricao(), String.CASE_INSENSITIVE_ORDER));
         return linhas;
     }
+    /**
+     * Busca um unico registro pelo identificador informado, quando ele existir.
+     */
 
     public Optional<BoletimEntity> findById(Long id) {
         return boletimRepository.findById(id).map(this::carregarColecoes);
@@ -98,6 +110,9 @@ public class BoletimService {
         entity.setFrequencias(frequenciaRepository.findByBoletim(entity.getId()));
         return entity;
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private BoletimEntity criarBoletim(Long alunoId, Long turmaId) {
         AlunoEntity aluno = alunoService.findById(alunoId)
@@ -110,6 +125,9 @@ public class BoletimService {
         entity.setTurma(turma);
         return boletimRepository.save(entity);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private void validarAlunoTurma(Long alunoId, Long turmaId) {
         if (alunoId == null || turmaId == null) {
@@ -120,6 +138,9 @@ public class BoletimService {
             throw new IllegalArgumentException("O aluno selecionado nao esta vinculado a turma informada.");
         }
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private BoletimDisciplinaDTO montarLinha(NotaDTO nota, FrequenciaDTO frequencia) {
         BoletimDisciplinaDTO linha = new BoletimDisciplinaDTO();
@@ -159,6 +180,9 @@ public class BoletimService {
         linha.setSituacaoFinal(AcademicoCalculoHelper.resolverSituacaoFinal(mediaNota, mediaFrequencia));
         return linha;
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private NotaDTO priorizarNotaMaisRecente(NotaDTO atual, NotaDTO nova) {
         Long idAtual = atual == null ? null : atual.getId();
@@ -171,6 +195,9 @@ public class BoletimService {
         }
         return idNova > idAtual ? nova : atual;
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private FrequenciaDTO priorizarFrequenciaMaisRecente(FrequenciaDTO atual, FrequenciaDTO nova) {
         Long idAtual = atual == null ? null : atual.getId();

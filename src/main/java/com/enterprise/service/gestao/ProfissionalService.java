@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.enterprise.validation.DocumentsValidation;
+/**
+ * Service responsavel pelas regras de negocio e pelos fluxos principais de ProfissionalService.
+ */
 
 @RequestScoped
 public class ProfissionalService {
@@ -22,6 +25,9 @@ public class ProfissionalService {
 
     @Inject
     private ProfissionalRepository repository;
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public ProfissionalDTO criar(ProfissionalDTO dto) {
         validar(dto);
@@ -29,6 +35,9 @@ public class ProfissionalService {
         repository.save(entity);
         return new ProfissionalDTO(entity);
     }
+    /**
+     * Atualiza o registro existente aplicando as regras de negocio desta camada.
+     */
 
     public ProfissionalDTO atualizar(ProfissionalDTO dto) {
         validar(dto);
@@ -46,22 +55,37 @@ public class ProfissionalService {
         ProfissionalEntity merged = repository.update(existente);
         return new ProfissionalDTO(merged);
     }
+    /**
+     * Busca todos os registros dessa entidade no criterio padrao adotado pela aplicacao.
+     */
 
     public List<ProfissionalEntity> findAll() {
         return repository.findAll();
     }
+    /**
+     * Executa uma consulta filtrada usando os parametros recebidos pelo fluxo atual.
+     */
 
     public List<ProfissionalEntity> findByFilters(String nome, String cpf) {
         return repository.findByFilters(nome, cpf);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     public List<ProfissionalEntity> findProfessoresAtivosByTermo(String termo) {
         return repository.findProfessoresAtivosByTermo(termo);
     }
+    /**
+     * Busca um unico registro pelo identificador informado, quando ele existir.
+     */
 
     public Optional<ProfissionalEntity> findById(Long id){
         return repository.findById(id);
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private void validar(ProfissionalDTO dto) {
         if (dto == null) {
@@ -69,35 +93,38 @@ public class ProfissionalService {
         }
 
         if (dto.getNome() == null || dto.getNome().isBlank()) {
-            throw new IllegalArgumentException("Nome Ã© obrigatÃ³rio.");
+            throw new IllegalArgumentException("Nome ÃƒÂ© obrigatÃƒÂ³rio.");
         }
         boolean validacaoCPF = validator.cpfValidation(dto.getCpf());
         if (dto.getCpf() == null || dto.getCpf().isBlank()) {
-            throw new IllegalArgumentException("CPF Ã© obrigatÃ³rio.");
+            throw new IllegalArgumentException("CPF ÃƒÂ© obrigatÃƒÂ³rio.");
         }else {
             if (validacaoCPF != true) {
-                throw new IllegalArgumentException("CPF Ã© invÃ¡lido!");
+                throw new IllegalArgumentException("CPF ÃƒÂ© invÃƒÂ¡lido!");
             }
         }
 
         boolean validacaoRG = validator.rgValidation(dto.getRg());
         if (dto.getRg() == null || dto.getRg().isBlank()) {
-            throw new IllegalArgumentException("RG Ã© obrigatÃ³rio.");
+            throw new IllegalArgumentException("RG ÃƒÂ© obrigatÃƒÂ³rio.");
         }else{
             if (validacaoRG != true) {
-                throw new IllegalArgumentException("RG Ã© invÃ¡lido!");
+                throw new IllegalArgumentException("RG ÃƒÂ© invÃƒÂ¡lido!");
             }
         }
         if (dto.getDtNasc() == null) {
-            throw new IllegalArgumentException("Data de nascimento Ã© obrigatÃ³ria.");
+            throw new IllegalArgumentException("Data de nascimento ÃƒÂ© obrigatÃƒÂ³ria.");
         }
         if (dto.getDtNasc().after(new Date())) {
-            throw new IllegalArgumentException("Data de nascimento invÃ¡lida.");
+            throw new IllegalArgumentException("Data de nascimento invÃƒÂ¡lida.");
         }
         if (dto.getRm() == null){
             dto.setRm(String.format("%05d", RANDOM.nextInt(100000)));
         }
     }
+    /**
+     * Executa uma parte da regra de negocio e organiza o fluxo principal deste servico.
+     */
 
     private String normalizarRg(String valor) {
         return valor == null ? null : valor.replaceAll("[^0-9A-Za-z]", "").toUpperCase();

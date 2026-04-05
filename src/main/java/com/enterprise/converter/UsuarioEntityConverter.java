@@ -8,6 +8,9 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+/**
+ * Converter JSF usado para transformar valores da interface em objetos de UsuarioEntityConverter e vice-versa.
+ */
 
 @Named("usuarioEntityConverter")
 @RequestScoped
@@ -15,6 +18,9 @@ public class UsuarioEntityConverter implements Converter<UsuarioEntity> {
 
     @Inject
     private UsuarioService usuarioService;
+    /**
+     * Converte o valor textual enviado pela interface para o objeto correspondente usado no backend.
+     */
 
     @Override
     public UsuarioEntity getAsObject(FacesContext context, UIComponent component, String value) {
@@ -28,6 +34,9 @@ public class UsuarioEntityConverter implements Converter<UsuarioEntity> {
             return null;
         }
     }
+    /**
+     * Converte o objeto selecionado em texto para que o componente JSF consiga renderizar o valor.
+     */
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, UsuarioEntity value) {

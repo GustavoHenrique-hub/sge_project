@@ -8,6 +8,9 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * Entidade JPA que representa os dados persistidos de HistoricoEntity no banco.
+ */
 
 @Getter
 @Setter
